@@ -1,0 +1,36 @@
+readOnly r //Lectura (Error si no existe)
+readOnlyBinary rb //Lectura Binaria (Error si no existe)
+read r+ //Lectura y Escritura (Error si no existe)
+readBinary rb+ //Lectura y Escritura Binaria(Error si no existe)
+writeOnly w
+writeOnlyBinary wb
+write w+
+writeBinary wb+
+updateOnly a
+updateBinaryOnly ab
+update a+
+updateBinary ab+
+
+std::write std::read std::update
+std::binary
+//Agregar std::trunc
+
+std::write : 00010
+std::read : 00001
+std::update : 00100
+std::binary : 01000
+std::trunc : 10000
+
+r:    0 001
+r+:   0 011/?
+w:    0 010
+w+:   0 011/? : 110
+a:    0 100
+a+:   0 101
+///////////
+rb:   1 001
+rb+:  1 011/!
+wb:   1 010
+wb+:  1 011/! : 110
+ab:   1 100
+ab+:  1 101
