@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 option(USINGWCARACTER "Usa los caracteres wchar_t para las rutas de archivos" OFF)
-option(TESTLIBME "Indica si libme esta en testeo o en compilacion libreria" OFF)
+option(TESTLIBME "Indica si libme esta en testeo o en compilacion libreria" ON)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -11,6 +11,7 @@ if(TESTLIBME)
 project(stdandart-library-for-me-test)
 add_executable(stdandart-library-for-me-test 
 ${CMAKE_SOURCE_DIR}/main.cpp
+${CMAKE_SOURCE_DIR}/lib/numbers.cpp
 ${CMAKE_SOURCE_DIR}/lib/converter.cpp
 ${CMAKE_SOURCE_DIR}/lib/exception.cpp
 ${CMAKE_SOURCE_DIR}/lib/url.cpp
@@ -29,6 +30,7 @@ else()
 project(stdandart-library-for-me)
 add_library(stdandart-library-for-me STATIC
 ${CMAKE_SOURCE_DIR}/lib/converter.cpp
+${CMAKE_SOURCE_DIR}/lib/numbers.cpp
 ${CMAKE_SOURCE_DIR}/lib/exception.cpp
 ${CMAKE_SOURCE_DIR}/lib/url.cpp
 ${CMAKE_SOURCE_DIR}/lib/fstream.cpp

@@ -35,13 +35,13 @@ void algoritm::copy(std::vector<T> &_destine_, const std::vector<T> &_sources)
 }
 size_t algoritm::bitforaround(size_t n)
 {
-    i16 i = sizeof(size_t) * 8;
+    unsigned char i = sizeof(size_t) * 8;
     while (--i >= 0)
     {
         if ((n & ((size_t)(1) << i)) != 0)
             break;
     }
-    return (size_t)(1) << (u16)(i + 1);
+    return (size_t)(1) << (unsigned char)(i + 1);
 }
 template <typename T>
 void algoritm::copy(std::vector<T> &_destine_, const T _sources[], size_t _ssources)
