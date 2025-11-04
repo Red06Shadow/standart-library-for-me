@@ -165,7 +165,7 @@ namespace utilitys
     class tuple<>
     {
     public:
-        static constexpr size_t size = 0;
+        static constexpr unsigned long long size = 0;
     };
     template <typename T, typename... Rest>
     class tuple<T, Rest...>

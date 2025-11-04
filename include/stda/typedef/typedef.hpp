@@ -1,7 +1,6 @@
 #include <vector>
-#include <stda/standart/utilitys.hpp>
-#include <stda/standart/numbers.hpp>
 #include <stda/sstrings/sstrings.hpp>
+#include <stda/numbers/numbers.hpp>
 
 #ifndef TYPEDEFS
 #define TYPEDEFS
