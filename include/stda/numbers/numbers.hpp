@@ -5,6 +5,12 @@
 #ifndef HEXADECIMALS
 #define HEXADECIMALS
 
+/* @Documentacion:
+ * Este archivo crea clases para manejar numeros de 8 bits hasta de 128bits... 
+ * Proximamente se espera crear para valores de 256, 512 o de numeros infinitos a base de vectores
+ * Tambien cuenta con funciones para generar cadenas de bit y hexadecimales
+ */
+
 namespace numbers
 {
     /// @brief Estructura pa almacenar bits por separado de la clase byte
@@ -748,6 +754,10 @@ namespace numbers
     class Binary
     {
     public:
+        /// @brief Funcion para obtener el binario de un dato primitivo
+        /// @tparam T Tipo de dato primitivo(!Atencion: No se debe insertar ningun tipo de dato nuevo!)
+        /// @param value Valor a analizar
+        /// @return Devuelve una cadena de caracteres tipo (?stringbuffer?) con el binario
         template <typename T>
         static stringbuffer binary(T value)
         {
@@ -777,6 +787,10 @@ namespace numbers
         static char __hexadecimal__caracter__(u8 value) { return (value < 10) ? '0' + value : value - 10 + 'a'; }
 
     public:
+        /// @brief Funcion para obtener el hexadecimal de un dato primitivo
+        /// @tparam T Tipo de dato primitivo(!Atencion: No se debe insertar ningun tipo de dato nuevo!)
+        /// @param value Valor a analizar
+        /// @return Devuelve una cadena de caracteres tipo (?stringbuffer?) con el hexadecimal
         template <typename T>
         static stringbuffer hexadecimal(T value)
         {
@@ -804,10 +818,14 @@ namespace numbers
     };
     inline Hexadecimal hex;
 
+    /// @brief Clase que genera los limites de los tipos de datos
+    /// @tparam T Tipo de dato primitivo(!Atencion: No se debe insertar ningun tipo de dato nuevo!)
     template <typename T>
     class limits
     {
     public:
+        /// @brief Expresion constante para obtener el limite
+        /// @return Devuelve el limite minimo del dato primitivo
         static constexpr T min()
         {
             if constexpr (std::is_unsigned<T>())
@@ -823,6 +841,8 @@ namespace numbers
             else
                 return 0;
         }
+        /// @brief Expresion constante para obtener el limite
+        /// @return Devuelve el limite maximo del dato primitivo
         static constexpr T max()
         {
             if constexpr (sizeof(T) == 1)

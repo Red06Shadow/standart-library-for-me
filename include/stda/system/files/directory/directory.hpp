@@ -5,14 +5,22 @@
 #ifndef DIRECTORY
 #define DIRECTORY
 
+/* @Documentacion:
+ * Este archivo contiene la clase directorio, maneja como bien dice su nombre los archivos y carpetas
+ * de Window por el momento, prooximamente pienso agregar a linux, resuelve ciertos porblemas que tenia
+ * con el manejo de archivos y es bastante util desde mi punto de vista
+ */
+
 #if defined(USINGWCARACTER)
 using w32fdata = WIN32_FIND_DATAW;
 #else
 using w32fdata = WIN32_FIND_DATAA;
 #endif
 
+/// @brief Nombres de espacios de variables
 namespace ios
 {
+    /// @brief Clase que gestinoa las funciones para los directorioss
     class directory
     {
     public:
@@ -47,6 +55,8 @@ namespace ios
         ///////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////////////////
+
+        /// @brief Clase contenedora que almacena la ruta y las funciones para el manejo directo del archivo
         class container
         {
         private:
@@ -54,6 +64,7 @@ namespace ios
             HANDLE __hanlde__;
 
         public:
+            /// @brief Clase iteradora modificada para que use funciones en vez de arreglos de cadenas de caracteres
             class iterator
             {
             private:
@@ -198,11 +209,29 @@ namespace ios
         /// @return el objecto iofstream
         static ios::iofstream open_file(const Url &url, bool binary = false, bool syncroned_input_output_system = false);
 
+        /// @brief Crea un archivo dentro del directorio especificado
+        /// @param url Direccion base del archivo(!Atencion: Si coloca la direccion de un archivo emitira error!)
+        /// @param name Nombre del archivo de tipo (?__caracter*?) (!Atencion: No coloque un nombre inavlido si no ocurrira un error!)
+        /// @param options Opcion de creacion del archivo
+        /// @param update Una direccion de memoria para si desea actualizar la ruta ya con el nombre del archivo insertado
         static void create_file(const Url &url, const __caracter* name, options_for_create options, Url *update = nullptr);
+        /// @brief Crea un archivo dentro del directorio especificado
+        /// @param url Direccion base del archivo(!Atencion: Si coloca la direccion de un archivo emitira error!)
+        /// @param name Nombre del archivo de tipo (?__string?) (!Atencion: No coloque un nombre inavlido si no ocurrira un error!)
+        /// @param options Opcion de creacion del archivo
+        /// @param update Una direccion de memoria para si desea actualizar la ruta ya con el nombre del archivo insertado
         static void create_file(const Url &url, const __string& name, options_for_create options, Url *update = nullptr);
 
+        /// @brief Elimina el archivo o todos los archivos de la ruta especificada
+        /// @param sources Direccion que se desea eliminar
         static void remove(const Url &sources);
+        /// @brief Elimina unicamente archivos
+        /// @param sources Direccion que se desea eliminar(!Atencion: Si inserta una ruta de directorio ocurrira un error!)
         static void remove_file(const Url &sources);
+        /// @brief Cambia el nombre del archivo o directorio
+        /// @param url Direccion que se desea renombrar
+        /// @param new_name Nuevo nombre que desee
+        /// @param ignore_type Si esta activa el tipo de archivo, o sea (...).txt, no se vera afectado por el renombre
         static void rename(const Url& url, const __caracter *new_name, bool ignore_type = true);
         ///////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////////////////
@@ -238,6 +267,8 @@ namespace ios
         static Url getPathRecycle();
     };
 }
+
+/// @Funciones Eliminadas o desactivadas por requerimientos no encontrados
 
 // static bool recyle(const Url url);
 

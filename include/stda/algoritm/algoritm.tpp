@@ -9,7 +9,7 @@ void algoritm::view(const T array[], size_t size)
 }
 
 template <typename T>
-void algoritm::view(const trails<T> array)
+void algoritm::view(const trails<T>& array)
 {
     std::cout << '[';
     for (size_t i = 0; i < array.size(); i++)

@@ -4,6 +4,11 @@
 
 #ifndef TYPEDEFS
 #define TYPEDEFS
+
+/* @Documentacion:
+ * Contiene una simplificacion de definiciones de clases para facilitar su uso
+ */
+
 typedef std::vector<numbers::byte> vbytes;
 typedef std::vector<numbers::word> vword;
 typedef std::vector<numbers::dword> vdword;

@@ -1,4 +1,4 @@
-size_t node::base::countofelements = 0, node::base::countofpoints = 0, node::base::countofarrays = 0, node::base::countofvector = 0, node::base::countofmaping = 0;
+size_t node::base::countofelements = 0, node::base::countofpoints = 0, node::base::countofarrays = 0, node::base::countofvector = 0, node::base::countofmaping = 0, node::base::countofother = 0;
 
 template <typename T>
 node::point<T>::point(const T &__value) : base(node::_S_point)

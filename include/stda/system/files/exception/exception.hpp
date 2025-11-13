@@ -6,8 +6,16 @@
 #ifndef EXCEPTIONSME
 #define EXCEPTIONSME
 
+/* @Documentacion:
+ * Este archivo contiene el manejo de excepciones para namespace ios
+ * facilita y ahorra tiempo a la hora de generarlas y aunque aun no este completa
+ * tambien puede recibir excepciones fuera de las ya predefinidas
+ */
+
+/// @brief Nombres de espacios de variables
 namespace ios
 {
+    /// @brief Clase que maneja las expeciones ios
     class exception : public std::exception
     {
     public:
@@ -31,15 +39,27 @@ namespace ios
         char* __other__;
 
     public:
+        /// @brief Constructor por defecto
         exception() noexcept : __error__(error::__none), __other__(nullptr) {}
+        /// @brief Constructor que usa el id de error
+        /// @param __message Identificador de tipo (?ios::exception::error?)
         explicit exception(const error __message) : __error__(__message), __other__(nullptr) {}
+        /// @brief Constructor que usa el id de error y un mensaje extra definido por el programador
+        /// @param __message Identificador de tipo (?ios::exception::error?)
+        /// @param other_message Mensaje adicional que se desea enviar
         explicit exception(const error __message, const char* other_message) : __error__(__message), __other__(const_cast<char*>(other_message)) {}
+        /// @brief Constructor que usa un mensaje puro para aletras indefinidas
+        /// @param __message Mensaje que se desea enviar de tipo (?const char*?)
         explicit exception(const char* __message) : __error__(error::__other), __other__(const_cast<char*>(__message)) {}
+        /// @brief Constructor que usa un mensaje puro para aletras indefinidas
+        /// @param __message Mensaje que se desea enviar de tipo (?std::string*?)
         explicit exception(const std::string __message) : __error__(error::__other) {
             __other__ = new char[__message.size() + 1];
             __other__[__message.size()] = 0;
             std::strcpy(__other__, __message.c_str());
         }
+        /// @brief Constructor que usa un mensaje puro para aletras indefinidas
+        /// @param __message Mensaje que se desea enviar de tipo (?std::wstring*?)
         explicit exception(const std::wstring __message) : __error__(error::__other) {
             __other__ = new char[__message.size() + 1];
             __other__[__message.size()] = 0;
@@ -56,9 +76,12 @@ namespace ios
             this->__error__ = _Other.__error__;
             return *this;
         }
+        /// @brief Obtiene el mensaje en formato (?const char*?)
+        /// @return Devuelve el mensaje
         const char *what() const noexcept override;
-        virtual ~exception() noexcept {
-        }
+        virtual ~exception() noexcept {}
+        /// @brief Obtiene el codigo de error en caso de tenerlo
+        /// @return Devuelve un valor de tipo (?ios::exception::error?)
         error get_code() const { return __error__; }
     };
 }

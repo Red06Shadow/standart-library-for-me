@@ -1,15 +1,21 @@
 #include <stda/system/files/url/url.hpp>
 #include <stda/sstrings/stringbuffer.hpp>
-#include <stda/standart/numbers.hpp>
+#include <stda/numbers/numbers.hpp>
 #include <stdio.h>
 #include <stdlib.h>
 
 #ifndef FSTREAM
 #define FSTREAM
 
+/* @Documentacion:
+ * Este archivo contiene el manejo de archivos a partir de valores de entrada y salida
+ * aunque estas funcionalidades existen en el standart de c++ prefiero usar esas ya que puedo modificarlas en caso de que fallen
+ * o mejorarlas de ser necesario y ademas para mi es mas comodo :)
+ */
+
 namespace ios
 {
-    /// @brief indicativo entero que permite identificar mas rapido el formato de archivo
+    /// @brief Indicativo entero que permite identificar mas rapido el formato de archivo
     enum base
     {
         in  = 0b00001,
@@ -92,8 +98,6 @@ namespace ios
     {
     public:
         static const u8 mode(ios::base __base);
-
-    // public:
         ////////////////////////////////////////////////////////////////////////////////
         fstream() = default;
         fstream(const __caracter *__path, ios::base __mode);
@@ -306,9 +310,18 @@ namespace ios
             }
             return *this;
         }
+        /// @brief A traves de esta funcion obtienes la entrada de datos del archivo
+        /// @return Devuelve una referencia a un ifstream
         ifstream &in();
+        /// @brief A traves de esta funcion obtienes la salida de datos del archivo
+        /// @return Devuelve una referencia a un ofstream
         ofstream &out();
+        /// @brief Permite verificar si el archivo fue abierto como binario o no
+        /// @return Devuelve verdadero si asi fue
         bool isBinaryFile();
+        /// @brief Activa o desactiva la configuracion de entrada y salida sincronizada
+        /// @param __v Activa la sincronizacion si es verdadero, si no la desactiva
+        /// @param Syncroned_fstream_reference Referencia a un elemento de tipo (?ios::fstream?) que se usara como manejador del archivo
         void setSyncronedInputOutputSystem(bool __v, fstream &Syncroned_fstream_reference);
         ~iofstream() {
             if(__input__ != nullptr) delete __input__;
