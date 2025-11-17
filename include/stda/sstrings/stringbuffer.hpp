@@ -104,6 +104,64 @@ public:
     /// @brief Punto final de la iteracion reversa del array
     /// @return Devuelve el iterador que apunta al elemento inicial del array
     iterators::reverse_iterator<char> rend() const { return iterators::reverse_iterator<char>(empty() ? nullptr : *buffer - 1); }
+
+    bool operator==(const std::string& str) {
+        return std::strcmp(str.c_str(), *buffer) == 0;
+    }
+    bool operator==(const stringbuffer& str) {
+        return std::strcmp(str.c_str(), *buffer) == 0;
+    }
+    bool operator==(const char* str) {
+        return std::strcmp(str, *buffer) == 0;
+    }
+    bool operator!=(const std::string& str) {
+        return std::strcmp(str.c_str(), *buffer) != 0;
+    }
+    bool operator!=(const stringbuffer& str) {
+        return std::strcmp(str.c_str(), *buffer) != 0;
+    }
+    bool operator!=(const char* str) {
+        return std::strcmp(str, *buffer) != 0;
+    }
+
+    bool operator>(const std::string& str) {
+        return std::strcmp(str.c_str(), *buffer) > 0;
+    }
+    bool operator>(const stringbuffer& str) {
+        return std::strcmp(str.c_str(), *buffer) > 0;
+    }
+    bool operator>(const char* str) {
+        return std::strcmp(str, *buffer) > 0;
+    }
+    bool operator<(const std::string& str) {
+        return std::strcmp(str.c_str(), *buffer) < 0;
+    }
+    bool operator<(const stringbuffer& str) {
+        return std::strcmp(str.c_str(), *buffer) < 0;
+    }
+    bool operator<(const char* str) {
+        return std::strcmp(str, *buffer) < 0;
+    }
+
+    bool operator>=(const std::string& str) {
+        return std::strcmp(str.c_str(), *buffer) >= 0;
+    }
+    bool operator>=(const stringbuffer& str) {
+        return std::strcmp(str.c_str(), *buffer) >= 0;
+    }
+    bool operator>=(const char* str) {
+        return std::strcmp(str, *buffer) >= 0;
+    }
+    bool operator<=(const std::string& str) {
+        return std::strcmp(str.c_str(), *buffer) <= 0;
+    }
+    bool operator<=(const stringbuffer& str) {
+        return std::strcmp(str.c_str(), *buffer) <= 0;
+    }
+    bool operator<=(const char* str) {
+        return std::strcmp(str, *buffer) <= 0;
+    }
+
     ~stringbuffer() {}
 };
 
@@ -197,6 +255,66 @@ public:
     /// @return Devuelve el iterador que apunta al elemento final del array
     iterators::reverse_iterator<wchar_t> rbegin() const { return iterators::reverse_iterator<wchar_t>(empty() ? nullptr : *buffer + buffer.size() - 1); }
     iterators::reverse_iterator<wchar_t> rend() const { return iterators::reverse_iterator<wchar_t>(empty() ? nullptr : *buffer - 1); }
+
+    
+    bool operator==(const std::wstring& str) {
+        return std::wcscmp(str.c_str(), *buffer) == 0;
+    }
+    bool operator==(const wstringbuffer& str) {
+        return std::wcscmp(str.c_str(), *buffer) == 0;
+    }
+    bool operator==(const wchar_t* str) {
+        return std::wcscmp(str, *buffer) == 0;
+    }
+    bool operator!=(const std::wstring& str) {
+        return std::wcscmp(str.c_str(), *buffer) != 0;
+    }
+    bool operator!=(const wstringbuffer& str) {
+        return std::wcscmp(str.c_str(), *buffer) != 0;
+    }
+    bool operator!=(const wchar_t* str) {
+        return std::wcscmp(str, *buffer) != 0;
+    }
+
+    bool operator>(const std::wstring& str) {
+        return std::wcscmp(str.c_str(), *buffer) > 0;
+    }
+    bool operator>(const wstringbuffer& str) {
+        return std::wcscmp(str.c_str(), *buffer) > 0;
+    }
+    bool operator>(const wchar_t* str) {
+        return std::wcscmp(str, *buffer) > 0;
+    }
+    bool operator<(const std::wstring& str) {
+        return std::wcscmp(str.c_str(), *buffer) < 0;
+    }
+    bool operator<(const wstringbuffer& str) {
+        return std::wcscmp(str.c_str(), *buffer) < 0;
+    }
+    bool operator<(const wchar_t* str) {
+        return std::wcscmp(str, *buffer) < 0;
+    }
+
+    bool operator>=(const std::wstring& str) {
+        return std::wcscmp(str.c_str(), *buffer) >= 0;
+    }
+    bool operator>=(const wstringbuffer& str) {
+        return std::wcscmp(str.c_str(), *buffer) >= 0;
+    }
+    bool operator>=(const wchar_t* str) {
+        return std::wcscmp(str, *buffer) >= 0;
+    }
+    bool operator<=(const std::wstring& str) {
+        return std::wcscmp(str.c_str(), *buffer) <= 0;
+    }
+    bool operator<=(const wstringbuffer& str) {
+        return std::wcscmp(str.c_str(), *buffer) <= 0;
+    }
+    bool operator<=(const wchar_t* str) {
+        return std::wcscmp(str, *buffer) <= 0;
+    }
+
+
     ~wstringbuffer() {}
 };
 

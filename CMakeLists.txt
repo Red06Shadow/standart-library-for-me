@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 option(USINGWCARACTER "Usa los caracteres wchar_t para las rutas de archivos" OFF)
-option(TESTLIBME "Indica si libme esta en testeo o en compilacion libreria" ON)
+option(TESTLIBME "Indica si libme esta en testeo o en compilacion libreria" OFF)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -55,7 +55,7 @@ target_link_libraries(stdandart-library-for-me PRIVATE Pathcch ${CMAKE_SOURCE_DI
 
 endif()
 
-
+|
 
 
 
