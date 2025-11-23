@@ -4,14 +4,32 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void ios::Url::__generate__(__caracter **destine, const __caracter *sources)
+const bool is_exist(const __caracter *path)
+{
+    WIN32_FIND_DATAW findFileData;
+    if (path == nullptr)
+        return false;
+#if defined(USINGWCARACTER)
+    HANDLE hfind = FindFirstFileExW(path, FindExInfoStandard, &findFileData, FindExSearchNameMatch, nullptr, 0);
+#else
+    HANDLE hfind = FindFirstFileExA(path, FindExInfoStandard, &findFileData, FindExSearchNameMatch, nullptr, 0);
+#endif
+    if (hfind != INVALID_HANDLE_VALUE)
+    {
+        CloseHandle(hfind);
+        return true;
+    }
+    return false;
+}
+
+void systems::Url::__generate__(__caracter **destine, const __caracter *sources)
 {
     size_t s = __size(sources);
     *destine = new __caracter[s + 1];
     (*destine)[s] = 0;
     __copy(*destine, sources);
 }
-void ios::Url::__generate__(__caracter **destine, const __caracter *sources, size_t size)
+void systems::Url::__generate__(__caracter **destine, const __caracter *sources, size_t size)
 {
     *destine = new __caracter[size + 1];
     (*destine)[size] = 0;
@@ -21,48 +39,48 @@ void ios::Url::__generate__(__caracter **destine, const __caracter *sources, siz
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-ios::Url::Url(const __caracter *path, bool checkExistUrl) : __consta__(true)
+systems::Url::Url(const __caracter *path, bool checkExistUrl) : __consta__(true)
 {
     size_t size = 0;
     if (path == nullptr)
-        throw ios::exception("Error: Path vacio en ios::Url contructor");
+        throw systems::exception("Error: Path vacio en systems::Url contructor");
     if ((size = __size(path)) == 0)
-        throw ios::exception("Error: Path vacio en ios::Url contructor");
+        throw systems::exception("Error: Path vacio en systems::Url contructor");
     //////////////////////////////////////////////////////////////////////////////////////////////////////
-    if (!ios::Url::is_corret(path))
-        throw ios::exception("Error: La ruta no es valida sintacticamente; " + __exceptiosconvert(path));
-    if (checkExistUrl && !ios::Url::is_exist(path))
-        throw ios::exception("Error: La direcion asiganda no existe; " + __exceptiosconvert(path));
+    if (!systems::Url::is_corret(path))
+        throw systems::exception("Error: La ruta no es valida sintacticamente; " + __exceptiosconvert(path));
+    if (checkExistUrl && !is_exist(path))
+        throw systems::exception("Error: La direcion asiganda no existe; " + __exceptiosconvert(path));
     __path__ = path;
 }
 
-ios::Url::Url(__caracter *path, bool checkExistUrl) : __consta__(false)
+systems::Url::Url(__caracter *path, bool checkExistUrl) : __consta__(false)
 {
     size_t size = 0;
     if (path == nullptr)
-        throw ios::exception("Error: Path vacio en ios::Url contructor");
+        throw systems::exception("Error: Path vacio en systems::Url contructor");
     if ((size = __size(path)) == 0)
-        throw ios::exception("Error: Path vacio en ios::Url contructor");
+        throw systems::exception("Error: Path vacio en systems::Url contructor");
     //////////////////////////////////////////////////////////////////////////////////////////////////////
-    if (!ios::Url::is_corret(path))
-        throw ios::exception("Error: La ruta no es valida sintacticamente; " + __exceptiosconvert(path));
-    if (checkExistUrl && !ios::Url::is_exist(path))
-        throw ios::exception("Error: La direcion asiganda no existe; " + __exceptiosconvert(path));
-    ios::Url::__generate__(const_cast<__caracter **>(&__path__), path);
+    if (!systems::Url::is_corret(path))
+        throw systems::exception("Error: La ruta no es valida sintacticamente; " + __exceptiosconvert(path));
+    if (checkExistUrl && !is_exist(path))
+        throw systems::exception("Error: La direcion asiganda no existe; " + __exceptiosconvert(path));
+    systems::Url::__generate__(const_cast<__caracter **>(&__path__), path);
 }
-ios::Url::Url(const __string &path, bool checkExistUrl) : ios::Url(const_cast<__caracter *>(path.c_str()), checkExistUrl) {}
-ios::Url::Url(const __stringbuffer &path, bool checkExistUrl) 
+systems::Url::Url(const __string &path, bool checkExistUrl) : systems::Url(const_cast<__caracter *>(path.c_str()), checkExistUrl) {}
+systems::Url::Url(const __stringbuffer &path, bool checkExistUrl) 
 {
     if(path.empty())
-        throw ios::exception("Error: Path vacio en ios::Url contructor");
-    if (!ios::Url::is_corret(path.c_str()))
-        throw ios::exception("Error: La ruta no es valida sintacticamente; " + __exceptiosconvert(path.c_str()));
-    if (checkExistUrl && !ios::Url::is_exist(path.c_str()))
-        throw ios::exception("Error: La direcion asiganda no existe; " + __exceptiosconvert(path.c_str()));
-    ios::Url::__generate__(const_cast<__caracter **>(&__path__), path.c_str(), path.size());
+        throw systems::exception("Error: Path vacio en systems::Url contructor");
+    if (!systems::Url::is_corret(path.c_str()))
+        throw systems::exception("Error: La ruta no es valida sintacticamente; " + __exceptiosconvert(path.c_str()));
+    if (checkExistUrl && !is_exist(path.c_str()))
+        throw systems::exception("Error: La direcion asiganda no existe; " + __exceptiosconvert(path.c_str()));
+    systems::Url::__generate__(const_cast<__caracter **>(&__path__), path.c_str(), path.size());
 }
 
-ios::Url::Url(const ios::Url &other) : __consta__(other.__consta__)
+systems::Url::Url(const systems::Url &other) : __consta__(other.__consta__)
 {
     if (other.__consta__)
     {
@@ -75,12 +93,12 @@ ios::Url::Url(const ios::Url &other) : __consta__(other.__consta__)
         __generate__(const_cast<__caracter **>(&__path__), other.__path__);
     }
 }
-ios::Url::Url(ios::Url &&other) : __consta__(other.__consta__)
+systems::Url::Url(systems::Url &&other) : __consta__(other.__consta__)
 {
     __path__ = other.__path__;
     other.__path__ = nullptr;
 }
-ios::Url &ios::Url::operator=(const ios::Url &other)
+systems::Url &systems::Url::operator=(const systems::Url &other)
 {
     if (this != &other)
     {
@@ -94,7 +112,7 @@ ios::Url &ios::Url::operator=(const ios::Url &other)
     }
     return *this;
 }
-ios::Url &ios::Url::operator=(ios::Url &&other)
+systems::Url &systems::Url::operator=(systems::Url &&other)
 {
     if (this != &other)
     {
@@ -106,29 +124,29 @@ ios::Url &ios::Url::operator=(ios::Url &&other)
     }
     return *this;
 }
-bool ios::Url::equals(const ios::Url &url1, const ios::Url &url2)
+bool systems::Url::equals(const systems::Url &url1, const systems::Url &url2)
 {
     return __compare(url1.__path__, url2.__path__) == 0;
 }
-bool ios::Url::equals(const ios::Url &url1, const __caracter *strurl)
+bool systems::Url::equals(const systems::Url &url1, const __caracter *strurl)
 {
     return __compare(url1.__path__, strurl) == 0;
 }
 
-const __caracter *ios::Url::name() const
+const __caracter *systems::Url::name() const
 {
-    return ios::Url::name(this->__path__);
+    return systems::Url::name(this->__path__);
 }
-const ios::Url ios::Url::absolute() const
+const systems::Url systems::Url::root() const
 {
-    return ios::Url::absolute(this->__path__);
+    return systems::Url::root(this->__path__);
 }
-const ios::Url ios::Url::parent() const
+const systems::Url systems::Url::parent() const
 {
-    return ios::Url::parent(this->__path__);
+    return systems::Url::parent(this->__path__);
 }
 
-const __caracter *ios::Url::name(const __caracter *path)
+const __caracter *systems::Url::name(const __caracter *path)
 {
     size_t size = __size(path), pos = 0;
     __caracter v = path[size - 1];
@@ -144,14 +162,14 @@ const __caracter *ios::Url::name(const __caracter *path)
     cstr[size - pos] = '\0';
     return const_cast<const __caracter *>(cstr);
 }
-const ios::Url ios::Url::absolute(const __caracter *path)
+const systems::Url systems::Url::root(const __caracter *path)
 {
     __caracter *cstr = new __caracter[4];
     __ncopy(cstr, path, 3);
     cstr[3] = '\0';
     return const_cast<const __caracter *>(cstr);
 }
-const ios::Url ios::Url::parent(const __caracter *path)
+const systems::Url systems::Url::parent(const __caracter *path)
 {
     size_t size = __size(path), pos = 0;
     if (path[size - 1] == '/' || path[size - 1] == '\\')
@@ -166,51 +184,11 @@ const ios::Url ios::Url::parent(const __caracter *path)
     return const_cast<const __caracter *>(cstr);
 }
 
-bool ios::Url::is_directory(const ios::Url &url)
-{
-    return ios::Url::is_directory(url.c_str());
-}
-bool ios::Url::is_directory(const __caracter *path)
-{
-#if defined(USINGWCARACTER)
-    DWORD base = GetFileAttributesW(path);
-#else
-    DWORD base = GetFileAttributesA(path);
-#endif
-    if (base == INVALID_FILE_ATTRIBUTES)
-        throw ios::exception("Error ruta invalida");
-    return (base & FILE_ATTRIBUTE_DIRECTORY);
-}
-bool ios::Url::is_directory(const __string &path)
-{
-    return ios::Url::is_directory(path);
-}
-
-bool ios::Url::is_file(const ios::Url &url)
-{
-    return ios::Url::is_file(url.c_str());
-}
-bool ios::Url::is_file(const __caracter *path)
-{
-#if defined(USINGWCARACTER)
-    DWORD base = GetFileAttributesW(path);
-#else
-    DWORD base = GetFileAttributesA(path);
-#endif
-    if (base == INVALID_FILE_ATTRIBUTES)
-        throw ios::exception("Error ruta invalida");
-    return (base & FILE_ATTRIBUTE_ARCHIVE);
-}
-bool ios::Url::is_file(const __string &path)
-{
-    return ios::Url::is_file(path);
-}
-
-const bool ios::Url::is_corret(const ios::Url &url)
+const bool systems::Url::is_corret(const systems::Url &url)
 {
     return is_corret(url.__path__);
 }
-const bool ios::Url::is_corret(const __caracter *path)
+const bool systems::Url::is_corret(const __caracter *path)
 {
     if (path == nullptr)
         return false;
@@ -231,11 +209,11 @@ const bool ios::Url::is_corret(const __caracter *path)
     }
     return true;
 }
-const bool ios::Url::is_corret(const __string &path)
+const bool systems::Url::is_corret(const __string &path)
 {
     return is_corret(path.c_str());
 }
-const void ios::Url::get_tokens(const ios::Url &url, std::vector<const __caracter *> &__vect)
+const void systems::Url::get_tokens(const systems::Url &url, std::vector<const __caracter *> &__vect)
 {
     size_t size = __size(url.c_str());
     size_t before = 0;
@@ -261,36 +239,7 @@ const void ios::Url::get_tokens(const ios::Url &url, std::vector<const __caracte
     __ncopy(const_cast<__caracter *>(__vect.back()), url.c_str() + before, size - before);
 }
 
-const bool ios::Url::is_exist(const ios::Url &url)
-{
-    return is_exist(url.__path__);
-}
-const bool ios::Url::is_exist(const __caracter *path)
-{
-    WIN32_FIND_DATAW findFileData;
-    if (path == nullptr)
-        return false;
-#if defined(USINGWCARACTER)
-    HANDLE hfind = FindFirstFileExW(path, FindExInfoStandard, &findFileData, FindExSearchNameMatch, nullptr, 0);
-#else
-    HANDLE hfind = FindFirstFileExA(path, FindExInfoStandard, &findFileData, FindExSearchNameMatch, nullptr, 0);
-#endif
-    if (hfind != INVALID_HANDLE_VALUE)
-    {
-        CloseHandle(hfind);
-        return true;
-    }
-    return false;
-}
-const bool ios::Url::is_exist(const __string &path)
-{
-    return is_exist(path.c_str());
-}
-bool ios::Url::is_exist() const
-{
-    return is_exist(__path__);
-}
-const __string ios::Url::get_file_type(const ios::Url &url)
+const __string systems::Url::get_file_type(const systems::Url &url)
 {
     return url.string().substr(sstring::find_last_of(url.c_str(), __caracter(46), __size(url.c_str())));
 }

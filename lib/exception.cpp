@@ -1,6 +1,6 @@
-#include <stda/system/files/exception/exception.hpp>
+#include <stda/system/exception/exception.hpp>
 
-char const *const ios::exception::errors[__SIZE__] =
+char const *const systems::exception::errors[__SIZE__] =
 {
     "Fallo la operacion de entrada o salida en las operaciones",
     "No se puede otra entidad que no sea una carpeta para poder definirla como destino",
@@ -10,7 +10,7 @@ char const *const ios::exception::errors[__SIZE__] =
     "No existe ese directorio",
 };
 
-const char *ios::exception::what() const noexcept
+const char *systems::exception::what() const noexcept
 {
     if(__error__ != error::__other)
         return static_cast<unsigned int>(__error__) > 0 ? errors[static_cast<unsigned int>(__error__) - 1] : "";

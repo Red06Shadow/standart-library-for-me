@@ -7,15 +7,15 @@
 #define EXCEPTIONSME
 
 /* @Documentacion:
- * Este archivo contiene el manejo de excepciones para namespace ios
+ * Este archivo contiene el manejo de excepciones para namespace systems
  * facilita y ahorra tiempo a la hora de generarlas y aunque aun no este completa
  * tambien puede recibir excepciones fuera de las ya predefinidas
  */
 
 /// @brief Nombres de espacios de variables
-namespace ios
+namespace systems
 {
-    /// @brief Clase que maneja las expeciones ios
+    /// @brief Clase que maneja las expeciones systems
     class exception : public std::exception
     {
     public:
@@ -42,10 +42,10 @@ namespace ios
         /// @brief Constructor por defecto
         exception() noexcept : __error__(error::__none), __other__(nullptr) {}
         /// @brief Constructor que usa el id de error
-        /// @param __message Identificador de tipo (?ios::exception::error?)
+        /// @param __message Identificador de tipo (?systems::exception::error?)
         explicit exception(const error __message) : __error__(__message), __other__(nullptr) {}
         /// @brief Constructor que usa el id de error y un mensaje extra definido por el programador
-        /// @param __message Identificador de tipo (?ios::exception::error?)
+        /// @param __message Identificador de tipo (?systems::exception::error?)
         /// @param other_message Mensaje adicional que se desea enviar
         explicit exception(const error __message, const char* other_message) : __error__(__message), __other__(const_cast<char*>(other_message)) {}
         /// @brief Constructor que usa un mensaje puro para aletras indefinidas
@@ -81,7 +81,7 @@ namespace ios
         const char *what() const noexcept override;
         virtual ~exception() noexcept {}
         /// @brief Obtiene el codigo de error en caso de tenerlo
-        /// @return Devuelve un valor de tipo (?ios::exception::error?)
+        /// @return Devuelve un valor de tipo (?systems::exception::error?)
         error get_code() const { return __error__; }
     };
 }

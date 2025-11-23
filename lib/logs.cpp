@@ -1,36 +1,36 @@
 #include <stda/system/logs/logs.hpp>
 
-logssystem::logs::logs(const __caracter *_message, logssystem::logs::type _id) : message(_message), id(_id), time(timesystem::get_time_now()) {}
-logssystem::logs::logs(const __string &_message, logssystem::logs::type _id) : message(_message.c_str(), _message.size()), id(_id), time(timesystem::get_time_now()) {}
-logssystem::logs::logs(const __stringbuffer &_message, logssystem::logs::type _id) : message(_message), id(_id), time(timesystem::get_time_now()) {}
-logssystem::logs::logs(const std::exception &_message, logssystem::logs::type _id) : message(_message.what()), id(_id), time(timesystem::get_time_now()) {}
+systems::logs::logs(const __caracter *_message, systems::logs::type _id) : message(_message), id(_id), time(systems::time::now()) {}
+systems::logs::logs(const __string &_message, systems::logs::type _id) : message(_message.c_str(), _message.size()), id(_id), time(systems::time::now()) {}
+systems::logs::logs(const __stringbuffer &_message, systems::logs::type _id) : message(_message), id(_id), time(systems::time::now()) {}
+systems::logs::logs(const std::exception &_message, systems::logs::type _id) : message(_message.what()), id(_id), time(systems::time::now()) {}
 
-const char *logssystem::manager::codecolor[4] =
+const char *systems::log_manager::codecolor[4] =
     {
         "\x1b[32m",
         "\x1b[33m",
         "\x1b[31m",
         "\033[m"};
-const char *logssystem::manager::codemensage[4]{
+const char *systems::log_manager::codemensage[4]{
     "Message",
     "Warning",
     "Error",
     "None"};
-std::vector<logssystem::logs> logssystem::manager::allocator = {};
-const char *logssystem::manager::nameprogram = __argv[0];
+std::vector<systems::logs> systems::log_manager::allocator = {};
+const char *systems::log_manager::nameprogram = __argv[0];
 
-void logssystem::manager::exportfile(const ios::Url &path)
+void systems::log_manager::exportfile(const systems::Url &path)
 {
-    ios::ofstream os(path);
+    systems::ios::ofstream os(path);
     for (auto &&log : allocator)
-        os << log.time.to_string(timesystem::formatdate::shortlow, timesystem::formatclock::large24h) << "  " << nameprogram << "  " << codemensage[static_cast<u8>(log.id)] << "  " << log.message << '\n';
+        os << log.time.to_string(systems::time::formatdate::shortlow, systems::time::formatclock::large24h) << "  " << nameprogram << "  " << codemensage[static_cast<u8>(log.id)] << "  " << log.message << '\n';
 }
-void logssystem::manager::view()
+void systems::log_manager::view()
 {
     for (auto &&log : allocator)
-        std::cerr << codecolor[static_cast<u8>(log.id)] << log.time.to_string(timesystem::formatdate::shortlow, timesystem::formatclock::large24h) << "  " << nameprogram << "  " << codemensage[static_cast<u8>(log.id)] << "  " << log.message.c_str() << codecolor[3] << '\n';
+        std::cerr << codecolor[static_cast<u8>(log.id)] << log.time.to_string(systems::time::formatdate::shortlow, systems::time::formatclock::large24h) << "  " << nameprogram << "  " << codemensage[static_cast<u8>(log.id)] << "  " << log.message.c_str() << codecolor[3] << '\n';
 }
-void logssystem::manager::serialize(const logssystem::logs &log) {
+void systems::log_manager::serialize(const systems::logs &log) {
     if(allocator.capacity() < 256) allocator.reserve(256);
     allocator.push_back(log);
 }

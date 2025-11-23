@@ -3,4 +3,6 @@ release
 debug
 tests
 main.cpp
+lib\txt.txt
+lib\stringbuffer_old.cpp
 .vscode

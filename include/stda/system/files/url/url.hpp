@@ -1,4 +1,4 @@
-#include <stda/system/files/exception/exception.hpp>
+#include <stda/system/exception/exception.hpp>
 #include <stda/sstrings/sstrings.hpp>
 #include <windows.h>
 #include <vector>
@@ -56,7 +56,7 @@ using __stringbuffer = stringbuffer;
 #define etiqueta(__name__) label(__name__)
 
 #pragma comment(lib, "Pathcch.lib")
-namespace ios
+namespace systems
 {
     /// @brief Clase que se encarga de manejar las rutas de archivos
     class Url
@@ -66,6 +66,7 @@ namespace ios
         const __caracter *__path__;
         static void __generate__(__caracter **destine, const __caracter *sources);
         static void __generate__(__caracter **destine, const __caracter *sources, size_t size);
+        // friend files;
 
     public:
         /// @brief Una pequena estructura para el control del directorio padre y el nombre del archivo o directorio
@@ -136,7 +137,7 @@ namespace ios
         const __caracter *name() const;
         /// @brief Obtienes la ruta absoluta
         /// @return Devuelve un (?Url?)
-        const Url absolute() const;
+        const Url root() const;
         /// @brief Obtienes la ruta padre
         /// @return Devuelve un (?Url?)
         const Url parent() const;
@@ -160,42 +161,18 @@ namespace ios
         /// @brief Obtienes la ruta absoluta
         /// @param path Ruta de tipo (?__caracter?)
         /// @return Devuelve un (?Url?)
-        static const Url absolute(const __caracter *path);
+        static const Url root(const __caracter *path);
         /// @brief Obtienes la ruta padre
         /// @param path Ruta de tipo (?__caracter?)
         /// @return Devuelve un (?Url?)
         static const Url parent(const __caracter *path);
 
-        /// @brief Comprueba si la ruta es un directorio
-        /// @param url Ruta de tipo (?Url?)
-        /// @return Devuelve verdadero si lo es
-        static bool is_directory(const Url &url);
-        /// @brief Comprueba si la ruta es un directorio
-        /// @param url Ruta de tipo (?__caracter*?)
-        /// @return Devuelve verdadero si lo es
-        static bool is_directory(const __caracter *path);
-        /// @brief Comprueba si la ruta es un directorio
-        /// @param url Ruta de tipo (?__string?)
-        /// @return Devuelve verdadero si lo es
-        static bool is_directory(const __string &path);
-
-        /// @brief Comprueba si la ruta es un archivo
-        /// @param url Ruta de tipo (?Url?)
-        /// @return Devuelve verdadero si lo es
-        static bool is_file(const Url &url);
-        /// @brief Comprueba si la ruta es un archivo
-        /// @param url Ruta de tipo (?__caracter*?)
-        /// @return Devuelve verdadero si lo es
-        static bool is_file(const __caracter *path);
-        /// @brief Comprueba si la ruta es un archivo
-        /// @param url Ruta de tipo (?__string?)
-        /// @return Devuelve verdadero si lo es
-        static bool is_file(const __string &path);
-
         /// @brief Separa las rutas de los archivos en una lista de estas
         /// @param url Ruta de tipo (?Url?)
         /// @param __vect Vector para contener los nombres de cada token(!Atencion: Debe estar vacio!)
         static const void get_tokens(const Url &url, std::vector<const __caracter *> &__vect);
+
+
         /// @brief Comprueba si la ruta es valida gramaticamente
         /// @param url Ruta de tipo (?Url?)
         /// @return Devuelve verdadero si lo es
@@ -208,23 +185,6 @@ namespace ios
         /// @param url Ruta de tipo (?__string?)
         /// @return Devuelve verdadero si lo es
         static const bool is_corret(const __string &path);
-
-        /// @brief Comprueba si la ruta existe
-        /// @param url Ruta de tipo (?Url?)
-        /// @return Devuelve verdadero si lo es
-        static const bool is_exist(const Url &url);
-        /// @brief Comprueba si la ruta existe
-        /// @param url Ruta de tipo (?__caracter*?)
-        /// @return Devuelve verdadero si lo es
-        static const bool is_exist(const __caracter *path);
-        /// @brief Comprueba si la ruta existe
-        /// @param url Ruta de tipo (?__string?)
-        /// @return Devuelve verdadero si lo es
-        static const bool is_exist(const __string &path);
-
-        /// @brief Comprueba si la ruta existe
-        /// @return Devuelve verdadero si lo es
-        bool is_exist() const;
 
         /// @brief Obtiene el tipo del archivo
         /// @param url Ruta de tipo (?Url?) (!Atencion: Si inserta un directorio se mostrara un error!)

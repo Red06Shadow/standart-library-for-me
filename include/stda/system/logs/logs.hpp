@@ -1,4 +1,4 @@
-#include <stda/system/files/files.hpp>
+#include <stda/system/files/filesystem.hpp>
 #include <stda/sstrings/sstrings.hpp>
 #include <stda/system/time/time.hpp>
 #include <stda/system/memory/memory.hpp>
@@ -14,7 +14,7 @@
 
 
 /// @brief Este es el espacio de nombre que contiene todo lo relacionado con el log
-namespace logssystem
+namespace systems
 {
     /// @brief Clase que maneja 
     class logs
@@ -33,7 +33,7 @@ namespace logssystem
         /// @brief Id del log
         type id;
         /// @brief Tiempo en el que se emitio el log
-        timesystem::time_point time;
+        time::time_point time;
         /// @brief Construtor basico para el log
         /// @param _message Mensaje a enviar de tipo(?const __caracter*?)
         /// @param _id Id del log
@@ -62,7 +62,7 @@ namespace logssystem
         }
         ~logs() {}
     };
-    class manager
+    class log_manager
     {
     private:
         static const char* codecolor[4];
@@ -72,7 +72,7 @@ namespace logssystem
     public:
         /// @brief Funcion que exporta todos los mensajes hacia un archivo dentro del la ruta especificada
         /// @param path Ruta del archivo
-        static void exportfile(const ios::Url& path = ios::Url(__argv[0]));
+        static void exportfile(const systems::Url& path = systems::Url(__argv[0]));
         /// @brief Funcion que muestra todos los logs por consola
         static void view();
         /// @brief Agrega un log al administrador para luego enviarlo a donde se desee
