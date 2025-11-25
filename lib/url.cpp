@@ -88,8 +88,7 @@ systems::Url::Url(const systems::Url &other) : __consta__(other.__consta__)
     }
     else
     {
-        if (__path__ != nullptr)
-            delete[] __path__;
+        __path__ = nullptr;
         __generate__(const_cast<__caracter **>(&__path__), other.__path__);
     }
 }
@@ -102,9 +101,10 @@ systems::Url &systems::Url::operator=(const systems::Url &other)
 {
     if (this != &other)
     {
-        this->__consta__ = other.__consta__;
-        if (__path__ != nullptr)
+        
+        if (__path__ != nullptr && !this->__consta__)
             delete[] (__path__);
+        this->__consta__ = other.__consta__;
         if (other.__consta__)
             this->__path__ = other.__path__;
         else
@@ -116,7 +116,7 @@ systems::Url &systems::Url::operator=(systems::Url &&other)
 {
     if (this != &other)
     {
-        if (__path__ != nullptr)
+        if (__path__ != nullptr && !this->__consta__)
             delete[] (__path__);
         this->__consta__ = other.__consta__;
         this->__path__ = other.__path__;

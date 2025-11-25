@@ -392,6 +392,14 @@ void systems::files::rename(const systems::Url &url, const __caracter *new_name,
     systems::Url newurl = url.parent() + new_name;
     systems::files::move(url, newurl);
 }
+void systems::files::rename(const systems::Url &url, const __string& new_name, bool ignore_type)
+{
+    systems::files::rename(url, new_name.c_str(), ignore_type);
+}
+void systems::files::rename(const systems::Url &url, const __stringbuffer& new_name, bool ignore_type)
+{
+    systems::files::rename(url, new_name.c_str(), ignore_type);
+}
 
 void systems::files::__generate__fast__rename__(__string &str, size_t pos)
 {
@@ -472,7 +480,7 @@ outignore:
 }
 void systems::files::create_file(const Url &url, const __string &name, options_for_create options, Url *update)
 {
-    systems::files::create_file(url, name, options, update);
+    systems::files::create_file(url, name.c_str(), options, update);
 }
 systems::Url systems::files::current_directory()
 {

@@ -201,6 +201,16 @@ namespace systems
             ///@param url path del archivo a iniciar flujo
             ///@param binary indica si el archivo a abrir sera en formato binario
             ifstream(const Url &url, bool binary);
+            /// @brief Lee todos los caracetres de formato ASCII del archivo y los almacena en str
+            /// @param str cadena de caracteres para str(?std::string&?)
+            /// @param _start punto de donde se empieca a leer
+            /// @param _end punto donde se detiene la lectura, por defecto -1 para leer archivo completo
+            void read(std::string& str, size_t _start = 0, size_t _end = -1ULL);
+            /// @brief Lee todos los caracetres de formato ASCII del archivo y los almacena en str
+            /// @param str cadena de caracteres para str(?std::wstring&?)
+            /// @param _start punto de donde se empieca a leer
+            /// @param _end punto donde se detiene la lectura, por defecto -1 para leer archivo completo
+            void read(std::wstring& str, size_t _start = 0, size_t _end = -1ULL);
             ////////////////////////////////////////////////////////////////////
             friend ifstream &operator>>(ifstream &is, char *&__str);
             friend ifstream &operator>>(ifstream &is, std::string &__str);
@@ -238,6 +248,18 @@ namespace systems
             /// @param url path del archivo a iniciar flujo
             /// @param __mode indica el modo de operacion al abir el archivo(Solo se admitiran modos de lectura)
             ofstream(const Url &url, ios::base __mode);
+            /// @brief Escribe todo lo que este dentro de la cadena str en un apocision determinada por start
+            /// @param str Cadena de caracteres de escritura(?std::string&?)
+            /// @param strstart Pocision de donde se quiere leer la cadena
+            /// @param strend Pocision de donde termina la lectura
+            /// @param start Posicion en el archivo de donde se empieza a escribir
+            void write(const std::string& str, size_t strstart = 0, size_t strend = -1ULL, size_t start = 0);
+            /// @brief Escribe todo lo que este dentro de la cadena str en un apocision determinada por start
+            /// @param str Cadena de caracteres de escritura(?std::wstring&?)
+            /// @param strstart Pocision de donde se quiere leer la cadena
+            /// @param strend Pocision de donde termina la lectura
+            /// @param start Posicion en el archivo de donde se empieza a escribir
+            void write(const std::wstring& str, size_t strstart = 0, size_t strend = -1ULL, size_t start = 0);
             ////////////////////////////////////////////////////////////////////
             friend ofstream &operator<<(ofstream &os, const char *__str);
             friend ofstream &operator<<(ofstream &os, const std::string __str);

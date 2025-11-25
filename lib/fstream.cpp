@@ -2,7 +2,7 @@
 
 const u8 systems::ios::fstream::mode(systems::ios::base __base)
 {
-    if((__base & systems::ios::app) && (__base & systems::ios::out))
+    if ((__base & systems::ios::app) && (__base & systems::ios::out))
         throw std::runtime_error("Invalid operation for arguments");
     if ((__base & 0b10) && (__base & 0b01) && (__base & systems::ios::base::trunc))
         __base = systems::ios::base(0b11) + (__base ^ systems::ios::base::trunc);
@@ -74,19 +74,19 @@ systems::ios::fstream::fstream(const __caracter *__path, systems::ios::base __mo
 }
 
 const char *const systems::ios::fstream::__mode__[12] = {
-    "r", //0
-    "w", //1
-    "r+", //2
-    "a", //3
-    "a+", //4
-    "w+", //5
+    "r",  // 0
+    "w",  // 1
+    "r+", // 2
+    "a",  // 3
+    "a+", // 4
+    "w+", // 5
     ///////////
-    "rb", //6
-    "wb", //7
-    "rb+", //8
-    "ab", //9
-    "ab+", //10
-    "wb+" //11
+    "rb",  // 6
+    "wb",  // 7
+    "rb+", // 8
+    "ab",  // 9
+    "ab+", // 10
+    "wb+"  // 11
 };
 
 void systems::ios::fstream::setpos(size_t position, bool actual)
@@ -188,6 +188,18 @@ systems::ios::ifstream::ifstream(const systems::Url &url, bool binary) : fstream
 /////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////Operadores In////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
+void systems::ios::ifstream::read(std::string &str, size_t _start, size_t _end)
+{
+    char __c;
+    while ((__c = fgetc(__fptr__)) != EOF && _start < _end)
+        str.push_back(__c);
+}
+void systems::ios::ifstream::read(std::wstring &str, size_t _start, size_t _end)
+{
+    wchar_t __c;
+    while ((__c = fgetwc(__fptr__)) != EOF && _start < _end)
+        str.push_back(__c);
+}
 systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, char *&__str)
 {
     std::string __str_;
@@ -259,22 +271,19 @@ systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, uns
 }
 systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, char &__n)
 {
-    if ((fread(&__n, sizeof(char), 1, is.__fptr__)) != 1)
-        throw std::runtime_error("Fallo la operacion de lectura en char systems::ios::operator>>");
+    if((__n = fgetc(is.__fptr__)) == EOF) {__n = '\0';}
     return is;
 }
 
 systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, wchar_t &__n)
 {
-    if ((fwrite(&__n, sizeof(wchar_t), 1, is.__fptr__)) != 1)
-        throw std::runtime_error("Fallo la operacion de lectura en wchar_t systems::ios::operator>>");
+    if((__n = fgetwc(is.__fptr__)) == EOF) {__n = '\0';}
     return is;
 }
 
 systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, unsigned char &__n)
 {
-    if ((fread(&__n, sizeof(char), 1, is.__fptr__)) != 1)
-        throw std::runtime_error("Fallo la operacion de lectura en char systems::ios::operator>>");
+    fread(&__n, sizeof(char), 1, is.__fptr__);
     return is;
 }
 systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, long &__n)
@@ -382,6 +391,19 @@ systems::ios::ofstream::ofstream(const systems::Url &url, systems::ios::base __m
     if (!(__mode & 0b10 || __mode & 0b100))
         throw std::runtime_error("Error: Debegate mode for this constructor");
     fstream(url.c_str(), __mode);
+}
+
+void systems::ios::ofstream::write(const std::string &str, size_t strstart, size_t strend, size_t start) {
+    size_t size = (strend > str.size() ? str.size():strend);
+    setpos(start, 1, false);
+    for (size_t i = 0; i < size; i++)
+        fwrite(&str[i], sizeof(char), 1, __fptr__);
+}
+void systems::ios::ofstream::write(const std::wstring &str, size_t strstart, size_t strend, size_t start) {
+    size_t size = (strend > str.size() ? str.size():strend);
+    setpos(start, 1, false);
+    for (size_t i = 0; i < size; i++)
+        fwrite(&str[i], sizeof(wchar_t), 1, __fptr__);
 }
 /////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////Operadores Out///////////////////////////////////////

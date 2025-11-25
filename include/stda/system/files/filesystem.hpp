@@ -295,12 +295,12 @@ namespace systems
         /// @param url Direccion que se desea renombrar
         /// @param new_name Nuevo nombre que desee de tipo(?__string?)
         /// @param ignore_type Si esta activa el tipo de archivo, o sea (...).txt, no se vera afectado por el renombre
-        static void rename(const Url &url, const __string *new_name, bool ignore_type = true);
+        static void rename(const Url &url, const __string& new_name, bool ignore_type = true);
         /// @brief Cambia el nombre del archivo o directorio
         /// @param url Direccion que se desea renombrar
         /// @param new_name Nuevo nombre que desee de tipo(?__stringbuffer?)
         /// @param ignore_type Si esta activa el tipo de archivo, o sea (...).txt, no se vera afectado por el renombre
-        static void rename(const Url &url, const __stringbuffer *new_name, bool ignore_type = true);
+        static void rename(const Url &url, const __stringbuffer& new_name, bool ignore_type = true);
         /// @brief Obtiene el directorio actual de la terminal
         /// @return Devuelve un (?Url?)
         static Url current_directory();
