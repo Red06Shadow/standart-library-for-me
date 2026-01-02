@@ -241,7 +241,8 @@ size_t sstring::find_frist_of(const char *str, char caracter, size_t position)
     const char *pivot = str + position;
     while (*pivot != 0)
     {
-        if (*pivot == caracter) return pivot - str;
+        if (*pivot == caracter)
+            return pivot - str;
         pivot++;
     }
     return size_t(-1);
@@ -251,62 +252,75 @@ size_t sstring::find_frist_of(const char *str, bool (*cmp)(char), size_t positio
     const char *pivot = str + position;
     while (*pivot != 0)
     {
-        if (cmp(*pivot)) return pivot - str;
+        if (cmp(*pivot))
+            return pivot - str;
         pivot++;
     }
     return size_t(-1);
 }
-size_t sstring::find_frist_of(const wchar_t *str, wchar_t caracter, size_t position) {
+size_t sstring::find_frist_of(const wchar_t *str, wchar_t caracter, size_t position)
+{
     const wchar_t *pivot = str + position;
     while (*pivot != 0)
     {
-        if (*pivot == caracter) return pivot - str;
+        if (*pivot == caracter)
+            return pivot - str;
         pivot++;
     }
     return size_t(-1);
 }
-size_t sstring::find_frist_of(const wchar_t *str, bool (*cmp)(wchar_t), size_t position) {
+size_t sstring::find_frist_of(const wchar_t *str, bool (*cmp)(wchar_t), size_t position)
+{
     const wchar_t *pivot = str + position;
     while (*pivot != 0)
     {
-        if (cmp(*pivot)) return pivot - str;
+        if (cmp(*pivot))
+            return pivot - str;
         pivot++;
     }
     return size_t(-1);
 }
 /////////////////////////////////////
-size_t sstring::find_frist_not_of(const char *str, char caracter, size_t position) {
+size_t sstring::find_frist_not_of(const char *str, char caracter, size_t position)
+{
     const char *pivot = str + position;
     while (*pivot != 0)
     {
-        if (*pivot != caracter) return pivot - str;
+        if (*pivot != caracter)
+            return pivot - str;
         pivot++;
     }
     return size_t(-1);
 }
-size_t sstring::find_frist_not_of(const char *str, bool (*cmp)(char), size_t position) {
+size_t sstring::find_frist_not_of(const char *str, bool (*cmp)(char), size_t position)
+{
     const char *pivot = str + position;
     while (*pivot != 0)
     {
-        if (cmp(*pivot)) return pivot - str;
+        if (cmp(*pivot))
+            return pivot - str;
         pivot++;
     }
     return size_t(-1);
 }
-size_t sstring::find_frist_not_of(const wchar_t *str, wchar_t caracter, size_t position) {
+size_t sstring::find_frist_not_of(const wchar_t *str, wchar_t caracter, size_t position)
+{
     const wchar_t *pivot = str + position;
     while (*pivot != 0)
     {
-        if (*pivot != caracter) return pivot - str;
+        if (*pivot != caracter)
+            return pivot - str;
         pivot++;
     }
     return size_t(-1);
 }
-size_t sstring::find_frist_not_of(const wchar_t *str, bool(*cmp)(wchar_t), size_t position) {
+size_t sstring::find_frist_not_of(const wchar_t *str, bool (*cmp)(wchar_t), size_t position)
+{
     const wchar_t *pivot = str + position;
     while (*pivot != 0)
     {
-        if (cmp(*pivot)) return pivot - str;
+        if (cmp(*pivot))
+            return pivot - str;
         pivot++;
     }
     return size_t(-1);
@@ -314,85 +328,121 @@ size_t sstring::find_frist_not_of(const wchar_t *str, bool(*cmp)(wchar_t), size_
 /////////////////////////////////////
 size_t sstring::find_last_of(const char *str, char caracter, size_t position)
 {
-    if(position == size_t(-1)) position = std::strlen(str);
+    if (position == size_t(-1))
+        position = std::strlen(str);
     const char *pivot = str + position;
     while (pivot != str)
     {
         pivot--;
-        if (*pivot == caracter) return pivot - str;
+        if (*pivot == caracter)
+            return pivot - str;
     }
     return size_t(-1);
 }
-size_t sstring::find_last_of(const char *str, bool(*cmp)(char), size_t position)
+size_t sstring::find_last_of(const char *str, bool (*cmp)(char), size_t position)
 {
-    if(position == size_t(-1)) position = std::strlen(str);
+    if (position == size_t(-1))
+        position = std::strlen(str);
     const char *pivot = str + position;
     while (pivot != str)
     {
         pivot--;
-        if (cmp(*pivot)) return pivot - str;
+        if (cmp(*pivot))
+            return pivot - str;
     }
     return size_t(-1);
 }
-size_t sstring::find_last_of(const wchar_t *str, wchar_t caracter, size_t position) {
-    if(position == size_t(-1)) position = std::wcslen(str);
+size_t sstring::find_last_of(const wchar_t *str, wchar_t caracter, size_t position)
+{
+    if (position == size_t(-1))
+        position = std::wcslen(str);
     const wchar_t *pivot = str + position;
     while (pivot != str)
     {
         pivot--;
-        if (*pivot == caracter) return pivot - str;
+        if (*pivot == caracter)
+            return pivot - str;
     }
     return size_t(-1);
 }
-size_t sstring::find_last_of(const wchar_t *str, bool(*cmp)(wchar_t), size_t position) {
-    if(position == size_t(-1)) position = std::wcslen(str);
+size_t sstring::find_last_of(const wchar_t *str, bool (*cmp)(wchar_t), size_t position)
+{
+    if (position == size_t(-1))
+        position = std::wcslen(str);
     const wchar_t *pivot = str + position;
     while (pivot != str)
     {
         pivot--;
-        if (cmp(*pivot)) return pivot - str;
+        if (cmp(*pivot))
+            return pivot - str;
     }
     return size_t(-1);
 }
 /////////////////////////////////////
-size_t sstring::find_last_not_of(const char *str, char caracter, size_t position) {
-    if(position == size_t(-1)) position = std::strlen(str);
+size_t sstring::find_last_not_of(const char *str, char caracter, size_t position)
+{
+    if (position == size_t(-1))
+        position = std::strlen(str);
     const char *pivot = str + position;
     while (pivot != str)
     {
         pivot--;
-        if (*pivot != caracter) return pivot - str;
+        if (*pivot != caracter)
+            return pivot - str;
     }
     return size_t(-1);
 }
-size_t sstring::find_last_not_of(const char *str, bool(*cmp)(char), size_t position) {
-    if(position == size_t(-1)) position = std::strlen(str);
+size_t sstring::find_last_not_of(const char *str, bool (*cmp)(char), size_t position)
+{
+    if (position == size_t(-1))
+        position = std::strlen(str);
     const char *pivot = str + position;
     while (pivot != str)
     {
         pivot--;
-        if (cmp(*pivot)) return pivot - str;
+        if (cmp(*pivot))
+            return pivot - str;
     }
     return size_t(-1);
 }
-size_t sstring::find_last_not_of(const wchar_t *str, wchar_t caracter, size_t position) {
-    if(position == size_t(-1)) position = std::wcslen(str);
+size_t sstring::find_last_not_of(const wchar_t *str, wchar_t caracter, size_t position)
+{
+    if (position == size_t(-1))
+        position = std::wcslen(str);
     const wchar_t *pivot = str + position;
     while (pivot != str)
     {
         pivot--;
-        if (*pivot != caracter) return pivot - str;
+        if (*pivot != caracter)
+            return pivot - str;
     }
     return size_t(-1);
 }
-size_t sstring::find_last_not_of(const wchar_t *str, bool(*cmp)(wchar_t), size_t position) {
-    if(position == size_t(-1)) position = std::wcslen(str);
+size_t sstring::find_last_not_of(const wchar_t *str, bool (*cmp)(wchar_t), size_t position)
+{
+    if (position == size_t(-1))
+        position = std::wcslen(str);
     const wchar_t *pivot = str + position;
     while (pivot != str)
     {
         pivot--;
-        if (cmp(*pivot)) return pivot - str;
+        if (cmp(*pivot))
+            return pivot - str;
     }
     return size_t(-1);
 }
+size_t sstring::find_word(const std::string &word, const std::string &sources) {
+    for (size_t i = 0; i < sources.size(); i++)
+    {
+        size_t pos = 0;
+        while (i >= sources.size() && word[pos] == sources[i])
+        {
+            pos++;
+            if(pos >= word.size()) return i - pos;
+            i++;
+        }
+    }
+    return -1ULL;
+}
+
 /////////////////////////////////////

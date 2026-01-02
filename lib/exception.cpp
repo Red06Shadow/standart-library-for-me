@@ -1,4 +1,4 @@
-#include <stda/system/exception/exception.hpp>
+#include <stda/system/exceptions/exceptions.hpp>
 
 char const *const systems::exception::errors[__SIZE__] =
 {

@@ -186,7 +186,7 @@ systems::ios::fstream::~fstream()
 systems::ios::ifstream::ifstream(const systems::Url &url) : fstream(url.c_str(), systems::ios::base::in) {}
 systems::ios::ifstream::ifstream(const systems::Url &url, bool binary) : fstream(url.c_str(), systems::ios::base::in | systems::ios::base(binary ? systems::ios::base::bin : 0)) {}
 /////////////////////////////////////////////////////////////////////////////////
-////////////////////////////Operadores In////////////////////////////////////////
+////////////////////////////Funciones In////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 void systems::ios::ifstream::read(std::string &str, size_t _start, size_t _end)
 {
@@ -200,6 +200,21 @@ void systems::ios::ifstream::read(std::wstring &str, size_t _start, size_t _end)
     while ((__c = fgetwc(__fptr__)) != EOF && _start < _end)
         str.push_back(__c);
 }
+void systems::ios::ifstream::read(std::string &str, char caracter_end)
+{
+    char __c;
+    while ((__c = fgetc(__fptr__)) != EOF && __c != caracter_end)
+        str.push_back(__c);
+}
+void systems::ios::ifstream::read(std::string &str, wchar_t caracter_end)
+{
+    wchar_t __c;
+    while ((__c = fgetc(__fptr__)) != EOF && __c != caracter_end)
+        str.push_back(__c);
+}
+/////////////////////////////////////////////////////////////////////////////////
+////////////////////////////Operadores In////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
 systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, char *&__str)
 {
     std::string __str_;
@@ -271,13 +286,19 @@ systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, uns
 }
 systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, char &__n)
 {
-    if((__n = fgetc(is.__fptr__)) == EOF) {__n = '\0';}
+    if ((__n = fgetc(is.__fptr__)) == EOF)
+    {
+        __n = '\0';
+    }
     return is;
 }
 
 systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, wchar_t &__n)
 {
-    if((__n = fgetwc(is.__fptr__)) == EOF) {__n = '\0';}
+    if ((__n = fgetwc(is.__fptr__)) == EOF)
+    {
+        __n = '\0';
+    }
     return is;
 }
 
@@ -376,14 +397,16 @@ systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, dou
     }
     return is;
 }
-// systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream& is, const std::istream &ins) {
-//     //Don't touch this code
-//     // std::streamsize size = ins.gcount();
-//     // char* str = new char[size + 1];
-//     // str[size] = 0;
-//     // ins.
-// }
-
+std::ostream &systems::ios::operator<<(std::ostream &out, systems::ios::ifstream &is)
+{
+    while (!is.iseof())
+    {
+        u8 byte;
+        is >> byte;
+        out << byte;
+    }
+    return out;
+}
 systems::ios::ofstream::ofstream(const systems::Url &url) : fstream(url.c_str(), systems::ios::base::app) {}
 systems::ios::ofstream::ofstream(const systems::Url &url, bool binary) : fstream(url.c_str(), systems::ios::base::app | systems::ios::base(binary ? systems::ios::base::bin : 0)) {}
 systems::ios::ofstream::ofstream(const systems::Url &url, systems::ios::base __mode)
@@ -393,14 +416,16 @@ systems::ios::ofstream::ofstream(const systems::Url &url, systems::ios::base __m
     fstream(url.c_str(), __mode);
 }
 
-void systems::ios::ofstream::write(const std::string &str, size_t strstart, size_t strend, size_t start) {
-    size_t size = (strend > str.size() ? str.size():strend);
+void systems::ios::ofstream::write(const std::string &str, size_t strstart, size_t strend, size_t start)
+{
+    size_t size = (strend > str.size() ? str.size() : strend);
     setpos(start, 1, false);
     for (size_t i = 0; i < size; i++)
         fwrite(&str[i], sizeof(char), 1, __fptr__);
 }
-void systems::ios::ofstream::write(const std::wstring &str, size_t strstart, size_t strend, size_t start) {
-    size_t size = (strend > str.size() ? str.size():strend);
+void systems::ios::ofstream::write(const std::wstring &str, size_t strstart, size_t strend, size_t start)
+{
+    size_t size = (strend > str.size() ? str.size() : strend);
     setpos(start, 1, false);
     for (size_t i = 0; i < size; i++)
         fwrite(&str[i], sizeof(wchar_t), 1, __fptr__);
@@ -578,7 +603,21 @@ systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, con
     }
     return os;
 }
-
+systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &out, ifstream &is) {
+    while (!is.iseof())
+    {
+        u8 byte;
+        is >> byte;
+        out << byte;
+    }
+    return out;
+}
+std::istream &systems::ios::operator>>(std::istream &in, systems::ios::ofstream &out) {
+    std::string line;
+    std::getline(in, line);
+    out << line;
+    return in;
+}
 systems::ios::iofstream::iofstream(const systems::Url &url)
 {
     __syncroned__file__input__output__ = nullptr;
