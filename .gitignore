@@ -1,7 +1,7 @@
 build
 release
 debug
-tests
+test
 main.cpp
 lib\txt.txt
 lib\stringbuffer_old.cpp

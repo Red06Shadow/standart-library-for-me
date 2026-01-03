@@ -313,15 +313,19 @@ void systems::files::create_directory(const systems::Url &url, const __string &n
         }
         case files::options_for_create::overwrite:
         {
-            __standartcout << __string("Esta seguro de sobreescribir el directorio \"") + name + __string("\" se borraran todos los archivos: \nSi: 1\nNo: 0\n:");
-            unsigned char c;
+            __standartcout << __string("Esta seguro de sobreescribir el directorio \"") + name + __string("\" se borraran todos los archivos: \nSi: 1\nNo: 0\n>> ");
+            unsigned short c;
             __standartcin >> c;
             if (c == 1)
-                systems::files::remove(newpath);
+                systems::files::remove(newpath.c_str());
+            else
+                goto outignore;
+            break;
         }
         case files::options_for_create::overwrite_not_ask:
         {
             systems::files::remove(newpath.c_str());
+            break;
         }
         case files::options_for_create::asking_before:
         {
@@ -447,15 +451,17 @@ void systems::files::create_file(const Url &url, const __caracter *name, options
         }
         case files::options_for_create::overwrite:
         {
-            __standartcout << __string("Esta seguro de sobreescribir el directorio \"") + name + __string("\" se borraran todos los archivos: \nSi: 1\nNo: 0\n:");
-            unsigned char c;
+            __standartcout << __string("Esta seguro de sobreescribir el directorio \"") + name + __string("\" se borraran todos los archivos: \nSi: 1\nNo: 0\n>> ");
+            unsigned short c;
             __standartcin >> c;
             if (c != 1)
                 goto outignore;
+            break;
         }
         case files::options_for_create::overwrite_not_ask:
         {
             goto ejecuteaction;
+            break;
         }
         case files::options_for_create::asking_before:
         {
