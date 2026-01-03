@@ -46,14 +46,16 @@ void sstring::removebeginespaces(std::wstring &str)
 /////////////////////////////////////
 bool sstring::isalfanum(char caracter)
 {
-    return ((caracter > 47 && caracter < 58) || (caracter > 64 && caracter < 91) || (caracter > 96 && caracter < 123));
+    return ((caracter >= '0' && caracter <= '9') || (caracter >= 'A' && caracter <= 'Z') || (caracter >= 'a' && caracter <= 'z'));
 }
 bool sstring::isalfanum(wchar_t caracter)
 {
-    return ((caracter > 47 && caracter < 58) || (caracter > 64 && caracter < 91) || (caracter > 96 && caracter < 123));
+    return ((caracter >= L'0' && caracter <= L'9') || (caracter >= L'A' && caracter <= L'Z') || (caracter >= L'a' && caracter <= L'z'));
 }
 bool sstring::isalfanum(const std::string &str)
 {
+    if (str.empty())
+        return false;
     for (size_t i = 0; i < str.size(); i++)
         if (!isalfanum(str[i]))
             return false;
@@ -61,8 +63,194 @@ bool sstring::isalfanum(const std::string &str)
 }
 bool sstring::isalfanum(const std::wstring &str)
 {
+    if (str.empty())
+        return false;
     for (size_t i = 0; i < str.size(); i++)
         if (!isalfanum(str[i]))
+            return false;
+    return true;
+}
+/////////////////////////////////////
+bool sstring::isalfa(char caracter)
+{
+    return ((caracter >= 'A' && caracter <= 'Z') || (caracter >= 'a' && caracter <= 'z'));
+}
+bool sstring::isalfa(wchar_t caracter)
+{
+    return ((caracter >= L'A' && caracter <= L'Z') || (caracter >= L'a' && caracter <= L'z'));
+}
+bool sstring::isalfa(const std::string &str)
+{
+    if (str.empty())
+        return false;
+    for (size_t i = 0; i < str.size(); i++)
+        if (!isalfa(str[i]))
+            return false;
+    return true;
+}
+bool sstring::isalfa(const std::wstring &str)
+{
+    if (str.empty())
+        return false;
+    for (size_t i = 0; i < str.size(); i++)
+        if (!isalfa(str[i]))
+            return false;
+    return true;
+}
+/////////////////////////////////////
+bool sstring::isnum(char caracter)
+{
+    return (caracter >= '0' && caracter <= '9');
+}
+bool sstring::isnum(wchar_t caracter)
+{
+    return (caracter >= L'0' && caracter <= L'9');
+}
+bool sstring::isnum(const std::string &str, unsigned char base)
+{
+    switch (base)
+    {
+    case 2:
+        return sstring::isnum_binary(str);
+        break;
+    case 8:
+        return sstring::isnum_octal(str);
+        break;
+    case 10:
+    {
+        return sstring::isnum_decimal(str);
+        break;
+    }
+    case 16:
+        return sstring::isnum_hexadecimal(str);
+        break;
+    case 'e':
+        return sstring::isnum_exponente(str);
+        break;
+    case 'E':
+        return sstring::isnum_exponente(str);
+        break;
+    default:
+        throw std::runtime_error("No se inserto una base valida en sstring::iisnum");
+        break;
+    }
+    return false;
+}
+bool sstring::isnum(const std::wstring &str, unsigned char base)
+{
+    switch (base)
+    {
+    case 2:
+        return sstring::isnum_binary(str);
+        break;
+    case 8:
+        return sstring::isnum_octal(str);
+        break;
+    case 10:
+        return sstring::isnum_decimal(str);
+        break;
+    case 16:
+        return sstring::isnum_hexadecimal(str);
+        break;
+    case 'e':
+        return sstring::isnum_exponente(str);
+        break;
+    case 'E':
+        return sstring::isnum_exponente(str);
+        break;
+    default:
+        throw std::runtime_error("No se inserto una base valida en sstring::iisnum");
+        break;
+    }
+    return false;
+}
+bool sstring::isnum_binary(const std::string &str)
+{
+    if (str.size() < 3 || str[0] != '0' || (str[1] != 'b' && str[1] != 'B'))
+        return false;
+    for (size_t i = 2; i < str.size(); i++)
+        if (str[i] != '0' && str[i] != '1')
+            return false;
+    return true;
+}
+bool sstring::isnum_binary(const std::wstring &str)
+{
+    if (str.size() < 3 || str[0] != L'0' || (str[1] != L'b' && str[1] != L'B'))
+        return false;
+    for (size_t i = 2; i < str.size(); i++)
+        if (str[i] != L'0' && str[i] != L'1')
+            return false;
+    return true;
+}
+bool sstring::isnum_octal(const std::string &str)
+{
+    if (str.size() < 3 || str[0] != '0' || (str[1] != 'o' && str[1] != 'O'))
+        return false;
+    for (size_t i = 2; i < str.size(); i++)
+        if (!(str[i] >= '0' && str[i] <= '7'))
+            return false;
+    return true;
+}
+bool sstring::isnum_octal(const std::wstring &str)
+{
+    if (str.size() < 3 || str[0] != L'0' || (str[1] != L'o' && str[1] != L'O'))
+        return false;
+    for (size_t i = 2; i < str.size(); i++)
+        if (!(str[i] >= L'0' && str[i] <= L'7'))
+            return false;
+    return true;
+}
+bool sstring::isnum_decimal(const std::string &str)
+{
+    if (str.empty())
+        return false;
+    for (size_t i = 0; i < str.size(); i++)
+        if (!isnum(str[i]))
+            return false;
+    return true;
+}
+bool sstring::isnum_decimal(const std::wstring &str)
+{
+    if (str.empty())
+        return false;
+    for (size_t i = 0; i < str.size(); i++)
+        if (!isnum(str[i]))
+            return false;
+    return true;
+}
+bool sstring::isnum_hexadecimal(const std::string &str)
+{
+    if (str.size() < 3 || str[0] != '0' || (str[1] != 'x' && str[1] != 'X'))
+        return false;
+    for (size_t i = 2; i < str.size(); i++)
+        if ((str[i] < '0' || str[i] > '9') && (str[i] < 'A' || str[i] > 'F') && (str[i] < 'a' || str[i] > 'f'))
+            return false;
+    return true;
+}
+bool sstring::isnum_hexadecimal(const std::wstring &str)
+{
+    if (str.size() < 3 || str[0] != L'0' || (str[1] != L'x' && str[1] != L'X'))
+        return false;
+    for (size_t i = 2; i < str.size(); i++)
+        if ((str[i] < L'0' || str[i] > L'9') && (str[i] < L'A' || str[i] > L'F') && (str[i] < L'a' || str[i] > L'f'))
+            return false;
+    return true;
+}
+bool sstring::isnum_exponente(const std::string &str)
+{
+    if (str.empty())
+        return false;
+    for (size_t i = 0; i < str.size(); i++)
+        if (!isnum(str[i]) && str[i] != 'e' && str[i] != 'E')
+            return false;
+    return true;
+}
+bool sstring::isnum_exponente(const std::wstring &str)
+{
+    if (str.empty())
+        return false;
+    for (size_t i = 0; i < str.size(); i++)
+        if (!isnum(str[i]) && str[i] != L'e' && str[i] != L'E')
             return false;
     return true;
 }
@@ -431,18 +619,94 @@ size_t sstring::find_last_not_of(const wchar_t *str, bool (*cmp)(wchar_t), size_
     }
     return size_t(-1);
 }
-size_t sstring::find_word(const std::string &word, const std::string &sources) {
-    for (size_t i = 0; i < sources.size(); i++)
+bool check_str(char car, const char* espacing)
+{
+    bool launch = true;
+    while (*espacing)
     {
-        size_t pos = 0;
-        while (i >= sources.size() && word[pos] == sources[i])
+        launch = false;
+        if(*espacing == car)
         {
-            pos++;
-            if(pos >= word.size()) return i - pos;
-            i++;
+            launch = true;
+            break;
         }
+        espacing++;
     }
-    return -1ULL;
+    return launch;
+}
+bool check_str(wchar_t car, const wchar_t* espacing)
+{
+    bool launch = true;
+    while (*espacing)
+    {
+        launch = false;
+        if(*espacing == car)
+        {
+            launch = true;
+            break;
+        }
+        espacing++;
+    }
+    return launch;
+}
+size_t sstring::find_word(const std::string& word, const std::string& sources, const char* espacing)
+{
+    size_t i = 0;
+    reset:
+    size_t count = 0, pos = -1ULL;
+    while (i < sources.size())
+    {
+        count = 0;
+        while (i < sources.size() && word[count] == sources[i])
+        {
+            count++;
+            i++;
+            if (count >= word.size())
+            {
+                pos = i - count;
+                goto check;
+            }
+        }
+        i++;
+    }
+    check:
+    if(i < sources.size() && pos != -1ULL)
+        if (!check_str(sources[i], espacing))
+            goto reset;
+    if(pos != 0 && pos != -1ULL)
+        if (!check_str(sources[pos - 1], espacing))
+            goto reset;
+    return pos;
+}
+
+size_t sstring::find_word(const std::wstring &word, const std::wstring &sources, const wchar_t *espacing)
+{
+    size_t i = 0;
+    reset:
+    size_t count = 0, pos = -1ULL;
+    while (i < sources.size())
+    {
+        count = 0;
+        while (i < sources.size() && word[count] == sources[i])
+        {
+            count++;
+            i++;
+            if (count >= word.size())
+            {
+                pos = i - count;
+                goto check;
+            }
+        }
+        i++;
+    }
+    check:
+    if(i < sources.size() && pos != -1ULL)
+        if (!check_str(sources[i], espacing))
+            goto reset;
+    if(pos != 0 && pos != -1ULL)
+        if (!check_str(sources[pos - 1], espacing))
+            goto reset;
+    return pos;
 }
 
 /////////////////////////////////////

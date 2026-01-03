@@ -43,6 +43,83 @@ namespace sstring
     /// @return Devuelve verdadero si se cumple
     bool isalfanum(const std::wstring &str);
     /////////////////////////////////////
+    /// @brief Identifica si el caracter es una letra
+    /// @param caracter Caracter de tipo (?char?)
+    /// @return Devuelve verdadero si se cumple
+    bool isalfa(char caracter);
+    /// @brief Identifica si el caracter es una letra
+    /// @param caracter Caracter de tipo (?wchar_t?)
+    /// @return Devuelve verdadero si se cumple
+    bool isalfa(wchar_t caracter);
+    /// @brief Indica si la cadena de caracteres es alfa, o sea si todos los caracteres son letras
+    /// @param str Cadena de caracteres de tipo (?std::string?)
+    /// @return Devuelve verdadero si se cumple
+    bool isalfa(const std::string &str);
+    /// @brief Indica si la cadena de caracteres es alfa, o sea si todos los caracteres son letras
+    /// @param str Cadena de caracteres de tipo (?std::wstring?)
+    /// @return Devuelve verdadero si se cumple
+    bool isalfa(const std::wstring &str);
+    /////////////////////////////////////
+    /// @brief Identifica si el caracter es un numero
+    /// @param caracter Caracter de tipo (?char?)
+    /// @return Devuelve verdadero si se cumple
+    bool isnum(char caracter);
+    /// @brief Identifica si el caracter es un numero
+    /// @param caracter Caracter de tipo (?wchar_t?)
+    /// @return Devuelve verdadero si se cumple
+    bool isnum(wchar_t caracter);
+    /// @brief Indica si la cadena de caracteres es numerica, o sea si todos los caracteres son numeros o cumplen con la regla de una notacion numerica valida
+    /// @param str Cadena de caracteres de tipo (?std::string?)
+    /// @param base Un numero que indica la base numerica: 2:bnario, 8:octal, 10:decimal, 16:hexadecimal, 'e' o 'E':exponentes
+    /// @return Devuelve verdadero si se cumple
+    bool isnum(const std::string &str, unsigned char base = 10);
+    /// @brief Indica si la cadena de caracteres es numerica, o sea si todos los caracteres son numeros o cumplen con la regla de una notacion numerica valida
+    /// @param str Cadena de caracteres de tipo (?std::wstring?)
+    /// @param base Un numero que indica la base numerica: 2:bnario, 8:octal, 10:decimal, 16:hexadecimal, 'e' o 'E':exponentes
+    /// @return Devuelve verdadero si se cumple
+    bool isnum(const std::wstring &str, unsigned char base = 10);
+    /////////////////////////////////////
+    /// @brief Identifica si la cadena representa un numero binario
+    /// @param str Cadena de caracteres de tipo (?std::string?)
+    /// @return Devuelve verdadero si se cumple
+    bool isnum_binary(const std::string &str);
+    /// @brief Identifica si la cadena representa un numero binario
+    /// @param str Cadena de caracteres de tipo (?std::wstring?)
+    /// @return Devuelve verdadero si se cumple
+    bool isnum_binary(const std::wstring &str);
+    /// @brief Identifica si la cadena representa un numero octal
+    /// @param str Cadena de caracteres de tipo (?std::string?)
+    /// @return Devuelve verdadero si se cumple
+    bool isnum_octal(const std::string &str);
+    /// @brief Identifica si la cadena representa un numero octal
+    /// @param str Cadena de caracteres de tipo (?std::wstring?)
+    /// @return Devuelve verdadero si se cumple
+    bool isnum_octal(const std::wstring &str);
+    /// @brief Identifica si la cadena representa un numero hexadecimal
+    /// @param str Cadena de caracteres de tipo (?std::string?)
+    /// @return Devuelve verdadero si se cumple
+    bool isnum_decimal(const std::string &str);
+    /// @brief Identifica si la cadena representa un numero decimal
+    /// @param str Cadena de caracteres de tipo (?std::wstring?)
+    /// @return Devuelve verdadero si se cumple
+    bool isnum_decimal(const std::wstring &str);
+    /// @brief Identifica si la cadena representa un numero decimal
+    /// @param str Cadena de caracteres de tipo (?std::string?)
+    /// @return Devuelve verdadero si se cumple
+    bool isnum_hexadecimal(const std::string &str);
+    /// @brief Identifica si la cadena representa un numero hexadecimal
+    /// @param str Cadena de caracteres de tipo (?std::wstring?)
+    /// @return Devuelve verdadero si se cumple
+    bool isnum_hexadecimal(const std::wstring &str);
+    /// @brief Identifica si la cadena representa un numero con exponente
+    /// @param str Cadena de caracteres de tipo (?std::string?)
+    /// @return Devuelve verdadero si se cumple
+    bool isnum_exponente(const std::string &str);
+    /// @brief Identifica si la cadena representa un numero con exponente
+    /// @param str Cadena de caracteres de tipo (?std::wstring?)
+    /// @return Devuelve verdadero si se cumple
+    bool isnum_exponente(const std::wstring &str);
+    /////////////////////////////////////
     /// @brief Convierte de minusculas a mayusculas los caracteres
     /// @param str Cadena de caracteres a modificar de tipo (?std::string?)
     void tooper(std::string &str);
@@ -103,7 +180,6 @@ namespace sstring
     /// @param destine Referencia a una cadena de caracteres de tipo (?wstringbuffer&?) (!Atencion: La cadena debe ser nullptr ya que dentro de esta se genera el espacio necesario para guardar la palabra!)
     void reverse(const wstringbuffer &str, wstringbuffer &destine);
     /////////////////////////////////////
-
     /// @brief Remplaca todas las referencias de un caracter dentro de la cadena por otro espeficicado
     /// @param str Cadena de caracteres de tipo (?char*?)
     /// @param find Caracter que se va a buscar de tipo (?char?)
@@ -236,9 +312,16 @@ namespace sstring
     size_t find_last_not_of(const wchar_t *str, bool (*cmp)(wchar_t), size_t position = size_t(-1));
     /////////////////////////////////////
     /// @brief Busca si existe esa palabra dentro de la cadena sources
-    /// @param word Palabra que se desea buscar
-    /// @param sources Cadena donde se buscara la palabra
+    /// @param word Palabra que se desea buscar de tipo (?std::string?)
+    /// @param sources Cadena donde se buscara la palabra de tipo (?std::string?)
+    /// @param espacing (?char?)
     /// @return Devuleve -1 si no la encuentra, si la encuentra devuleve la pocision dada
-    size_t find_word(const std::string& word, const std::string& sources);
+    size_t find_word(const std::string& word, const std::string& sources, const char* espacing = " ,;.:?!'#$%&/(){}[]+*-<>_");
+    /// @brief Busca si existe esa palabra dentro de la cadena sources
+    /// @param word Palabra que se desea buscar de tipo (?std::wstring?)
+    /// @param sources Cadena donde se buscara la palabra de tipo (?std::wstring?)
+    /// @param espacing (?wchar_t?)
+    /// @return Devuleve -1 si no la encuentra, si la encuentra devuleve la pocision dada
+    size_t find_word(const std::wstring& word, const std::wstring& sources, const wchar_t* espacing = L" ,;.:?!'#$%&/(){}[]+*-<>_");
 } // namespace sstring
 #endif
