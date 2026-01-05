@@ -4,17 +4,20 @@
 #define outignore labeljump2
 #define ejecuteaction labeljump3
 
+#define NotExistingFolder "No existe ese directorio"
+#define NotupdateOperation "No se ejecutar la opcion actualizar(update) en la funcion de copiar archivos"
+
 // systems::Url systems::files::recylePath = systems::files::getPathRecycle();
 
 void __stdcall systems::files::copy_and_move_progress_interface(LARGE_INTEGER __totalFileSize,
-                                                                 LARGE_INTEGER __totalBytesTransferrend,
-                                                                 LARGE_INTEGER __streamSize,
-                                                                 LARGE_INTEGER __StreamBytesTransferrend,
-                                                                 DWORD __dwStreamNumber,
-                                                                 DWORD __callBackReason,
-                                                                 HANDLE __hSorcesFile,
-                                                                 HANDLE __hDestinationFile,
-                                                                 LPVOID lpData)
+                                                                LARGE_INTEGER __totalBytesTransferrend,
+                                                                LARGE_INTEGER __streamSize,
+                                                                LARGE_INTEGER __StreamBytesTransferrend,
+                                                                DWORD __dwStreamNumber,
+                                                                DWORD __callBackReason,
+                                                                HANDLE __hSorcesFile,
+                                                                HANDLE __hDestinationFile,
+                                                                LPVOID lpData)
 {
     double porcentaje = (double)__totalBytesTransferrend.QuadPart * 100 / __totalFileSize.QuadPart;
     if (systems::files::__interfaces_avilite__)
@@ -24,7 +27,7 @@ template <typename T, typename Q>
 T systems::files::cases_optimizate(Q input, Q invalid_values_of_greath_equals)
 {
     if (input >= invalid_values_of_greath_equals)
-        throw systems::exception(systems::exception::error::__invalidopmovecopy);
+        throw systems::exception("Invalid operand for this funtion");
     return static_cast<T>(input);
 }
 
@@ -106,10 +109,10 @@ size_t systems::files::size_file(const systems::Url &url)
     tamano.QuadPart = 0;
 #if defined(USINGWCARACTER)
     if (!GetFileSizeEx(CreateFileW(url.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL), &tamano))
-        throw systems::exception(systems::exception::error::__notgetfilesize);
+        throw systems::windows_exceptions(GetLastError(), "systems::files::size_file");
 #else
     if (!GetFileSizeEx(CreateFileA(url.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL), &tamano))
-        throw systems::exception(systems::exception::error::__notgetfilesize);
+        throw systems::windows_exceptions(GetLastError(), "systems::files::size_file");
 #endif
     return size_t(tamano.QuadPart);
 }
@@ -122,7 +125,7 @@ void systems::files::copy_file(const systems::Url &sources, const systems::Url &
 {
     __string newfile = (destine.string() + __concaturl + sources.name());
     if (!is_directory(destine))
-        throw systems::exception(systems::exception::error::__notfolderdestine);
+        throw systems::exception(NotExistingFolder);
     if (is_exist(newfile.c_str()) && options_for_copy_and_move::overwrite != options)
     {
     repetnotblockask:
@@ -134,7 +137,7 @@ void systems::files::copy_file(const systems::Url &sources, const systems::Url &
             break;
         }
         case options_for_copy_and_move::update:
-            throw systems::exception(systems::exception::error::__notfileupdater);
+            throw systems::exception(NotupdateOperation);
         case options_for_copy_and_move::overwrite:
         {
             systems::files::remove_file(newfile.c_str());
@@ -162,7 +165,7 @@ void systems::files::copy_file(const systems::Url &sources, const systems::Url &
 void systems::files::copy(const systems::Url &sources, const systems::Url &destine, systems::files::options_for_copy_and_move options)
 {
     if (!is_directory(destine))
-        throw systems::exception(systems::exception::error::__notfolderdestine);
+        throw systems::exception(NotExistingFolder);
     if (is_directory(sources))
     {
         systems::Url newdestine;
@@ -184,7 +187,7 @@ void systems::files::move_file(const systems::Url &sources, const systems::Url &
 {
     __string newfile = (destine.string() + __concaturl + sources.name());
     if (!is_directory(destine))
-        throw systems::exception(systems::exception::error::__notfolderdestine);
+        throw systems::exception(NotExistingFolder);
     if (is_exist(newfile.c_str()) && options_for_copy_and_move::overwrite != options)
     {
     repetnotblockask:
@@ -196,7 +199,7 @@ void systems::files::move_file(const systems::Url &sources, const systems::Url &
             break;
         }
         case options_for_copy_and_move::update:
-            throw systems::exception(systems::exception::error::__notfileupdater);
+            throw systems::exception(NotupdateOperation);
         case options_for_copy_and_move::overwrite:
         {
             systems::files::remove_file(newfile.c_str());
@@ -224,7 +227,7 @@ void systems::files::move_file(const systems::Url &sources, const systems::Url &
 void systems::files::move(const systems::Url &sources, const systems::Url &destine, systems::files::options_for_copy_and_move options)
 {
     if (!is_directory(destine))
-        throw systems::exception(systems::exception::error::__notfolderdestine);
+        throw systems::exception(NotExistingFolder);
     if (is_directory(sources))
     {
         systems::Url newdestine;
@@ -347,7 +350,7 @@ void systems::files::create_directory(const systems::Url &url, const __string &n
         !CreateDirectoryExA(url.c_str(), newpath.c_str(), NULL)
 #endif
     )
-        throw systems::exception(systems::exception::error::__notexistingfolder);
+        throw systems::windows_exceptions(GetLastError(), "systems::files::create_directory");
     if (update != nullptr)
         *update = newpath;
 outignore:
@@ -372,7 +375,7 @@ void systems::files::remove(const systems::Url &sources)
             !RemoveDirectoryA(sources.c_str())
 #endif
         )
-            throw systems::exception(__string("Error: No se puede eliminar el directorio, \"") + sources.string() + "\" y el sistema lanzo el siguiente error: \n" + systems::files::get_last_error());
+            throw systems::windows_exceptions(GetLastError(), "systems::files::create_directory");
     }
     else
         systems::files::remove_file(sources);
@@ -380,7 +383,7 @@ void systems::files::remove(const systems::Url &sources)
 void systems::files::remove_file(const systems::Url &sources)
 {
     if (is_directory(sources))
-        throw systems::exception(systems::exception::error::__notfolderdestine);
+        throw systems::exception(NotExistingFolder);
     if (
 #if defined(USINGWCARACTER)
         !DeleteFileW(sources.c_str())
@@ -388,7 +391,7 @@ void systems::files::remove_file(const systems::Url &sources)
         !DeleteFileA(sources.c_str())
 #endif
     )
-        throw systems::exception(__string("Error: No se puede eliminar el directorio, \"") + sources.string() + "\" y el sistema lanzo el siguiente error: \n" + systems::files::get_last_error());
+        throw systems::windows_exceptions(GetLastError(), "systems::files::remove");
 }
 
 void systems::files::rename(const systems::Url &url, const __caracter *new_name, bool ignore_type)
@@ -396,11 +399,11 @@ void systems::files::rename(const systems::Url &url, const __caracter *new_name,
     systems::Url newurl = url.parent() + new_name;
     systems::files::move(url, newurl);
 }
-void systems::files::rename(const systems::Url &url, const __string& new_name, bool ignore_type)
+void systems::files::rename(const systems::Url &url, const __string &new_name, bool ignore_type)
 {
     systems::files::rename(url, new_name.c_str(), ignore_type);
 }
-void systems::files::rename(const systems::Url &url, const __stringbuffer& new_name, bool ignore_type)
+void systems::files::rename(const systems::Url &url, const __stringbuffer &new_name, bool ignore_type)
 {
     systems::files::rename(url, new_name.c_str(), ignore_type);
 }
@@ -431,7 +434,7 @@ systems::Url systems::files::getPathRecycle()
 #endif
         return systems::Url(__ruta);
     }
-    throw systems::exception("No se pudo encontrar la ruta de la papelara de reciclaje.");
+    throw systems::windows_exceptions(GetLastError(), "systems::files::getPathRecycle");
     return "";
 }
 
@@ -499,10 +502,10 @@ systems::Url systems::files::current_directory()
 #endif
     )
         return systems::Url(cwd);
-    throw systems::exception("No se pudo acceder o identificar la ruta actual.");
+    throw systems::windows_exceptions(GetLastError(), "systems::files::create_file");
     return systems::Url();
 }
-bool systems::files::is_exist(const Url& path)
+bool systems::files::is_exist(const Url &path)
 {
     return is_exist(path.c_str());
 }
@@ -523,53 +526,77 @@ bool systems::files::is_exist(const __caracter *path)
     }
     return false;
 }
-bool systems::files::is_exist(const __string& path)
+bool systems::files::is_exist(const __string &path)
 {
     return is_exist(path.c_str());
 }
-bool systems::files::is_exist(const __stringbuffer& path)
+bool systems::files::is_exist(const __stringbuffer &path)
 {
     return is_exist(path.c_str());
 }
-bool systems::files::is_directory(const Url &url) {
+bool systems::files::is_directory(const Url &url)
+{
     return systems::files::is_directory(url.c_str());
 }
-bool systems::files::is_directory(const __caracter *url) {
-    #if defined(USINGWCARACTER)
+bool systems::files::is_directory(const __caracter *url)
+{
+#if defined(USINGWCARACTER)
     DWORD base = GetFileAttributesW(url);
 #else
     DWORD base = GetFileAttributesA(url);
 #endif
     if (base == INVALID_FILE_ATTRIBUTES)
-        throw systems::exception("Error ruta invalida");
+        throw systems::windows_exceptions(GetLastError());
     return (base & FILE_ATTRIBUTE_DIRECTORY);
 }
-bool systems::files::is_directory(const __string &url) {
-    return systems::files::is_directory(url.c_str());
-
-}
-bool systems::files::is_directory(const __stringbuffer &url) {
+bool systems::files::is_directory(const __string &url)
+{
     return systems::files::is_directory(url.c_str());
 }
-bool systems::files::is_regular_file(const Url &url) {
+bool systems::files::is_directory(const __stringbuffer &url)
+{
+    return systems::files::is_directory(url.c_str());
+}
+bool systems::files::is_regular_file(const Url &url)
+{
     return systems::files::is_regular_file(url.c_str());
 }
-bool systems::files::is_regular_file(const __caracter *url) {
-    #if defined(USINGWCARACTER)
+bool systems::files::is_regular_file(const __caracter *url)
+{
+#if defined(USINGWCARACTER)
     DWORD base = GetFileAttributesW(path);
 #else
     DWORD base = GetFileAttributesA(url);
 #endif
     if (base == INVALID_FILE_ATTRIBUTES)
-        throw systems::exception("Error ruta invalida");
+        throw systems::windows_exceptions(GetLastError());
     return (base & FILE_ATTRIBUTE_ARCHIVE);
 }
-bool systems::files::is_regular_file(const __string &url) {
+bool systems::files::is_regular_file(const __string &url)
+{
     return systems::files::is_regular_file(url.c_str());
 }
-bool systems::files::is_regular_file(const __stringbuffer &url) {
+bool systems::files::is_regular_file(const __stringbuffer &url)
+{
     return systems::files::is_regular_file(url.c_str());
 }
+const __string systems::files::extension(const __caracter *path)
+{
+    if (!systems::files::is_regular_file(path))
+        throw systems::exception("La ruta insertada no le corresponde a un archivo regular.");
+    size_t size = __size(path);
+    size_t dot = sstring::find_last_of(path, __caracter(46), size);
+    size_t l1 = sstring::find_last_of(path, __caracter('/'), size);
+    size_t l2 = sstring::find_last_of(path, __caracter('\\'), size);
+    if ((dot < l1 && l1 != -1ULL) || (dot < l2 && l2 != -1ULL))
+        return "";
+    return __string(path).substr(dot);
+}
+const __string systems::files::extension(const systems::Url &url)
+{
+    return systems::files::extension(url.c_str());
+}
+
 // bool systems::files::is_symlink(const Url &url) {
 
 // }

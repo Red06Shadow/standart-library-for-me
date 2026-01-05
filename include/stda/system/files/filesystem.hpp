@@ -100,7 +100,7 @@ namespace systems
                     !GetFileAttributesExA(url.c_str(), GetFileExInfoStandard, &__atributes__)
 #endif
                 )
-                    throw systems::exception("Error: A ocurrido un error al obtener el estado.");
+                    throw systems::windows_exceptions(GetLastError(), "Constructor:Status");
             }
             int operator&(const file_atributes __value)
             {
@@ -169,7 +169,7 @@ namespace systems
                 __hanlde__ = FindFirstFileExA((url.string() + "\\*").c_str(), FindExInfoStandard, &__main__, FindExSearchNameMatch, NULL, FIND_FIRST_EX_LARGE_FETCH);
 #endif
                 if (__hanlde__ == INVALID_HANDLE_VALUE)
-                    throw systems::exception(systems::exception::error::__notexistingfolder);
+                    throw systems::windows_exceptions(GetLastError(), "Constructor:Container");
                 // Codigo para proximas versiones
                 //                 size_t v = 0;
                 //                 do
@@ -353,6 +353,14 @@ namespace systems
         /// @param url Ruta de tipo (?__stringbuffer?)
         /// @return Devuelve verdadero si lo es
         static bool is_exist(const __stringbuffer &path);
+        /// @brief Obtiene la extension del archivo
+        /// @param url Ruta de tipo (?const __caracter *?) (!Atencion: Si inserta un directorio se mostrara un error!)
+        /// @return Devuelve la extension en formato (?__string?)
+        static const __string extension(const __caracter *path);
+        /// @brief Obtiene la extension del archivo
+        /// @param url Ruta de tipo (?Url?) (!Atencion: Si inserta un directorio se mostrara un error!)
+        /// @return Devuelve la extension en formato (?__string?)
+        static const __string extension(const Url &url);
         // Proximamente
         // static bool is_symlink(const Url &url);
         // static bool is_symlink(const __caracter *url);

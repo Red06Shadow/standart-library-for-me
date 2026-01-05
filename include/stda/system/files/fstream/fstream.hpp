@@ -162,6 +162,7 @@ namespace systems
             /// @brief Crea una instancia de fstream sin llamar al constructor
             /// @param __path Path del archivo
             /// @param __mode Modo en el que se abrira el archivo
+            /// @return Retorna un objecto (?fstream?)
             static fstream open(const __caracter *__path, ios::base __mode);
             /// @brief A partir de una instancia cerrada por close reabre el archivo con el path definido
             /// @param __path Path del archivo
@@ -254,6 +255,11 @@ namespace systems
         class ofstream : public fstream
         {
         public:
+            enum class options : u8 {
+                append,
+                override,
+                write,
+            };
             ///@brief Constructor por defecto
             ofstream() : fstream() {}
             ///@brief Constructor con direccion path del archivo con tipo Url
@@ -262,11 +268,8 @@ namespace systems
             ///@brief Constructor con direccion path del archivo con tipo Url, y modo de apertura
             ///@param url path del archivo a iniciar flujo
             ///@param binary indica si el archivo a abrir sera en formato binario
-            ofstream(const Url &url, bool binary);
-            /// @brief Constructor con direccion path del archivo con tipo Url, y modo de apertura
-            /// @param url path del archivo a iniciar flujo
-            /// @param __mode indica el modo de operacion al abir el archivo(Solo se admitiran modos de lectura)
-            ofstream(const Url &url, ios::base __mode);
+            ///@param options indica si el archivo se creara en caso de no existir, lo actualizara o agregara elementos al final
+            ofstream(const Url &url, bool binary, ios::ofstream::options options = ios::ofstream::options::write);
             /// @brief Escribe todo lo que este dentro de la cadena str en un apocision determinada por sources
             /// @param str Cadena de caracteres de escritura(?std::string&?)
             /// @param strstart Pocision de donde se quiere leer la cadena
@@ -283,7 +286,7 @@ namespace systems
             /// @tparam data Tipo de dato a leer en el archivo
             /// @param __data Valor a enviar al fichero
             template <typename data>
-            void get(const data& __data)
+            void set(const data& __data)
             {
                 *this << __data;
             }

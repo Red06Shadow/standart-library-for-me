@@ -69,9 +69,9 @@ systems::Url::Url(__caracter *path, bool checkExistUrl) : __consta__(false)
     systems::Url::__generate__(const_cast<__caracter **>(&__path__), path);
 }
 systems::Url::Url(const __string &path, bool checkExistUrl) : systems::Url(const_cast<__caracter *>(path.c_str()), checkExistUrl) {}
-systems::Url::Url(const __stringbuffer &path, bool checkExistUrl) 
+systems::Url::Url(const __stringbuffer &path, bool checkExistUrl)
 {
-    if(path.empty())
+    if (path.empty())
         throw systems::exception("Error: Path vacio en systems::Url contructor");
     if (!systems::Url::is_corret(path.c_str()))
         throw systems::exception("Error: La ruta no es valida sintacticamente; " + __exceptiosconvert(path.c_str()));
@@ -101,7 +101,7 @@ systems::Url &systems::Url::operator=(const systems::Url &other)
 {
     if (this != &other)
     {
-        
+
         if (__path__ != nullptr && !this->__consta__)
             delete[] (__path__);
         this->__consta__ = other.__consta__;
@@ -153,7 +153,7 @@ const __caracter *systems::Url::name(const __caracter *path)
     if (path[size - 1] == '/' || path[size - 1] == '\\')
         size--;
     pos = sstring::find_last_of(path, [](__caracter v) -> bool
-                   { return v == '/' || v == '\\'; }, size);
+                                { return v == '/' || v == '\\'; }, size);
     if (pos == size_t(-1))
         pos = 0;
     pos++;
@@ -175,7 +175,7 @@ const systems::Url systems::Url::parent(const __caracter *path)
     if (path[size - 1] == '/' || path[size - 1] == '\\')
         size--;
     pos = sstring::find_last_of(path, [](__caracter v) -> bool
-                   { return v == '/' || v == '\\'; }, size);
+                                { return v == '/' || v == '\\'; }, size);
     if (pos == size_t(-1))
         pos = 0;
     __caracter *cstr = new __caracter[pos + 2];
@@ -201,13 +201,15 @@ const bool systems::Url::is_corret(const __caracter *path)
     delete[] (__str__);
 #endif
     return !FAILED(hr);
-    const wchar_t* invalidCaracters = L"<>:\"|?*";
+#if FALSE
+    const wchar_t *invalidCaracters = L"<>:\"|?*";
     while (*path)
     {
         if (wcschr(invalidCaracters, *path))
             return false;
     }
     return true;
+#endif
 }
 const bool systems::Url::is_corret(const __string &path)
 {
@@ -237,9 +239,4 @@ const void systems::Url::get_tokens(const systems::Url &url, std::vector<const _
     __vect.push_back(new __caracter[size - before]);
     const_cast<__caracter *>(__vect.back())[size - before] = '\0';
     __ncopy(const_cast<__caracter *>(__vect.back()), url.c_str() + before, size - before);
-}
-
-const __string systems::Url::get_file_type(const systems::Url &url)
-{
-    return url.string().substr(sstring::find_last_of(url.c_str(), __caracter(46), __size(url.c_str())));
 }

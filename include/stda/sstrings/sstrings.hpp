@@ -14,17 +14,24 @@ namespace sstring
 {
     /// @brief Elimina los caracteres de espacio de la cadena
     /// @param str Cadena que se desea modificar de tipo (?std::string?)
-    void removeespaces(std::string &str);
+    void remove_espaces(std::string &str);
     /// @brief Elimina los caracteres de espacio de la cadena
     /// @param str Cadena que se desea modificar de tipo (?std::wstring?)
-    void removeespaces(std::wstring &str);
+    void remove_espaces(std::wstring &str);
     /////////////////////////////////////
     /// @brief Elimina los caracteres de espacio del principio de la cadena
     /// @param str Cadena que se desea modificar de tipo (?std::string?)
-    void removebeginespaces(std::string &str);
+    void remove_begin_espaces(std::string &str);
     /// @brief Elimina los caracteres de espacio del principio de la cadena
     /// @param str Cadena que se desea modificar de tipo (?std::wstring?)
-    void removebeginespaces(std::wstring &str);
+    void remove_begin_espaces(std::wstring &str);
+    /////////////////////////////////////
+    /// @brief Elimina los caracteres de espacio del final de la cadena
+    /// @param str Cadena que se desea modificar de tipo (?std::string?)
+    void remove_end_espaces(std::string &str);
+    /// @brief Elimina los caracteres de espacio del final de la cadena
+    /// @param str Cadena que se desea modificar de tipo (?std::wstring?)
+    void remove_end_espaces(std::wstring &str);
     /////////////////////////////////////
     /// @brief Identifica si el caracter es un numero o una letra
     /// @param caracter Caracter de tipo (?char?)
@@ -316,12 +323,21 @@ namespace sstring
     /// @param sources Cadena donde se buscara la palabra de tipo (?std::string?)
     /// @param espacing (?char?)
     /// @return Devuleve -1 si no la encuentra, si la encuentra devuleve la pocision dada
-    size_t find_word(const std::string& word, const std::string& sources, const char* espacing = " ,;.:?!'#$%&/(){}[]+*-<>_");
+    size_t find_word(const std::string &word, const std::string &sources, size_t index = 0, const char *espacing = " ,;.:?!'#$%&/(){}[]+*-<>_");
     /// @brief Busca si existe esa palabra dentro de la cadena sources
     /// @param word Palabra que se desea buscar de tipo (?std::wstring?)
     /// @param sources Cadena donde se buscara la palabra de tipo (?std::wstring?)
     /// @param espacing (?wchar_t?)
     /// @return Devuleve -1 si no la encuentra, si la encuentra devuleve la pocision dada
-    size_t find_word(const std::wstring& word, const std::wstring& sources, const wchar_t* espacing = L" ,;.:?!'#$%&/(){}[]+*-<>_");
+    size_t find_word(const std::wstring &word, const std::wstring &sources, size_t index = 0, const wchar_t *espacing = L" ,;.:?!'#$%&/(){}[]+*-<>_");
+
+    // _GLIBCXX_NODISCARD _GLIBCXX_CONSTEXPR inline char*
+    // operator=(char* str, const std::string& sources) _GLIBCXX_NOTHROW
+    // {
+    //     char* __str = new char[sources.size() + 1];
+    //     std::strcpy(__str, sources.c_str());
+    //     return __str;
+    // }
+
 } // namespace sstring
 #endif

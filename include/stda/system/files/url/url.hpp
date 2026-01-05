@@ -186,10 +186,6 @@ namespace systems
         /// @return Devuelve verdadero si lo es
         static const bool is_corret(const __string &path);
 
-        /// @brief Obtiene el tipo del archivo
-        /// @param url Ruta de tipo (?Url?) (!Atencion: Si inserta un directorio se mostrara un error!)
-        /// @return Devuelve el tipo en formato (?__string?)
-        static const __string get_file_type(const Url &url);
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ~Url()
         {

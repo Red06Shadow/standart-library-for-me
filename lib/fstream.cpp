@@ -2,11 +2,19 @@
 
 const u8 systems::ios::fstream::mode(systems::ios::base __base)
 {
+    u8 base = 0;
     if ((__base & systems::ios::app) && (__base & systems::ios::out))
-        throw std::runtime_error("Invalid operation for arguments");
-    if ((__base & 0b10) && (__base & 0b01) && (__base & systems::ios::base::trunc))
-        __base = systems::ios::base(0b11) + (__base ^ systems::ios::base::trunc);
-    return (__base - ((__base & systems::ios::bin) ? u8(3) : u8(1)));
+        throw systems::exception("Invalid operation for arguments");
+    if (__base & systems::ios::base::bin)
+        base = 6, __base ^= systems::ios::base::bin;
+    if (!(__base & systems::ios::base::trunc))
+        return base + static_cast<u8>(__base) - 1;
+    __base ^= systems::ios::base::trunc;
+    if (!(__base & 0b11))
+        throw systems::exception("Invalid operation for arguments");
+    else
+        base += 0b110;
+    return base - 1;
 }
 
 systems::ios::fstream::fstream(const systems::ios::fstream &other)
@@ -68,7 +76,8 @@ systems::ios::fstream::fstream(const __caracter *__path, systems::ios::base __mo
     __fptr__ = fopen(__str__, systems::ios::fstream::__mode__[systems::ios::fstream::mode(__mode)]);
     delete[] (__str__);
 #else
-    __fptr__ = fopen(__path, systems::ios::fstream::__mode__[systems::ios::fstream::mode(__mode)]);
+    u8 base = systems::ios::fstream::mode(__mode);
+    __fptr__ = fopen(__path, systems::ios::fstream::__mode__[base]);
 #endif
     __position_aux__ = __position_before__ = ftell(__fptr__);
 }
@@ -152,7 +161,7 @@ systems::ios::fstream systems::ios::fstream::open(const __caracter *__path, syst
 void systems::ios::fstream::reopen(const __caracter *__path, systems::ios::base __mode, fstream &__fstream__)
 {
     if (__fstream__.isopen())
-        throw std::runtime_error("Error: El archivo aun esta abierto");
+        throw systems::exception(ferror(__fstream__.__fptr__), "systems::ios::fstream::reopen");
 #if defined(USINGWCARACTER)
     char *__str__ = std::stringconverter::convert_utf8_to_ascii(__path);
     __fptr__ = fopen(__str__, systems::ios::fstream::__mode__[__mode - u8(1)]);
@@ -259,7 +268,7 @@ systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, int
     if (is.__binary__)
     {
         if ((fread(&__n, sizeof(int), 1, is.__fptr__)) != 1)
-            throw std::runtime_error("Fallo la operacion de lectura en int systems::ios::operator>>");
+            throw systems::exception(ferror(is.__fptr__), "systems::ios::operator>>(systems::ios::ifstream &is, int &__n)");
     }
     else
     {
@@ -274,7 +283,7 @@ systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, uns
     if (is.__binary__)
     {
         if ((fread(&__n, sizeof(int), 1, is.__fptr__)) != 1)
-            throw std::runtime_error("Fallo la operacion de lectura en unsigned int systems::ios::operator>>");
+            throw systems::exception(ferror(is.__fptr__), "systems::ios::operator>>(systems::ios::ifstream &is, unsigned int &__n)");
     }
     else
     {
@@ -312,7 +321,7 @@ systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, lon
     if (is.__binary__)
     {
         if ((fread(&__n, sizeof(long), 1, is.__fptr__)) != 1)
-            throw std::runtime_error("Fallo la operacion de lectura en long systems::ios::operator>>");
+            throw systems::exception(ferror(is.__fptr__), "systems::ios::operator>>(systems::ios::ifstream &is, long &__n)");
     }
     else
     {
@@ -327,7 +336,7 @@ systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, uns
     if (is.__binary__)
     {
         if ((fread(&__n, sizeof(long), 1, is.__fptr__)) != 1)
-            throw std::runtime_error("Fallo la operacion de lectura en unsigned long systems::ios::operator>>");
+            throw systems::exception(ferror(is.__fptr__), "systems::ios::operator>>(systems::ios::ifstream &is, unsigned long &__n)");
     }
     else
     {
@@ -342,7 +351,7 @@ systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, lon
     if (is.__binary__)
     {
         if ((fread(&__n, sizeof(long long), 1, is.__fptr__)) != 1)
-            throw std::runtime_error("Fallo la operacion de lectura en long long systems::ios::operator>>");
+            throw systems::exception(ferror(is.__fptr__), "systems::ios::operator>>(systems::ios::ifstream &is, long long &__n)");
     }
     else
     {
@@ -357,7 +366,7 @@ systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, uns
     if (is.__binary__)
     {
         if ((fread(&__n, sizeof(long long), 1, is.__fptr__)) != 1)
-            throw std::runtime_error("Fallo la operacion de lectura en unsigned long long systems::ios::operator>>");
+            throw systems::exception(ferror(is.__fptr__), "systems::ios::operator>>(systems::ios::ifstream &is, unsigned long long &__n)");
     }
     else
     {
@@ -372,7 +381,7 @@ systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, flo
     if (is.__binary__)
     {
         if ((fread(&__n, sizeof(float), 1, is.__fptr__)) != 1)
-            throw std::runtime_error("Fallo la operacion de lectura en float systems::ios::operator>>");
+            throw systems::exception(ferror(is.__fptr__), "systems::ios::operator>>(systems::ios::ifstream &is, float &__n)");
     }
     else
     {
@@ -387,7 +396,7 @@ systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, dou
     if (is.__binary__)
     {
         if ((fread(&__n, sizeof(double), 1, is.__fptr__)) != 1)
-            throw std::runtime_error("Fallo la operacion de lectura en double systems::ios::operator>>");
+            throw systems::exception(ferror(is.__fptr__), "systems::ios::operator>>(systems::ios::ifstream &is, double &__n)");
     }
     else
     {
@@ -408,13 +417,13 @@ std::ostream &systems::ios::operator<<(std::ostream &out, systems::ios::ifstream
     return out;
 }
 systems::ios::ofstream::ofstream(const systems::Url &url) : fstream(url.c_str(), systems::ios::base::app) {}
-systems::ios::ofstream::ofstream(const systems::Url &url, bool binary) : fstream(url.c_str(), systems::ios::base::app | systems::ios::base(binary ? systems::ios::base::bin : 0)) {}
-systems::ios::ofstream::ofstream(const systems::Url &url, systems::ios::base __mode)
-{
-    if (!(__mode & 0b10 || __mode & 0b100))
-        throw std::runtime_error("Error: Debegate mode for this constructor");
-    fstream(url.c_str(), __mode);
-}
+systems::ios::ofstream::ofstream(const systems::Url &url, bool binary, ios::ofstream::options options) : systems::ios::fstream(url.c_str(), (
+                                                                                                                                                options == ios::ofstream::options::write
+                                                                                                                                                    ? (systems::ios::out | systems::ios::in)
+                                                                                                                                                    : (options == ios::ofstream::options::override
+                                                                                                                                                           ? systems::ios::out
+                                                                                                                                                           : systems::ios::app)) |
+                                                                                                                                                systems::ios::base(binary ? systems::ios::base::bin : 0)) {}
 
 void systems::ios::ofstream::write(const std::string &str, size_t strstart, size_t strend, size_t start)
 {
@@ -437,31 +446,31 @@ systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, con
 {
     size_t n_elements = std::strlen(__str);
     if ((fwrite(__str, sizeof(char), n_elements, os.__fptr__)) != n_elements)
-        throw std::runtime_error("Fallo la operacion de escritura en const char* systems::ios::operator<<");
+        throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const char* __str)");
     return os;
 }
 systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, const std::string __str)
 {
     if ((fwrite(__str.c_str(), sizeof(char), __str.size(), os.__fptr__)) != __str.size())
-        throw std::runtime_error("Fallo la operacion de escritura en const std::string systems::ios::operator<<");
+        throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const std::string __str)");
     return os;
 }
 systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, const std::wstring __str)
 {
     if ((fwrite(__str.c_str(), sizeof(wchar_t), __str.size(), os.__fptr__)) != __str.size())
-        throw std::runtime_error("Fallo la operacion de escritura en const std::wstring systems::ios::operator<<");
+        throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const std::wstring __str)");
     return os;
 }
 systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, const stringbuffer &__str)
 {
     if ((fwrite(__str.c_str(), sizeof(char), __str.size(), os.__fptr__)) != __str.size())
-        throw std::runtime_error("Fallo la operacion de escritura en stringbuffer systems::ios::operator<<");
+        throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const stringbuffer __str)");
     return os;
 }
 systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, const wstringbuffer &__str)
 {
     if ((fwrite(__str.c_str(), sizeof(wchar_t), __str.size(), os.__fptr__)) != __str.size())
-        throw std::runtime_error("Fallo la operacion de escritura en stringbuffer systems::ios::operator<<");
+        throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const wstringbuffer __str)");
     return os;
 }
 systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, const int __n)
@@ -469,13 +478,13 @@ systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, con
     if (os.__binary__)
     {
         if ((fwrite(&__n, sizeof(int), 1, os.__fptr__)) != 1)
-            throw std::runtime_error("Fallo la operacion de escritura en int systems::ios::operator<<");
+            throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const int __n)");
     }
     else
     {
         std::string cstr__n_ = std::to_string(__n);
         if ((fwrite(cstr__n_.c_str(), sizeof(char), cstr__n_.size(), os.__fptr__)) != cstr__n_.size())
-            throw std::runtime_error("Fallo la operacion de escritura en int systems::ios::operator<<");
+            throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const int __n)");
     }
     return os;
 }
@@ -484,13 +493,13 @@ systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, con
     if (os.__binary__)
     {
         if ((fwrite(&__n, sizeof(unsigned int), 1, os.__fptr__)) != 1)
-            throw std::runtime_error("Fallo la operacion de escritura en unsigned int systems::ios::operator<<");
+            throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const unsigned int __n)");
     }
     else
     {
         std::string cstr__n_ = std::to_string(__n);
         if ((fwrite(cstr__n_.c_str(), sizeof(char), cstr__n_.size(), os.__fptr__)) != cstr__n_.size())
-            throw std::runtime_error("Fallo la operacion de escritura en unsigned int systems::ios::operator<<");
+            throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const unsigned int __n)");
     }
     return os;
 }
@@ -498,19 +507,19 @@ systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, con
 systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, const char __n)
 {
     if ((fwrite(&__n, sizeof(char), 1, os.__fptr__)) != 1)
-        throw std::runtime_error("Fallo la operacion de escritura en char systems::ios::operator<<");
+        throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const char __n)");
     return os;
 }
 systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, const unsigned char __n)
 {
     if ((fwrite(&__n, sizeof(char), 1, os.__fptr__)) != 1)
-        throw std::runtime_error("Fallo la operacion de escritura en char systems::ios::operator<<");
+        throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const unsigned char __n)");
     return os;
 }
 systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, const wchar_t __n)
 {
     if ((fwrite(&__n, sizeof(wchar_t), 1, os.__fptr__)) != 1)
-        throw std::runtime_error("Fallo la operacion de escritura en wchar_t systems::ios::operator<<");
+        throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const wchar_t __n)");
     return os;
 }
 systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, const long __n)
@@ -518,13 +527,13 @@ systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, con
     if (os.__binary__)
     {
         if ((fwrite(&__n, sizeof(long), 1, os.__fptr__)) != 1)
-            throw std::runtime_error("Fallo la operacion de escritura en long systems::ios::operator<<");
+            throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const long __n)");
     }
     else
     {
         std::string cstr__n_ = std::to_string(__n);
         if ((fwrite(cstr__n_.c_str(), sizeof(char), cstr__n_.size(), os.__fptr__)) != cstr__n_.size())
-            throw std::runtime_error("Fallo la operacion de escritura en long systems::ios::operator<<");
+            throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const long __n)");
     }
     return os;
 }
@@ -533,13 +542,13 @@ systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, con
     if (os.__binary__)
     {
         if ((fwrite(&__n, sizeof(unsigned long), 1, os.__fptr__)) != 1)
-            throw std::runtime_error("Fallo la operacion de escritura en unsigned long systems::ios::operator<<");
+            throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const unsigned long __n)");
     }
     else
     {
         std::string cstr__n_ = std::to_string(__n);
         if ((fwrite(cstr__n_.c_str(), sizeof(char), cstr__n_.size(), os.__fptr__)) != cstr__n_.size())
-            throw std::runtime_error("Fallo la operacion de escritura en unsigned long systems::ios::operator<<");
+            throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const unsigned long __n)");
     }
     return os;
 }
@@ -548,13 +557,13 @@ systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, con
     if (os.__binary__)
     {
         if ((fwrite(&__n, sizeof(long long), 1, os.__fptr__)) != 1)
-            throw std::runtime_error("Fallo la operacion de escritura en long long systems::ios::operator<<");
+            throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const long long __n)");
     }
     else
     {
         std::string cstr__n_ = std::to_string(__n);
         if ((fwrite(cstr__n_.c_str(), sizeof(char), cstr__n_.size(), os.__fptr__)) != cstr__n_.size())
-            throw std::runtime_error("Fallo la operacion de escritura en long long systems::ios::operator<<");
+            throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const long long __n)");
     }
     return os;
 }
@@ -563,13 +572,13 @@ systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, con
     if (os.__binary__)
     {
         if ((fwrite(&__n, sizeof(unsigned long long), 1, os.__fptr__)) != 1)
-            throw std::runtime_error("Fallo la operacion de escritura en unsigned long long systems::ios::operator<<");
+            throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const unsigned long long __n)");
     }
     else
     {
         std::string cstr__n_ = std::to_string(__n);
         if ((fwrite(cstr__n_.c_str(), sizeof(char), cstr__n_.size(), os.__fptr__)) != cstr__n_.size())
-            throw std::runtime_error("Fallo la operacion de escritura en unsigned long long systems::ios::operator<<");
+            throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const unsigned long long __n)");
     }
     return os;
 }
@@ -578,13 +587,13 @@ systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, con
     if (os.__binary__)
     {
         if ((fwrite(&__n, sizeof(float), 1, os.__fptr__)) != 1)
-            throw std::runtime_error("Fallo la operacion de escritura en float systems::ios::operator<<");
+            throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const float __n)");
     }
     else
     {
         std::string cstr__n_ = std::to_string(__n);
         if ((fwrite(cstr__n_.c_str(), sizeof(char), cstr__n_.size(), os.__fptr__)) != cstr__n_.size())
-            throw std::runtime_error("Fallo la operacion de escritura en float systems::ios::operator<<");
+            throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const float __n)");
     }
     return os;
 }
@@ -593,17 +602,18 @@ systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, con
     if (os.__binary__)
     {
         if ((fwrite(&__n, sizeof(double), 1, os.__fptr__)) != 1)
-            throw std::runtime_error("Fallo la operacion de escritura en double systems::ios::operator<<");
+            throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const double __n)");
     }
     else
     {
         std::string cstr__n_ = std::to_string(__n);
         if ((fwrite(cstr__n_.c_str(), sizeof(char), cstr__n_.size(), os.__fptr__)) != cstr__n_.size())
-            throw std::runtime_error("Fallo la operacion de escritura en double operator<<");
+            throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const double __n)");
     }
     return os;
 }
-systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &out, ifstream &is) {
+systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &out, ifstream &is)
+{
     while (!is.iseof())
     {
         u8 byte;
@@ -612,7 +622,8 @@ systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &out, if
     }
     return out;
 }
-std::istream &systems::ios::operator>>(std::istream &in, systems::ios::ofstream &out) {
+std::istream &systems::ios::operator>>(std::istream &in, systems::ios::ofstream &out)
+{
     std::string line;
     std::getline(in, line);
     out << line;

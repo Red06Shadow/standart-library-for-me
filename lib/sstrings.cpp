@@ -1,6 +1,6 @@
 #include <stda/sstrings/sstrings.hpp>
 
-void sstring::removeespaces(std::string &str)
+void sstring::remove_espaces(std::string &str)
 {
     size_t i = 0;
     while (i < str.size())
@@ -11,7 +11,7 @@ void sstring::removeespaces(std::string &str)
             i++;
     }
 }
-void sstring::removeespaces(std::wstring &str)
+void sstring::remove_espaces(std::wstring &str)
 {
     size_t i = 0;
     while (i < str.size())
@@ -23,7 +23,7 @@ void sstring::removeespaces(std::wstring &str)
     }
 }
 /////////////////////////////////////
-void sstring::removebeginespaces(std::string &str)
+void sstring::remove_begin_espaces(std::string &str)
 {
     while (str.begin() != str.end())
     {
@@ -33,7 +33,7 @@ void sstring::removebeginespaces(std::string &str)
             break;
     }
 }
-void sstring::removebeginespaces(std::wstring &str)
+void sstring::remove_begin_espaces(std::wstring &str)
 {
     while (str.begin() != str.end())
     {
@@ -41,6 +41,29 @@ void sstring::removebeginespaces(std::wstring &str)
             str.erase(str.begin());
         else
             break;
+    }
+}
+/////////////////////////////////////
+void sstring::remove_end_espaces(std::string &str)
+{
+    if(!str.empty())
+    {
+        do
+        {
+            if (*(str.end() - 1) != ' ')
+                break;
+            str.erase(str.end() - 1);
+        } while (str.end() != str.begin());
+    }
+}
+void sstring::remove_end_espaces(std::wstring &str)
+{
+    if(!str.empty())
+    {
+        do
+        {
+            str.erase(str.end());
+        } while (str.end() != str.begin());
     }
 }
 /////////////////////////////////////
@@ -649,9 +672,9 @@ bool check_str(wchar_t car, const wchar_t* espacing)
     }
     return launch;
 }
-size_t sstring::find_word(const std::string& word, const std::string& sources, const char* espacing)
+size_t sstring::find_word(const std::string& word, const std::string& sources, size_t index, const char* espacing)
 {
-    size_t i = 0;
+    size_t i = index;
     reset:
     size_t count = 0, pos = -1ULL;
     while (i < sources.size())
@@ -679,9 +702,9 @@ size_t sstring::find_word(const std::string& word, const std::string& sources, c
     return pos;
 }
 
-size_t sstring::find_word(const std::wstring &word, const std::wstring &sources, const wchar_t *espacing)
+size_t sstring::find_word(const std::wstring &word, const std::wstring &sources, size_t index, const wchar_t *espacing)
 {
-    size_t i = 0;
+    size_t i = index;
     reset:
     size_t count = 0, pos = -1ULL;
     while (i < sources.size())
