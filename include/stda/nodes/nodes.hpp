@@ -12,7 +12,7 @@
  * grafos, aun la idea no esta clara, pero se tiene en cuenta
  */
 
-namespace node
+namespace Node
 {
     /// @brief id del tipo de nodo especificado, esto permite identificar el nodo a base de un puntero y luego proceder a hacer un cast a este elemento
     enum id : u8
@@ -29,7 +29,7 @@ namespace node
     {
     public:
         /// @brief Id del nodo
-        node::id pid;
+        Node::id pid;
 
     protected:
         /// @brief Identificado unico para cada nodo generado dentro de la ejecucion del programa
@@ -41,7 +41,7 @@ namespace node
         /// @brief Constructor principal de clase, no tiene uno por defecto para que el programado r que genere un nuevo tipo de nodo no se equivoque a la hora de generar un id distinto
         /// @param __id Id del nodo
         /// @note (!Importante: Use base::countofother y countofother::id::_S_other para nodos personalizados!)
-        base(const node::id __id = node::_S_base) : __intern__id(countofelements), pid(__id) { countofelements++; }
+        base(const Node::id __id = Node::_S_base) : __intern__id(countofelements), pid(__id) { countofelements++; }
         base(const base &other)
         {
             __intern__id = other.__intern__id;
@@ -147,27 +147,27 @@ namespace node
             reverse(const array &__base) : __arrarptr__(__base.values) {}
             /// @brief Punto de partida de la iteracion reversa del array
             /// @return Devuelve el iterador que apunta al elemento final del array
-            iterators::reverse_iterator<base *> begin() const { return iterators::reverse_iterator<base *>(__arrarptr__ + N - 1); }
+            Iterators::Reverse_Iterator<base *> begin() const { return Iterators::Reverse_Iterator<base *>(__arrarptr__ + N - 1); }
             /// @brief Punto final de la iteracion reversa del array
             /// @return Devuelve el iterador que apunta al elemento inicial del array
-            iterators::reverse_iterator<base *> end() const { return iterators::reverse_iterator<base *>(__arrarptr__ - 1); }
+            Iterators::Reverse_Iterator<base *> end() const { return Iterators::Reverse_Iterator<base *>(__arrarptr__ - 1); }
             ~reverse() {}
         };
         /// @brief Punto de partida de la iteracion del array
         /// @return Devuelve el iterador que apunta al elemento inicial del array
-        iterators::iterator<base *> begin() const { return iterators::iterator<base *>(values); }
+        Iterators::Iterator<base *> begin() const { return Iterators::Iterator<base *>(values); }
         /// @brief Punto final de la iteracion del array
         /// @return Devuelve el iterador que apunta al elemento final del array
-        iterators::iterator<base *> end() const { return iterators::iterator<base *>(values + N); }
+        Iterators::Iterator<base *> end() const { return Iterators::Iterator<base *>(values + N); }
         ////////////////////////////////////////////////////////////////////////////////
         /// @brief Punto de partida de la iteracion reversa del array
         /// @return Devuelve el iterador que apunta al elemento final del array
-        iterators::reverse_iterator<base *> rbegin() const { return iterators::reverse_iterator<base *>(values + N - 1); }
+        Iterators::Reverse_Iterator<base *> rbegin() const { return Iterators::Reverse_Iterator<base *>(values + N - 1); }
         /// @brief Punto final de la iteracion reversa del array
         /// @return Devuelve el iterador que apunta al elemento inicial del array
-        iterators::reverse_iterator<base *> rend() const { return iterators::reverse_iterator<base *>(values - 1); }
+        Iterators::Reverse_Iterator<base *> rend() const { return Iterators::Reverse_Iterator<base *>(values - 1); }
         /// @brief Constructor por defecto de array
-        array() : node::base(node::_S_array) { base::countofarrays++; }
+        array() : Node::base(Node::_S_array) { base::countofarrays++; }
         /// @brief Constructor del array en base a un (?std::initializer_list<base*>?)
         /// @param list Lista de elementos a agregar(!Importante: Fallara si ingresas un numero mayor de elemntos!)
         array(const std::initializer_list<base *> &list);
@@ -228,13 +228,13 @@ namespace node
 
     public:
         /// @brief Constructor por defecto del vector
-        vector() : node::base(node::_S_vector) { base::countofvector++; }
+        vector() : Node::base(Node::_S_vector) { base::countofvector++; }
         /// @brief Constructor del array en base a un (?std::initializer_list<base*>?)
         /// @param list Lista de elementos a agregar
         vector(const std::initializer_list<base *> &list);
         vector(const std::vector<base *> &factor);
-        vector(const node::vector &other);
-        vector(node::vector &&other);
+        vector(const Node::vector &other);
+        vector(Node::vector &&other);
         base *&operator[](size_t pos)
         {
             return values[pos];
@@ -273,7 +273,7 @@ namespace node
         /// @brief Inserta un elemento en la posicion deseada
         /// @param pos Iterador del vector
         /// @param value Valor del puntero del nodo
-        void insert(const std::vector<base *>::iterator &pos, base *value);
+        void insert(const std::vector<base *>::Iterator &pos, base *value);
         /// @brief Agrega el elemento al final del arreglo
         /// @param value Valor del puntero del nodo
         void push_back(base *value) { values.push_back(value); }
@@ -296,7 +296,7 @@ namespace node
         void remove(size_t pos);
         /// @brief Elimina un elemento del arreglo volviendo a nullptr el valor de esa pocision
         /// @param pos Iterador del elemento
-        void remove(const std::vector<base *>::iterator &pos);
+        void remove(const std::vector<base *>::Iterator &pos);
         /// @brief Obtiene una expresion constante del tamano del arreglo
         /// @return Devuelve un (?size_t?) del numero de elementos tangibles del vector
         const size_t size() const { return values.size(); }
@@ -308,10 +308,10 @@ namespace node
         const base *top() const { return const_cast<const base *>(values[0]); }
         /// @brief Punto de partida de la iteracion del array
         /// @return Devuelve el iterador que apunta al elemento inicial del array
-        std::vector<base *>::iterator begin() { return values.begin(); }
+        std::vector<base *>::Iterator begin() { return values.begin(); }
         /// @brief Punto de final de la iteracion del array
         /// @return Devuelve el iterador que apunta al elemento final del array
-        std::vector<base *>::iterator end() { return values.end(); }
+        std::vector<base *>::Iterator end() { return values.end(); }
         ~vector() override;
     };
     /// @brief Clase que guarda los elemntos de nodos en base a una clave(?std::map?)
@@ -325,13 +325,13 @@ namespace node
 
     public:
         /// @brief Consttuctor por defecto
-        mapped() : node::base(node::_S_mapped) { base::countofmaping++; }
+        mapped() : Node::base(Node::_S_mapped) { base::countofmaping++; }
         /// @brief Constructor del array en base a un (?std::std::initializer_list<std::pair<_Key, base *>>?)
         /// @param list Lista de elementos a agregar
         mapped(const std::initializer_list<std::pair<_Key, base *>> &list);
         mapped(const std::map<_Key, base *> &factor);
-        mapped(const node::mapped<_Key> &other);
-        mapped(node::mapped<_Key> &&other);
+        mapped(const Node::mapped<_Key> &other);
+        mapped(Node::mapped<_Key> &&other);
         /// @brief Inserta a partir de una clave no repetida el elemento que se desea
         /// @param key Clave de almacenamiento del elemento
         /// @param value Valor a guardar
@@ -380,7 +380,7 @@ namespace node
         }
         ~mapped() override;
     };
-} // namespace node
+} // namespace Node
 #include "nodes.tpp"
 
 #endif

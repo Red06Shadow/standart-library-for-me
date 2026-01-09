@@ -1,4 +1,4 @@
-#include <stda/system/files/filesystem.hpp>
+#include <stda/system/Files/Filesystem.hpp>
 
 #define repetnotblockask labeljump1
 #define outignore labeljump2
@@ -7,9 +7,9 @@
 #define NotExistingFolder "No existe ese directorio"
 #define NotupdateOperation "No se ejecutar la opcion actualizar(update) en la funcion de copiar archivos"
 
-// systems::Url systems::files::recylePath = systems::files::getPathRecycle();
+// System::Url System::Files::recylePath = System::Files::getPathRecycle();
 
-void __stdcall systems::files::copy_and_move_progress_interface(LARGE_INTEGER __totalFileSize,
+void __stdcall System::Files::copy_and_move_progress_interface(LARGE_INTEGER __totalFileSize,
                                                                 LARGE_INTEGER __totalBytesTransferrend,
                                                                 LARGE_INTEGER __streamSize,
                                                                 LARGE_INTEGER __StreamBytesTransferrend,
@@ -20,18 +20,18 @@ void __stdcall systems::files::copy_and_move_progress_interface(LARGE_INTEGER __
                                                                 LPVOID lpData)
 {
     double porcentaje = (double)__totalBytesTransferrend.QuadPart * 100 / __totalFileSize.QuadPart;
-    if (systems::files::__interfaces_avilite__)
+    if (System::Files::__interfaces_avilite__)
         __standartcout << L"\rProgreso: " << porcentaje << L"%" << std::flush;
 }
 template <typename T, typename Q>
-T systems::files::cases_optimizate(Q input, Q invalid_values_of_greath_equals)
+T System::Files::cases_optimizate(Q input, Q invalid_values_of_greath_equals)
 {
     if (input >= invalid_values_of_greath_equals)
-        throw systems::exception("Invalid operand for this funtion");
+        throw System::Exception("Invalid operand for this funtion");
     return static_cast<T>(input);
 }
 
-systems::files::options_for_copy_and_move systems::files::ask_options_for_copy_and_move_file()
+System::Files::options_for_copy_and_move System::Files::ask_options_for_copy_and_move_file()
 {
     __standartcout << "Que opcion desea realizar" << std::endl;
     __standartcout << "1: Duplicar" << std::endl;
@@ -42,10 +42,10 @@ systems::files::options_for_copy_and_move systems::files::ask_options_for_copy_a
     unsigned int v;
     __standartcin >> v;
     __standartcin.clear();
-    return cases_optimizate<systems::files::options_for_copy_and_move, unsigned int>(v, 4);
+    return cases_optimizate<System::Files::options_for_copy_and_move, unsigned int>(v, 4);
 }
 
-systems::files::options_for_create systems::files::ask_options_for_create()
+System::Files::options_for_create System::Files::ask_options_for_create()
 {
     __standartcout << "Que opcion desea realizar" << std::endl;
     __standartcout << "1: Duplicar" << std::endl;
@@ -55,10 +55,10 @@ systems::files::options_for_create systems::files::ask_options_for_create()
     unsigned int v;
     __standartcin >> v;
     __standartcin.clear();
-    return cases_optimizate<systems::files::options_for_create, unsigned int>(v, 3);
+    return cases_optimizate<System::Files::options_for_create, unsigned int>(v, 3);
 }
 
-__string systems::files::get_last_error()
+__string System::Files::get_last_error()
 {
     DWORD errorCode = GetLastError();
     __caracter *errorMessage = nullptr;
@@ -87,32 +87,32 @@ __string systems::files::get_last_error()
     return __string("");
 }
 
-size_t systems::files::size(const systems::Url &url)
+size_t System::Files::size(const System::Url &url)
 {
     size_t size = 0;
     if (is_directory(url.c_str()))
     {
-        for (auto &&ifile : systems::files::container(url))
+        for (auto &&ifile : System::Files::container(url))
             if (__compare(ifile.cFileName, __dot) != 0 && __compare(ifile.cFileName, __dot2) != 0)
-                size += systems::files::size(url + ifile.cFileName);
+                size += System::Files::size(url + ifile.cFileName);
     }
     else
     {
-        size += systems::files::size_file(url);
+        size += System::Files::size_file(url);
     }
     return size;
 }
 
-size_t systems::files::size_file(const systems::Url &url)
+size_t System::Files::size_file(const System::Url &url)
 {
     LARGE_INTEGER tamano;
     tamano.QuadPart = 0;
 #if defined(USINGWCARACTER)
     if (!GetFileSizeEx(CreateFileW(url.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL), &tamano))
-        throw systems::windows_exceptions(GetLastError(), "systems::files::size_file");
+        throw System::Windows_Exceptions(GetLastError(), "System::Files::size_file");
 #else
     if (!GetFileSizeEx(CreateFileA(url.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL), &tamano))
-        throw systems::windows_exceptions(GetLastError(), "systems::files::size_file");
+        throw System::Windows_Exceptions(GetLastError(), "System::Files::size_file");
 #endif
     return size_t(tamano.QuadPart);
 }
@@ -121,11 +121,11 @@ size_t systems::files::size_file(const systems::Url &url)
 // #else
 
 // #endif
-void systems::files::copy_file(const systems::Url &sources, const systems::Url &destine, files::options_for_copy_and_move options)
+void System::Files::copy_file(const System::Url &sources, const System::Url &destine, Files::options_for_copy_and_move options)
 {
     __string newfile = (destine.string() + __concaturl + sources.name());
     if (!is_directory(destine))
-        throw systems::exception(NotExistingFolder);
+        throw System::Exception(NotExistingFolder);
     if (is_exist(newfile.c_str()) && options_for_copy_and_move::overwrite != options)
     {
     repetnotblockask:
@@ -133,21 +133,21 @@ void systems::files::copy_file(const systems::Url &sources, const systems::Url &
         {
         case options_for_copy_and_move::duplicate:
         {
-            systems::files::__generate__fast__rename__(newfile, newfile.find_last_of(__dot));
+            System::Files::__generate__fast__rename__(newfile, newfile.find_last_of(__dot));
             break;
         }
         case options_for_copy_and_move::update:
-            throw systems::exception(NotupdateOperation);
+            throw System::Exception(NotupdateOperation);
         case options_for_copy_and_move::overwrite:
         {
-            systems::files::remove_file(newfile.c_str());
+            System::Files::remove_file(newfile.c_str());
             break;
         }
         default:
         {
             __standartcout << __string("El archivo \"") + sources.name() + __string("\" ya existe en el direcrorio \"") + destine.string() << std::endl;
             options = ask_options_for_copy_and_move_file();
-            if (options != systems::files::options_for_copy_and_move::asking_before)
+            if (options != System::Files::options_for_copy_and_move::asking_before)
                 goto repetnotblockask;
             break;
         }
@@ -162,20 +162,20 @@ void systems::files::copy_file(const systems::Url &sources, const systems::Url &
 #endif
     }
 }
-void systems::files::copy(const systems::Url &sources, const systems::Url &destine, systems::files::options_for_copy_and_move options)
+void System::Files::copy(const System::Url &sources, const System::Url &destine, System::Files::options_for_copy_and_move options)
 {
     if (!is_directory(destine))
-        throw systems::exception(NotExistingFolder);
+        throw System::Exception(NotExistingFolder);
     if (is_directory(sources))
     {
-        systems::Url newdestine;
-        systems::files::create_directory(destine, sources.name(), static_cast<options_for_create>(options), &newdestine);
-        for (auto &&ifile : systems::files::container(sources))
+        System::Url newdestine;
+        System::Files::create_directory(destine, sources.name(), static_cast<options_for_create>(options), &newdestine);
+        for (auto &&ifile : System::Files::container(sources))
         {
             if (__compare(ifile.cFileName, __dot) != 0 && __compare(ifile.cFileName, __dot2) != 0)
             {
                 __string newsources = sources.string() + __concaturl + ifile.cFileName;
-                systems::files::copy(newsources, newdestine, options);
+                System::Files::copy(newsources, newdestine, options);
             }
         }
     }
@@ -183,11 +183,11 @@ void systems::files::copy(const systems::Url &sources, const systems::Url &desti
         copy_file(sources, destine, options == options_for_copy_and_move::update ? options_for_copy_and_move::duplicate : options);
 }
 
-void systems::files::move_file(const systems::Url &sources, const systems::Url &destine, files::options_for_copy_and_move options)
+void System::Files::move_file(const System::Url &sources, const System::Url &destine, Files::options_for_copy_and_move options)
 {
     __string newfile = (destine.string() + __concaturl + sources.name());
     if (!is_directory(destine))
-        throw systems::exception(NotExistingFolder);
+        throw System::Exception(NotExistingFolder);
     if (is_exist(newfile.c_str()) && options_for_copy_and_move::overwrite != options)
     {
     repetnotblockask:
@@ -195,21 +195,21 @@ void systems::files::move_file(const systems::Url &sources, const systems::Url &
         {
         case options_for_copy_and_move::duplicate:
         {
-            systems::files::__generate__fast__rename__(newfile, newfile.find_last_of(__dot));
+            System::Files::__generate__fast__rename__(newfile, newfile.find_last_of(__dot));
             break;
         }
         case options_for_copy_and_move::update:
-            throw systems::exception(NotupdateOperation);
+            throw System::Exception(NotupdateOperation);
         case options_for_copy_and_move::overwrite:
         {
-            systems::files::remove_file(newfile.c_str());
+            System::Files::remove_file(newfile.c_str());
             break;
         }
         default:
         {
             __standartcout << __string("El archivo \"") + sources.name() + __string("\" ya existe en el direcrorio \"") + destine.string() << std::endl;
             options = ask_options_for_copy_and_move_file();
-            if (options != systems::files::options_for_copy_and_move::asking_before)
+            if (options != System::Files::options_for_copy_and_move::asking_before)
                 goto repetnotblockask;
             break;
         }
@@ -224,20 +224,20 @@ void systems::files::move_file(const systems::Url &sources, const systems::Url &
 #endif
     }
 }
-void systems::files::move(const systems::Url &sources, const systems::Url &destine, systems::files::options_for_copy_and_move options)
+void System::Files::move(const System::Url &sources, const System::Url &destine, System::Files::options_for_copy_and_move options)
 {
     if (!is_directory(destine))
-        throw systems::exception(NotExistingFolder);
+        throw System::Exception(NotExistingFolder);
     if (is_directory(sources))
     {
-        systems::Url newdestine;
-        systems::files::create_directory(destine, sources.name(), static_cast<options_for_create>(options), &newdestine);
-        for (auto &&ifile : systems::files::container(sources))
+        System::Url newdestine;
+        System::Files::create_directory(destine, sources.name(), static_cast<options_for_create>(options), &newdestine);
+        for (auto &&ifile : System::Files::container(sources))
         {
             if (__compare(ifile.cFileName, __dot) != 0 && __compare(ifile.cFileName, __dot2) != 0)
             {
                 __string newsources = sources.string() + __concaturl + ifile.cFileName;
-                systems::files::move(newsources, newdestine, options);
+                System::Files::move(newsources, newdestine, options);
             }
         }
     }
@@ -245,36 +245,36 @@ void systems::files::move(const systems::Url &sources, const systems::Url &desti
         move_file(sources, destine, options == options_for_copy_and_move::update ? options_for_copy_and_move::duplicate : options);
 }
 
-void systems::files::back_folder(systems::Url &url)
+void System::Files::back_folder(System::Url &url)
 {
     url = url.parent();
 }
-void systems::files::open_folder(systems::Url &url, const __caracter *_str)
+void System::Files::open_folder(System::Url &url, const __caracter *_str)
 {
-    url = systems::Url(url.string() + __concaturl + _str, true);
+    url = System::Url(url.string() + __concaturl + _str, true);
 }
-void systems::files::open_folder(systems::Url &url, const __string &_str)
+void System::Files::open_folder(System::Url &url, const __string &_str)
 {
-    url = systems::Url(url.string() + __concaturl + _str, true);
+    url = System::Url(url.string() + __concaturl + _str, true);
 }
 
-void systems::files::view_url(const systems::Url &url, bool recursive)
+void System::Files::view_url(const System::Url &url, bool recursive)
 {
     __standartcout << url.name() << std::endl;
     /////////////////////////////////////////////////////////////
     if (is_directory(url))
     {
-        for (auto &&ifile : systems::files::container(url))
+        for (auto &&ifile : System::Files::container(url))
         {
             if (__compare(ifile.cFileName, __dot) != 0 && __compare(ifile.cFileName, __dot2) != 0)
             {
                 __string v = url.string() + __concaturl + ifile.cFileName;
-                systems::files::__intern__viewer__directory__(v, 2, recursive);
+                System::Files::__intern__viewer__directory__(v, 2, recursive);
             }
         }
     }
 }
-bool systems::files::__intern__viewer__directory__(const systems::Url &url, size_t n_profundidad, bool recursive)
+bool System::Files::__intern__viewer__directory__(const System::Url &url, size_t n_profundidad, bool recursive)
 {
     for (size_t i = 1; i < n_profundidad; i++)
         __standartcout << "  ";
@@ -289,19 +289,19 @@ bool systems::files::__intern__viewer__directory__(const systems::Url &url, size
     if (!is_directory(url))
         return true;
     /////////////////////////////////////////////////////////////
-    for (auto &&ifile : systems::files::container(url))
+    for (auto &&ifile : System::Files::container(url))
     {
         if (__compare(ifile.cFileName, __dot) != 0 && __compare(ifile.cFileName, __dot2) != 0)
-            systems::files::__intern__viewer__directory__(url.string() + __concaturl + ifile.cFileName, n_profundidad + 1, recursive);
+            System::Files::__intern__viewer__directory__(url.string() + __concaturl + ifile.cFileName, n_profundidad + 1, recursive);
     }
     return true;
 }
 
-void systems::files::create_directory(const systems::Url &url, const __caracter *name, files::options_for_create options, systems::Url *update)
+void System::Files::create_directory(const System::Url &url, const __caracter *name, Files::options_for_create options, System::Url *update)
 {
     create_directory(url, __string(name), options, update);
 }
-void systems::files::create_directory(const systems::Url &url, const __string &name, files::options_for_create options, systems::Url *update)
+void System::Files::create_directory(const System::Url &url, const __string &name, Files::options_for_create options, System::Url *update)
 {
     __string newpath = url.string() + __concaturl + name;
     if (is_exist(newpath.c_str()))
@@ -309,32 +309,32 @@ void systems::files::create_directory(const systems::Url &url, const __string &n
     repetnotblockask:
         switch (options)
         {
-        case files::options_for_create::duplicate:
+        case Files::options_for_create::duplicate:
         {
-            systems::files::__generate__fast__rename__(newpath, newpath.size());
+            System::Files::__generate__fast__rename__(newpath, newpath.size());
             break;
         }
-        case files::options_for_create::overwrite:
+        case Files::options_for_create::overwrite:
         {
             __standartcout << __string("Esta seguro de sobreescribir el directorio \"") + name + __string("\" se borraran todos los archivos: \nSi: 1\nNo: 0\n>> ");
             unsigned short c;
             __standartcin >> c;
             if (c == 1)
-                systems::files::remove(newpath.c_str());
+                System::Files::remove(newpath.c_str());
             else
                 goto outignore;
             break;
         }
-        case files::options_for_create::overwrite_not_ask:
+        case Files::options_for_create::overwrite_not_ask:
         {
-            systems::files::remove(newpath.c_str());
+            System::Files::remove(newpath.c_str());
             break;
         }
-        case files::options_for_create::asking_before:
+        case Files::options_for_create::asking_before:
         {
             __standartcout << __string("El directorio \"") + name + __string("\" ya existe en el direcrorio \"") + url.string() << std::endl;
             options = ask_options_for_create();
-            if (options != systems::files::options_for_create::asking_before)
+            if (options != System::Files::options_for_create::asking_before)
                 goto repetnotblockask;
             break;
         }
@@ -350,24 +350,24 @@ void systems::files::create_directory(const systems::Url &url, const __string &n
         !CreateDirectoryExA(url.c_str(), newpath.c_str(), NULL)
 #endif
     )
-        throw systems::windows_exceptions(GetLastError(), "systems::files::create_directory");
+        throw System::Windows_Exceptions(GetLastError(), "System::Files::create_directory");
     if (update != nullptr)
         *update = newpath;
 outignore:
     return;
 }
-systems::ios::iofstream systems::files::open_file(const systems::Url &url, bool binary, bool syncroned_input_output_system)
+System::Ios::iofstream System::Files::open_file(const System::Url &url, bool binary, bool syncroned_input_output_system)
 {
-    return systems::ios::iofstream(url, binary, syncroned_input_output_system);
+    return System::Ios::iofstream(url, binary, syncroned_input_output_system);
 }
 
-void systems::files::remove(const systems::Url &sources)
+void System::Files::remove(const System::Url &sources)
 {
     if (is_directory(sources))
     {
-        for (auto &&ifile : systems::files::container(sources))
+        for (auto &&ifile : System::Files::container(sources))
             if (__compare(ifile.cFileName, __dot) != 0 && __compare(ifile.cFileName, __dot2) != 0)
-                systems::files::remove(sources.string() + __concaturl + ifile.cFileName);
+                System::Files::remove(sources.string() + __concaturl + ifile.cFileName);
         if (
 #if defined(USINGWCARACTER)
             !RemoveDirectoryW(sources.c_str())
@@ -375,15 +375,15 @@ void systems::files::remove(const systems::Url &sources)
             !RemoveDirectoryA(sources.c_str())
 #endif
         )
-            throw systems::windows_exceptions(GetLastError(), "systems::files::create_directory");
+            throw System::Windows_Exceptions(GetLastError(), "System::Files::create_directory");
     }
     else
-        systems::files::remove_file(sources);
+        System::Files::remove_file(sources);
 }
-void systems::files::remove_file(const systems::Url &sources)
+void System::Files::remove_file(const System::Url &sources)
 {
     if (is_directory(sources))
-        throw systems::exception(NotExistingFolder);
+        throw System::Exception(NotExistingFolder);
     if (
 #if defined(USINGWCARACTER)
         !DeleteFileW(sources.c_str())
@@ -391,24 +391,24 @@ void systems::files::remove_file(const systems::Url &sources)
         !DeleteFileA(sources.c_str())
 #endif
     )
-        throw systems::windows_exceptions(GetLastError(), "systems::files::remove");
+        throw System::Windows_Exceptions(GetLastError(), "System::Files::remove");
 }
 
-void systems::files::rename(const systems::Url &url, const __caracter *new_name, bool ignore_type)
+void System::Files::rename(const System::Url &url, const __caracter *new_name, bool ignore_type)
 {
-    systems::Url newurl = url.parent() + new_name;
-    systems::files::move(url, newurl);
+    System::Url newurl = url.parent() + new_name;
+    System::Files::move(url, newurl);
 }
-void systems::files::rename(const systems::Url &url, const __string &new_name, bool ignore_type)
+void System::Files::rename(const System::Url &url, const __string &new_name, bool ignore_type)
 {
-    systems::files::rename(url, new_name.c_str(), ignore_type);
+    System::Files::rename(url, new_name.c_str(), ignore_type);
 }
-void systems::files::rename(const systems::Url &url, const __stringbuffer &new_name, bool ignore_type)
+void System::Files::rename(const System::Url &url, const __stringbuffer &new_name, bool ignore_type)
 {
-    systems::files::rename(url, new_name.c_str(), ignore_type);
+    System::Files::rename(url, new_name.c_str(), ignore_type);
 }
 
-void systems::files::__generate__fast__rename__(__string &str, size_t pos)
+void System::Files::__generate__fast__rename__(__string &str, size_t pos)
 {
     size_t count = 0;
     while (is_exist(str.c_str()))
@@ -421,7 +421,7 @@ void systems::files::__generate__fast__rename__(__string &str, size_t pos)
     }
 }
 
-systems::Url systems::files::getPathRecycle()
+System::Url System::Files::getPathRecycle()
 {
     wchar_t *ruta = new wchar_t[MAX_PATH];
     HRESULT hr = SHGetKnownFolderPath(FOLDERID_RecycleBinFolder, 0, NULL, &ruta);
@@ -430,29 +430,29 @@ systems::Url systems::files::getPathRecycle()
 #if defined(USINGWCARACTER)
         wchar_t *__ruta = ruta;
 #else
-        char *__ruta = stringconverter::convert_utf8_to_ascii(ruta, true);
+        char *__ruta = String::convert_utf8_to_ascii(ruta, true);
 #endif
-        return systems::Url(__ruta);
+        return System::Url(__ruta);
     }
-    throw systems::windows_exceptions(GetLastError(), "systems::files::getPathRecycle");
+    throw System::Windows_Exceptions(GetLastError(), "System::Files::getPathRecycle");
     return "";
 }
 
-void systems::files::create_file(const Url &url, const __caracter *name, options_for_create options, Url *update)
+void System::Files::create_file(const Url &url, const __caracter *name, options_for_create options, Url *update)
 {
     __string newpath = url.string() + __concaturl + name;
-    systems::ios::fstream ocl;
+    System::Ios::fstream ocl;
     if (is_exist(newpath.c_str()))
     {
     repetnotblockask:
         switch (options)
         {
-        case files::options_for_create::duplicate:
+        case Files::options_for_create::duplicate:
         {
-            systems::files::__generate__fast__rename__(newpath, newpath.size());
+            System::Files::__generate__fast__rename__(newpath, newpath.size());
             break;
         }
-        case files::options_for_create::overwrite:
+        case Files::options_for_create::overwrite:
         {
             __standartcout << __string("Esta seguro de sobreescribir el directorio \"") + name + __string("\" se borraran todos los archivos: \nSi: 1\nNo: 0\n>> ");
             unsigned short c;
@@ -461,16 +461,16 @@ void systems::files::create_file(const Url &url, const __caracter *name, options
                 goto outignore;
             break;
         }
-        case files::options_for_create::overwrite_not_ask:
+        case Files::options_for_create::overwrite_not_ask:
         {
             goto ejecuteaction;
             break;
         }
-        case files::options_for_create::asking_before:
+        case Files::options_for_create::asking_before:
         {
             __standartcout << __string("El directorio \"") + name + __string("\" ya existe en el direcrorio \"") + url.string() << std::endl;
             options = ask_options_for_create();
-            if (options != systems::files::options_for_create::asking_before)
+            if (options != System::Files::options_for_create::asking_before)
                 goto repetnotblockask;
             break;
         }
@@ -480,18 +480,18 @@ void systems::files::create_file(const Url &url, const __caracter *name, options
         }
     }
 ejecuteaction:
-    ocl = systems::ios::fstream(newpath.c_str(), systems::ios::out);
-    systems::ios::fstream::close(ocl);
+    ocl = System::Ios::fstream(newpath.c_str(), System::Ios::out);
+    System::Ios::fstream::close(ocl);
     if (update != nullptr)
         *update = newpath;
 outignore:
     return;
 }
-void systems::files::create_file(const Url &url, const __string &name, options_for_create options, Url *update)
+void System::Files::create_file(const Url &url, const __string &name, options_for_create options, Url *update)
 {
-    systems::files::create_file(url, name.c_str(), options, update);
+    System::Files::create_file(url, name.c_str(), options, update);
 }
-systems::Url systems::files::current_directory()
+System::Url System::Files::current_directory()
 {
     __caracter cwd[MAX_PATH];
     if (
@@ -501,15 +501,15 @@ systems::Url systems::files::current_directory()
         GetCurrentDirectoryA(MAX_PATH, cwd) != 0
 #endif
     )
-        return systems::Url(cwd);
-    throw systems::windows_exceptions(GetLastError(), "systems::files::create_file");
-    return systems::Url();
+        return System::Url(cwd);
+    throw System::Windows_Exceptions(GetLastError(), "System::Files::create_file");
+    return System::Url();
 }
-bool systems::files::is_exist(const Url &path)
+bool System::Files::is_exist(const Url &path)
 {
     return is_exist(path.c_str());
 }
-bool systems::files::is_exist(const __caracter *path)
+bool System::Files::is_exist(const __caracter *path)
 {
     WIN32_FIND_DATAW findFileData;
     if (path == nullptr)
@@ -526,19 +526,19 @@ bool systems::files::is_exist(const __caracter *path)
     }
     return false;
 }
-bool systems::files::is_exist(const __string &path)
+bool System::Files::is_exist(const __string &path)
 {
     return is_exist(path.c_str());
 }
-bool systems::files::is_exist(const __stringbuffer &path)
+bool System::Files::is_exist(const __stringbuffer &path)
 {
     return is_exist(path.c_str());
 }
-bool systems::files::is_directory(const Url &url)
+bool System::Files::is_directory(const Url &url)
 {
-    return systems::files::is_directory(url.c_str());
+    return System::Files::is_directory(url.c_str());
 }
-bool systems::files::is_directory(const __caracter *url)
+bool System::Files::is_directory(const __caracter *url)
 {
 #if defined(USINGWCARACTER)
     DWORD base = GetFileAttributesW(url);
@@ -546,22 +546,22 @@ bool systems::files::is_directory(const __caracter *url)
     DWORD base = GetFileAttributesA(url);
 #endif
     if (base == INVALID_FILE_ATTRIBUTES)
-        throw systems::windows_exceptions(GetLastError());
+        throw System::Windows_Exceptions(GetLastError());
     return (base & FILE_ATTRIBUTE_DIRECTORY);
 }
-bool systems::files::is_directory(const __string &url)
+bool System::Files::is_directory(const __string &url)
 {
-    return systems::files::is_directory(url.c_str());
+    return System::Files::is_directory(url.c_str());
 }
-bool systems::files::is_directory(const __stringbuffer &url)
+bool System::Files::is_directory(const __stringbuffer &url)
 {
-    return systems::files::is_directory(url.c_str());
+    return System::Files::is_directory(url.c_str());
 }
-bool systems::files::is_regular_file(const Url &url)
+bool System::Files::is_regular_file(const Url &url)
 {
-    return systems::files::is_regular_file(url.c_str());
+    return System::Files::is_regular_file(url.c_str());
 }
-bool systems::files::is_regular_file(const __caracter *url)
+bool System::Files::is_regular_file(const __caracter *url)
 {
 #if defined(USINGWCARACTER)
     DWORD base = GetFileAttributesW(path);
@@ -569,43 +569,43 @@ bool systems::files::is_regular_file(const __caracter *url)
     DWORD base = GetFileAttributesA(url);
 #endif
     if (base == INVALID_FILE_ATTRIBUTES)
-        throw systems::windows_exceptions(GetLastError());
+        throw System::Windows_Exceptions(GetLastError());
     return (base & FILE_ATTRIBUTE_ARCHIVE);
 }
-bool systems::files::is_regular_file(const __string &url)
+bool System::Files::is_regular_file(const __string &url)
 {
-    return systems::files::is_regular_file(url.c_str());
+    return System::Files::is_regular_file(url.c_str());
 }
-bool systems::files::is_regular_file(const __stringbuffer &url)
+bool System::Files::is_regular_file(const __stringbuffer &url)
 {
-    return systems::files::is_regular_file(url.c_str());
+    return System::Files::is_regular_file(url.c_str());
 }
-const __string systems::files::extension(const __caracter *path)
+const __string System::Files::extension(const __caracter *path)
 {
-    if (!systems::files::is_regular_file(path))
-        throw systems::exception("La ruta insertada no le corresponde a un archivo regular.");
+    if (!System::Files::is_regular_file(path))
+        throw System::Exception("La ruta insertada no le corresponde a un archivo regular.");
     size_t size = __size(path);
-    size_t dot = sstring::find_last_of(path, __caracter(46), size);
-    size_t l1 = sstring::find_last_of(path, __caracter('/'), size);
-    size_t l2 = sstring::find_last_of(path, __caracter('\\'), size);
+    size_t dot = String::find_last_of(path, __caracter(46), size);
+    size_t l1 = String::find_last_of(path, __caracter('/'), size);
+    size_t l2 = String::find_last_of(path, __caracter('\\'), size);
     if ((dot < l1 && l1 != -1ULL) || (dot < l2 && l2 != -1ULL))
         return "";
     return __string(path).substr(dot);
 }
-const __string systems::files::extension(const systems::Url &url)
+const __string System::Files::extension(const System::Url &url)
 {
-    return systems::files::extension(url.c_str());
+    return System::Files::extension(url.c_str());
 }
 
-// bool systems::files::is_symlink(const Url &url) {
+// bool System::Files::is_symlink(const Url &url) {
 
 // }
-// bool systems::files::is_symlink(const __caracter *url) {
+// bool System::Files::is_symlink(const __caracter *url) {
 
 // }
-// bool systems::files::is_symlink(const __string &url) {
+// bool System::Files::is_symlink(const __string &url) {
 
 // }
-// bool systems::files::is_symlink(const __stringbuffer &url) {
+// bool System::Files::is_symlink(const __stringbuffer &url) {
 
 // }

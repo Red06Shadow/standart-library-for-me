@@ -1,4 +1,4 @@
-#include <stda/system/files/fstream/fstream.hpp>
+#include <stda/system/Files/fstream/fstream.hpp>
 #include <stda/system/time/time.hpp>
 #include <stda/system/exceptions/exceptions.hpp>
 #include <shlobj.h>
@@ -20,10 +20,10 @@ using w32fdata = WIN32_FIND_DATAA;
 #endif
 
 /// @brief Nombres de espacio para todo lo relacionado con el sistema
-namespace systems
+namespace System
 {
     /// @brief Clase que gestinoa las funciones para los directorioss
-    class files
+    class Files
     {
     public:
         ///////////////////////////////////////////////////////////////////////////////
@@ -56,7 +56,7 @@ namespace systems
             // Estos son los valores hexadecimales reales
             read_only = 0x00000001,
             hidden = 0x00000002,
-            systems = 0x00000004,
+            System = 0x00000004,
             directory = 0x00000010,
             archive = 0x00000020,
             device = 0x00000040,
@@ -100,7 +100,7 @@ namespace systems
                     !GetFileAttributesExA(url.c_str(), GetFileExInfoStandard, &__atributes__)
 #endif
                 )
-                    throw systems::windows_exceptions(GetLastError(), "Constructor:Status");
+                    throw System::Windows_Exceptions(GetLastError(), "Constructor:Status");
             }
             int operator&(const file_atributes __value)
             {
@@ -109,9 +109,9 @@ namespace systems
             size_t max_size() { return __atributes__.nFileSizeHigh; }
             size_t size() { return __atributes__.nFileSizeLow; }
 
-            time::time_point write_last_access_time() {return time::time_point(time::timefile_to_time_t(__atributes__.ftLastAccessTime));}
-            time::time_point write_create_time() {return time::time_point(time::timefile_to_time_t(__atributes__.ftCreationTime));}
-            time::time_point write_last_write_time() {return time::time_point(time::timefile_to_time_t(__atributes__.ftLastWriteTime));}
+            Time::Point write_last_access_time() {return Time::Point(Time::timefile_to_time_t(__atributes__.ftLastAccessTime));}
+            Time::Point write_create_time() {return Time::Point(Time::timefile_to_time_t(__atributes__.ftCreationTime));}
+            Time::Point write_last_write_time() {return Time::Point(Time::timefile_to_time_t(__atributes__.ftLastWriteTime));}
             ~status() {}
         };
         /// @brief Clase contenedora que almacena la ruta y las funciones para el manejo directo del archivo
@@ -123,7 +123,7 @@ namespace systems
 
         public:
             /// @brief Clase iteradora modificada para que use funciones en vez de arreglos de cadenas de caracteres
-            class iterator
+            class Iterator
             {
             private:
                 const w32fdata *__ptr__main__;
@@ -131,15 +131,15 @@ namespace systems
                 friend container;
 
             public:
-                explicit iterator(const w32fdata *__receptor__, const HANDLE &__handle) : ref_handle(__handle), __ptr__main__(__receptor__) {}
+                explicit Iterator(const w32fdata *__receptor__, const HANDLE &__handle) : ref_handle(__handle), __ptr__main__(__receptor__) {}
 
-                bool operator==(const iterator &otro) const { return this->__ptr__main__ == otro.__ptr__main__; }
-                bool operator!=(const iterator &otro) const { return this->__ptr__main__ != otro.__ptr__main__; }
+                bool operator==(const Iterator &otro) const { return this->__ptr__main__ == otro.__ptr__main__; }
+                bool operator!=(const Iterator &otro) const { return this->__ptr__main__ != otro.__ptr__main__; }
 
                 w32fdata &operator*() { return *(const_cast<w32fdata *>(__ptr__main__)); }
                 w32fdata *operator->() { return const_cast<w32fdata *>(__ptr__main__); }
 
-                iterator &operator++()
+                Iterator &operator++()
                 {
                     if (
 #if defined(USINGWCARACTER)
@@ -152,9 +152,9 @@ namespace systems
                     return *this;
                 }
 
-                iterator operator++(int)
+                Iterator operator++(int)
                 {
-                    iterator temp(*this);
+                    Iterator temp(*this);
                     ++(*this);
                     return temp;
                 }
@@ -169,7 +169,7 @@ namespace systems
                 __hanlde__ = FindFirstFileExA((url.string() + "\\*").c_str(), FindExInfoStandard, &__main__, FindExSearchNameMatch, NULL, FIND_FIRST_EX_LARGE_FETCH);
 #endif
                 if (__hanlde__ == INVALID_HANDLE_VALUE)
-                    throw systems::windows_exceptions(GetLastError(), "Constructor:Container");
+                    throw System::Windows_Exceptions(GetLastError(), "Constructor:Container");
                 // Codigo para proximas versiones
                 //                 size_t v = 0;
                 //                 do
@@ -184,8 +184,8 @@ namespace systems
                 //                 );
                 //                 if(v == 0)
             }
-            iterator begin() { return iterator(&__main__, __hanlde__); }
-            iterator end() { return iterator(nullptr, __hanlde__); }
+            Iterator begin() { return Iterator(&__main__, __hanlde__); }
+            Iterator end() { return Iterator(nullptr, __hanlde__); }
             ~container()
             {
                 FindClose(__hanlde__);
@@ -210,22 +210,22 @@ namespace systems
         /// @param sources Path(Ruta) de deseada
         /// @param destine Path(Ruta) de destino
         /// @param options Opciones para la copia
-        static void copy(const Url &sources, const Url &destine, files::options_for_copy_and_move options = files::options_for_copy_and_move::asking_before);
+        static void copy(const Url &sources, const Url &destine, Files::options_for_copy_and_move options = Files::options_for_copy_and_move::asking_before);
         /// @brief Copia un archivo de una ruta a otra
         /// @param sources Path(Ruta) de deseada Aclaracion: Saltara un error si intentas mover un directorio
         /// @param destine Path(Ruta) de destino
         /// @param options Opciones para la copia
-        static void copy_file(const Url &sources, const Url &destine, files::options_for_copy_and_move options = files::options_for_copy_and_move::asking_before);
+        static void copy_file(const Url &sources, const Url &destine, Files::options_for_copy_and_move options = Files::options_for_copy_and_move::asking_before);
         /// @brief Mueve un directorio o archivo de una ruta a otra
         /// @param sources Path(Ruta) de deseada
         /// @param destine Path(Ruta) de destino
         /// @param options Opciones para la copia
-        static void move(const Url &sources, const Url &destine, files::options_for_copy_and_move options = files::options_for_copy_and_move::asking_before);
+        static void move(const Url &sources, const Url &destine, Files::options_for_copy_and_move options = Files::options_for_copy_and_move::asking_before);
         /// @brief Mueve un archivo de una ruta a otra
         /// @param sources Path(Ruta) de deseada Aclaracion: Saltara un error si intentas mover un directorio
         /// @param destine Path(Ruta) de destino
         /// @param options Opciones para la copia
-        static void move_file(const Url &sources, const Url &destine, files::options_for_copy_and_move options = files::options_for_copy_and_move::asking_before);
+        static void move_file(const Url &sources, const Url &destine, Files::options_for_copy_and_move options = Files::options_for_copy_and_move::asking_before);
         /// @brief Transforma la ruta insertada como parametro al directorio anterior
         /// @param url Path(Ruta) de deseada
         static void back_folder(Url &url);
@@ -265,7 +265,7 @@ namespace systems
         /// @param binary Si la lectura del archivo sera binaria o en texto
         /// @param syncroned_input_output_system Si el sistema de engtrada estara sincronizado con el de salida(que los punteros y buffers sean unicos para ambos modos)
         /// @return el objecto iofstream
-        static ios::iofstream open_file(const Url &url, bool binary = false, bool syncroned_input_output_system = false);
+        static Ios::iofstream open_file(const Url &url, bool binary = false, bool syncroned_input_output_system = false);
 
         /// @brief Crea un archivo dentro del directorio especificado
         /// @param url Direccion base del archivo(!Atencion: Si coloca la direccion de un archivo emitira error!)
@@ -392,8 +392,8 @@ namespace systems
                                                                HANDLE __hDestinationFile,
                                                                LPVOID lpData);
         static bool __intern__viewer__directory__(const Url &url, size_t n_profundidad, bool recursive = false);
-        static files::options_for_copy_and_move ask_options_for_copy_and_move_file();
-        static files::options_for_create ask_options_for_create();
+        static Files::options_for_copy_and_move ask_options_for_copy_and_move_file();
+        static Files::options_for_create ask_options_for_create();
         static void __generate__fast__rename__(__string &str, size_t pos);
         template <typename T, typename Q>
         static T cases_optimizate(Q input, Q invalid_values_of_greath_equals);
@@ -401,7 +401,7 @@ namespace systems
     };
 }
 
-using filesystem = systems::files;
+using Filesystem = System::Files;
 
 /// @Funciones Eliminadas o desactivadas por requerimientos no encontrados
 

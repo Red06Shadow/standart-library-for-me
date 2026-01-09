@@ -1,6 +1,6 @@
 #include <stda/sstrings/sstrings.hpp>
 
-void sstring::remove_espaces(std::string &str)
+void String::remove_espaces(std::string &str)
 {
     size_t i = 0;
     while (i < str.size())
@@ -11,7 +11,7 @@ void sstring::remove_espaces(std::string &str)
             i++;
     }
 }
-void sstring::remove_espaces(std::wstring &str)
+void String::remove_espaces(std::wstring &str)
 {
     size_t i = 0;
     while (i < str.size())
@@ -23,7 +23,7 @@ void sstring::remove_espaces(std::wstring &str)
     }
 }
 /////////////////////////////////////
-void sstring::remove_begin_espaces(std::string &str)
+void String::remove_begin_espaces(std::string &str)
 {
     while (str.begin() != str.end())
     {
@@ -33,7 +33,7 @@ void sstring::remove_begin_espaces(std::string &str)
             break;
     }
 }
-void sstring::remove_begin_espaces(std::wstring &str)
+void String::remove_begin_espaces(std::wstring &str)
 {
     while (str.begin() != str.end())
     {
@@ -44,9 +44,9 @@ void sstring::remove_begin_espaces(std::wstring &str)
     }
 }
 /////////////////////////////////////
-void sstring::remove_end_espaces(std::string &str)
+void String::remove_end_espaces(std::string &str)
 {
-    if(!str.empty())
+    if (!str.empty())
     {
         do
         {
@@ -56,9 +56,9 @@ void sstring::remove_end_espaces(std::string &str)
         } while (str.end() != str.begin());
     }
 }
-void sstring::remove_end_espaces(std::wstring &str)
+void String::remove_end_espaces(std::wstring &str)
 {
-    if(!str.empty())
+    if (!str.empty())
     {
         do
         {
@@ -67,15 +67,15 @@ void sstring::remove_end_espaces(std::wstring &str)
     }
 }
 /////////////////////////////////////
-bool sstring::isalfanum(char caracter)
+bool String::isalfanum(char caracter)
 {
     return ((caracter >= '0' && caracter <= '9') || (caracter >= 'A' && caracter <= 'Z') || (caracter >= 'a' && caracter <= 'z'));
 }
-bool sstring::isalfanum(wchar_t caracter)
+bool String::isalfanum(wchar_t caracter)
 {
     return ((caracter >= L'0' && caracter <= L'9') || (caracter >= L'A' && caracter <= L'Z') || (caracter >= L'a' && caracter <= L'z'));
 }
-bool sstring::isalfanum(const std::string &str)
+bool String::isalfanum(const std::string &str)
 {
     if (str.empty())
         return false;
@@ -84,7 +84,7 @@ bool sstring::isalfanum(const std::string &str)
             return false;
     return true;
 }
-bool sstring::isalfanum(const std::wstring &str)
+bool String::isalfanum(const std::wstring &str)
 {
     if (str.empty())
         return false;
@@ -94,15 +94,15 @@ bool sstring::isalfanum(const std::wstring &str)
     return true;
 }
 /////////////////////////////////////
-bool sstring::isalfa(char caracter)
+bool String::isalfa(char caracter)
 {
     return ((caracter >= 'A' && caracter <= 'Z') || (caracter >= 'a' && caracter <= 'z'));
 }
-bool sstring::isalfa(wchar_t caracter)
+bool String::isalfa(wchar_t caracter)
 {
     return ((caracter >= L'A' && caracter <= L'Z') || (caracter >= L'a' && caracter <= L'z'));
 }
-bool sstring::isalfa(const std::string &str)
+bool String::isalfa(const std::string &str)
 {
     if (str.empty())
         return false;
@@ -111,7 +111,7 @@ bool sstring::isalfa(const std::string &str)
             return false;
     return true;
 }
-bool sstring::isalfa(const std::wstring &str)
+bool String::isalfa(const std::wstring &str)
 {
     if (str.empty())
         return false;
@@ -121,73 +121,73 @@ bool sstring::isalfa(const std::wstring &str)
     return true;
 }
 /////////////////////////////////////
-bool sstring::isnum(char caracter)
+bool String::isnum(char caracter)
 {
     return (caracter >= '0' && caracter <= '9');
 }
-bool sstring::isnum(wchar_t caracter)
+bool String::isnum(wchar_t caracter)
 {
     return (caracter >= L'0' && caracter <= L'9');
 }
-bool sstring::isnum(const std::string &str, unsigned char base)
+bool String::isnum(const std::string &str, unsigned char base)
 {
     switch (base)
     {
     case 2:
-        return sstring::isnum_binary(str);
+        return String::isnum_binary(str);
         break;
     case 8:
-        return sstring::isnum_octal(str);
+        return String::isnum_octal(str);
         break;
     case 10:
     {
-        return sstring::isnum_decimal(str);
+        return String::isnum_decimal(str);
         break;
     }
     case 16:
-        return sstring::isnum_hexadecimal(str);
+        return String::isnum_hexadecimal(str);
         break;
     case 'e':
-        return sstring::isnum_exponente(str);
+        return String::isnum_exponente(str);
         break;
     case 'E':
-        return sstring::isnum_exponente(str);
+        return String::isnum_exponente(str);
         break;
     default:
-        throw std::runtime_error("No se inserto una base valida en sstring::iisnum");
+        throw std::runtime_error("No se inserto una base valida en String::iisnum");
         break;
     }
     return false;
 }
-bool sstring::isnum(const std::wstring &str, unsigned char base)
+bool String::isnum(const std::wstring &str, unsigned char base)
 {
     switch (base)
     {
     case 2:
-        return sstring::isnum_binary(str);
+        return String::isnum_binary(str);
         break;
     case 8:
-        return sstring::isnum_octal(str);
+        return String::isnum_octal(str);
         break;
     case 10:
-        return sstring::isnum_decimal(str);
+        return String::isnum_decimal(str);
         break;
     case 16:
-        return sstring::isnum_hexadecimal(str);
+        return String::isnum_hexadecimal(str);
         break;
     case 'e':
-        return sstring::isnum_exponente(str);
+        return String::isnum_exponente(str);
         break;
     case 'E':
-        return sstring::isnum_exponente(str);
+        return String::isnum_exponente(str);
         break;
     default:
-        throw std::runtime_error("No se inserto una base valida en sstring::iisnum");
+        throw std::runtime_error("No se inserto una base valida en String::iisnum");
         break;
     }
     return false;
 }
-bool sstring::isnum_binary(const std::string &str)
+bool String::isnum_binary(const std::string &str)
 {
     if (str.size() < 3 || str[0] != '0' || (str[1] != 'b' && str[1] != 'B'))
         return false;
@@ -196,7 +196,7 @@ bool sstring::isnum_binary(const std::string &str)
             return false;
     return true;
 }
-bool sstring::isnum_binary(const std::wstring &str)
+bool String::isnum_binary(const std::wstring &str)
 {
     if (str.size() < 3 || str[0] != L'0' || (str[1] != L'b' && str[1] != L'B'))
         return false;
@@ -205,7 +205,7 @@ bool sstring::isnum_binary(const std::wstring &str)
             return false;
     return true;
 }
-bool sstring::isnum_octal(const std::string &str)
+bool String::isnum_octal(const std::string &str)
 {
     if (str.size() < 3 || str[0] != '0' || (str[1] != 'o' && str[1] != 'O'))
         return false;
@@ -214,7 +214,7 @@ bool sstring::isnum_octal(const std::string &str)
             return false;
     return true;
 }
-bool sstring::isnum_octal(const std::wstring &str)
+bool String::isnum_octal(const std::wstring &str)
 {
     if (str.size() < 3 || str[0] != L'0' || (str[1] != L'o' && str[1] != L'O'))
         return false;
@@ -223,7 +223,7 @@ bool sstring::isnum_octal(const std::wstring &str)
             return false;
     return true;
 }
-bool sstring::isnum_decimal(const std::string &str)
+bool String::isnum_decimal(const std::string &str)
 {
     if (str.empty())
         return false;
@@ -232,7 +232,7 @@ bool sstring::isnum_decimal(const std::string &str)
             return false;
     return true;
 }
-bool sstring::isnum_decimal(const std::wstring &str)
+bool String::isnum_decimal(const std::wstring &str)
 {
     if (str.empty())
         return false;
@@ -241,7 +241,7 @@ bool sstring::isnum_decimal(const std::wstring &str)
             return false;
     return true;
 }
-bool sstring::isnum_hexadecimal(const std::string &str)
+bool String::isnum_hexadecimal(const std::string &str)
 {
     if (str.size() < 3 || str[0] != '0' || (str[1] != 'x' && str[1] != 'X'))
         return false;
@@ -250,7 +250,7 @@ bool sstring::isnum_hexadecimal(const std::string &str)
             return false;
     return true;
 }
-bool sstring::isnum_hexadecimal(const std::wstring &str)
+bool String::isnum_hexadecimal(const std::wstring &str)
 {
     if (str.size() < 3 || str[0] != L'0' || (str[1] != L'x' && str[1] != L'X'))
         return false;
@@ -259,7 +259,7 @@ bool sstring::isnum_hexadecimal(const std::wstring &str)
             return false;
     return true;
 }
-bool sstring::isnum_exponente(const std::string &str)
+bool String::isnum_exponente(const std::string &str)
 {
     if (str.empty())
         return false;
@@ -268,7 +268,7 @@ bool sstring::isnum_exponente(const std::string &str)
             return false;
     return true;
 }
-bool sstring::isnum_exponente(const std::wstring &str)
+bool String::isnum_exponente(const std::wstring &str)
 {
     if (str.empty())
         return false;
@@ -278,14 +278,14 @@ bool sstring::isnum_exponente(const std::wstring &str)
     return true;
 }
 /////////////////////////////////////
-void sstring::tooper(std::string &str)
+void String::tooper(std::string &str)
 {
     for (size_t i = 0; i < str.size(); i++)
         if (str[i] > 96 && str[i] < 123)
             str[i] = 'A' + (str[i] - 'a');
 }
 /////////////////////////////////////
-void sstring::word(const char *sources, char *&destine, size_t index)
+void String::word(const char *sources, char *&destine, size_t index)
 {
     const char *base = sources + index;
     size_t counter = 0;
@@ -298,7 +298,7 @@ void sstring::word(const char *sources, char *&destine, size_t index)
     destine[counter] = 0;
     std::strncpy(destine, sources + index, counter);
 }
-void sstring::word(const wchar_t *sources, wchar_t *&destine, size_t index)
+void String::word(const wchar_t *sources, wchar_t *&destine, size_t index)
 {
     const wchar_t *base = sources + index;
     size_t counter = 0;
@@ -311,7 +311,7 @@ void sstring::word(const wchar_t *sources, wchar_t *&destine, size_t index)
     destine[counter] = 0;
     std::wcsncpy(destine, sources + index, counter);
 }
-void sstring::word(const std::string &sources, std::string &destine, size_t index)
+void String::word(const std::string &sources, std::string &destine, size_t index)
 {
     for (size_t i = index; i < sources.size(); i++)
     {
@@ -321,7 +321,7 @@ void sstring::word(const std::string &sources, std::string &destine, size_t inde
             break;
     }
 }
-void sstring::word(const std::wstring &sources, std::wstring &destine, size_t index)
+void String::word(const std::wstring &sources, std::wstring &destine, size_t index)
 {
     for (size_t i = index; i < sources.size(); i++)
     {
@@ -331,7 +331,7 @@ void sstring::word(const std::wstring &sources, std::wstring &destine, size_t in
             break;
     }
 }
-void sstring::word(const stringbuffer &sources, stringbuffer &destine, size_t index)
+void String::word(const stringbuffer &sources, stringbuffer &destine, size_t index)
 {
     size_t counter = 0;
     while (isalfanum(sources.at(index++)))
@@ -339,7 +339,7 @@ void sstring::word(const stringbuffer &sources, stringbuffer &destine, size_t in
     destine = stringbuffer(counter);
     destine.copy(sources, counter);
 }
-void sstring::word(const wstringbuffer &sources, wstringbuffer &destine, size_t index)
+void String::word(const wstringbuffer &sources, wstringbuffer &destine, size_t index)
 {
     size_t counter = 0;
     while (isalfanum(sources.at(index++)))
@@ -349,7 +349,7 @@ void sstring::word(const wstringbuffer &sources, wstringbuffer &destine, size_t 
 }
 
 /////////////////////////////////////
-void sstring::reverse(const char *sources, char *&destine)
+void String::reverse(const char *sources, char *&destine)
 {
     size_t size = std::strlen(sources), count = 0;
     const char *rsources = sources + size;
@@ -362,7 +362,7 @@ void sstring::reverse(const char *sources, char *&destine)
         rsources--;
     }
 }
-void sstring::reverse(const wchar_t *sources, wchar_t *&destine)
+void String::reverse(const wchar_t *sources, wchar_t *&destine)
 {
     size_t size = std::wcslen(sources), count = 0;
     const wchar_t *rsources = sources + size;
@@ -375,26 +375,26 @@ void sstring::reverse(const wchar_t *sources, wchar_t *&destine)
         rsources--;
     }
 }
-void sstring::reverse(const std::string &sources, std::string &destine)
+void String::reverse(const std::string &sources, std::string &destine)
 {
     size_t size = sources.size();
     for (size_t count = 0; count < size; count++)
         destine.push_back(sources[size - 1 - count]);
 }
-void sstring::reverse(const std::wstring &sources, std::wstring &destine)
+void String::reverse(const std::wstring &sources, std::wstring &destine)
 {
     size_t size = sources.size();
     for (size_t count = 0; count < size; count++)
         destine.push_back(sources[size - 1 - count]);
 }
-void sstring::reverse(const stringbuffer &sources, stringbuffer &destine)
+void String::reverse(const stringbuffer &sources, stringbuffer &destine)
 {
     destine = stringbuffer(sources.size());
     size_t count = 0;
     for (auto &&caracter : stringbuffer::reverse(sources))
         destine[count++] = caracter;
 }
-void sstring::reverse(const wstringbuffer &sources, wstringbuffer &destine)
+void String::reverse(const wstringbuffer &sources, wstringbuffer &destine)
 {
     destine = wstringbuffer(sources.size());
     size_t count = 0;
@@ -402,7 +402,7 @@ void sstring::reverse(const wstringbuffer &sources, wstringbuffer &destine)
         destine[count++] = caracter;
 }
 /////////////////////////////////////
-void sstring::replaceAll(char *str, char find, char replacer)
+void String::replaceAll(char *str, char find, char replacer)
 {
     char *pivot = str;
     while (*pivot != 0)
@@ -412,7 +412,7 @@ void sstring::replaceAll(char *str, char find, char replacer)
         pivot++;
     }
 }
-void sstring::replaceAll(wchar_t *str, wchar_t find, wchar_t replacer)
+void String::replaceAll(wchar_t *str, wchar_t find, wchar_t replacer)
 {
     wchar_t *pivot = str;
     while (*pivot != 0)
@@ -422,32 +422,32 @@ void sstring::replaceAll(wchar_t *str, wchar_t find, wchar_t replacer)
         pivot++;
     }
 }
-void sstring::replaceAll(std::string &str, char find, char replacer)
+void String::replaceAll(std::string &str, char find, char replacer)
 {
     for (auto &&i : str)
         if (find == i)
             i = replacer;
 }
-void sstring::replaceAll(std::wstring &str, wchar_t find, wchar_t replacer)
+void String::replaceAll(std::wstring &str, wchar_t find, wchar_t replacer)
 {
     for (auto &&i : str)
         if (find == i)
             i = replacer;
 }
-void sstring::replaceAll(stringbuffer &str, char find, char replacer)
+void String::replaceAll(stringbuffer &str, char find, char replacer)
 {
     for (auto &&i : str)
         if (find == i)
             i = replacer;
 }
-void sstring::replaceAll(wstringbuffer &str, wchar_t find, wchar_t replacer)
+void String::replaceAll(wstringbuffer &str, wchar_t find, wchar_t replacer)
 {
     for (auto &&i : str)
         if (find == i)
             i = replacer;
 }
 /////////////////////////////////////
-size_t sstring::find_frist_of(const char *str, char caracter, size_t position)
+size_t String::find_first_of(const char *str, char caracter, size_t position)
 {
     const char *pivot = str + position;
     while (*pivot != 0)
@@ -456,9 +456,9 @@ size_t sstring::find_frist_of(const char *str, char caracter, size_t position)
             return pivot - str;
         pivot++;
     }
-    return size_t(-1);
+    return String::npos;
 }
-size_t sstring::find_frist_of(const char *str, bool (*cmp)(char), size_t position)
+size_t String::find_first_of(const char *str, bool (*cmp)(char), size_t position)
 {
     const char *pivot = str + position;
     while (*pivot != 0)
@@ -467,9 +467,9 @@ size_t sstring::find_frist_of(const char *str, bool (*cmp)(char), size_t positio
             return pivot - str;
         pivot++;
     }
-    return size_t(-1);
+    return String::npos;
 }
-size_t sstring::find_frist_of(const wchar_t *str, wchar_t caracter, size_t position)
+size_t String::find_first_of(const wchar_t *str, wchar_t caracter, size_t position)
 {
     const wchar_t *pivot = str + position;
     while (*pivot != 0)
@@ -478,9 +478,9 @@ size_t sstring::find_frist_of(const wchar_t *str, wchar_t caracter, size_t posit
             return pivot - str;
         pivot++;
     }
-    return size_t(-1);
+    return String::npos;
 }
-size_t sstring::find_frist_of(const wchar_t *str, bool (*cmp)(wchar_t), size_t position)
+size_t String::find_first_of(const wchar_t *str, bool (*cmp)(wchar_t), size_t position)
 {
     const wchar_t *pivot = str + position;
     while (*pivot != 0)
@@ -489,10 +489,10 @@ size_t sstring::find_frist_of(const wchar_t *str, bool (*cmp)(wchar_t), size_t p
             return pivot - str;
         pivot++;
     }
-    return size_t(-1);
+    return String::npos;
 }
 /////////////////////////////////////
-size_t sstring::find_frist_not_of(const char *str, char caracter, size_t position)
+size_t String::find_first_not_of(const char *str, char caracter, size_t position)
 {
     const char *pivot = str + position;
     while (*pivot != 0)
@@ -501,9 +501,9 @@ size_t sstring::find_frist_not_of(const char *str, char caracter, size_t positio
             return pivot - str;
         pivot++;
     }
-    return size_t(-1);
+    return String::npos;
 }
-size_t sstring::find_frist_not_of(const char *str, bool (*cmp)(char), size_t position)
+size_t String::find_first_not_of(const char *str, bool (*cmp)(char), size_t position)
 {
     const char *pivot = str + position;
     while (*pivot != 0)
@@ -512,9 +512,9 @@ size_t sstring::find_frist_not_of(const char *str, bool (*cmp)(char), size_t pos
             return pivot - str;
         pivot++;
     }
-    return size_t(-1);
+    return String::npos;
 }
-size_t sstring::find_frist_not_of(const wchar_t *str, wchar_t caracter, size_t position)
+size_t String::find_first_not_of(const wchar_t *str, wchar_t caracter, size_t position)
 {
     const wchar_t *pivot = str + position;
     while (*pivot != 0)
@@ -523,9 +523,9 @@ size_t sstring::find_frist_not_of(const wchar_t *str, wchar_t caracter, size_t p
             return pivot - str;
         pivot++;
     }
-    return size_t(-1);
+    return String::npos;
 }
-size_t sstring::find_frist_not_of(const wchar_t *str, bool (*cmp)(wchar_t), size_t position)
+size_t String::find_first_not_of(const wchar_t *str, bool (*cmp)(wchar_t), size_t position)
 {
     const wchar_t *pivot = str + position;
     while (*pivot != 0)
@@ -534,12 +534,12 @@ size_t sstring::find_frist_not_of(const wchar_t *str, bool (*cmp)(wchar_t), size
             return pivot - str;
         pivot++;
     }
-    return size_t(-1);
+    return String::npos;
 }
 /////////////////////////////////////
-size_t sstring::find_last_of(const char *str, char caracter, size_t position)
+size_t String::find_last_of(const char *str, char caracter, size_t position)
 {
-    if (position == size_t(-1))
+    if (position == String::npos)
         position = std::strlen(str);
     const char *pivot = str + position;
     while (pivot != str)
@@ -548,11 +548,11 @@ size_t sstring::find_last_of(const char *str, char caracter, size_t position)
         if (*pivot == caracter)
             return pivot - str;
     }
-    return size_t(-1);
+    return String::npos;
 }
-size_t sstring::find_last_of(const char *str, bool (*cmp)(char), size_t position)
+size_t String::find_last_of(const char *str, bool (*cmp)(char), size_t position)
 {
-    if (position == size_t(-1))
+    if (position == String::npos)
         position = std::strlen(str);
     const char *pivot = str + position;
     while (pivot != str)
@@ -561,11 +561,11 @@ size_t sstring::find_last_of(const char *str, bool (*cmp)(char), size_t position
         if (cmp(*pivot))
             return pivot - str;
     }
-    return size_t(-1);
+    return String::npos;
 }
-size_t sstring::find_last_of(const wchar_t *str, wchar_t caracter, size_t position)
+size_t String::find_last_of(const wchar_t *str, wchar_t caracter, size_t position)
 {
-    if (position == size_t(-1))
+    if (position == String::npos)
         position = std::wcslen(str);
     const wchar_t *pivot = str + position;
     while (pivot != str)
@@ -574,11 +574,11 @@ size_t sstring::find_last_of(const wchar_t *str, wchar_t caracter, size_t positi
         if (*pivot == caracter)
             return pivot - str;
     }
-    return size_t(-1);
+    return String::npos;
 }
-size_t sstring::find_last_of(const wchar_t *str, bool (*cmp)(wchar_t), size_t position)
+size_t String::find_last_of(const wchar_t *str, bool (*cmp)(wchar_t), size_t position)
 {
-    if (position == size_t(-1))
+    if (position == String::npos)
         position = std::wcslen(str);
     const wchar_t *pivot = str + position;
     while (pivot != str)
@@ -587,12 +587,12 @@ size_t sstring::find_last_of(const wchar_t *str, bool (*cmp)(wchar_t), size_t po
         if (cmp(*pivot))
             return pivot - str;
     }
-    return size_t(-1);
+    return String::npos;
 }
 /////////////////////////////////////
-size_t sstring::find_last_not_of(const char *str, char caracter, size_t position)
+size_t String::find_last_not_of(const char *str, char caracter, size_t position)
 {
-    if (position == size_t(-1))
+    if (position == String::npos)
         position = std::strlen(str);
     const char *pivot = str + position;
     while (pivot != str)
@@ -601,11 +601,11 @@ size_t sstring::find_last_not_of(const char *str, char caracter, size_t position
         if (*pivot != caracter)
             return pivot - str;
     }
-    return size_t(-1);
+    return String::npos;
 }
-size_t sstring::find_last_not_of(const char *str, bool (*cmp)(char), size_t position)
+size_t String::find_last_not_of(const char *str, bool (*cmp)(char), size_t position)
 {
-    if (position == size_t(-1))
+    if (position == String::npos)
         position = std::strlen(str);
     const char *pivot = str + position;
     while (pivot != str)
@@ -614,11 +614,11 @@ size_t sstring::find_last_not_of(const char *str, bool (*cmp)(char), size_t posi
         if (cmp(*pivot))
             return pivot - str;
     }
-    return size_t(-1);
+    return String::npos;
 }
-size_t sstring::find_last_not_of(const wchar_t *str, wchar_t caracter, size_t position)
+size_t String::find_last_not_of(const wchar_t *str, wchar_t caracter, size_t position)
 {
-    if (position == size_t(-1))
+    if (position == String::npos)
         position = std::wcslen(str);
     const wchar_t *pivot = str + position;
     while (pivot != str)
@@ -627,11 +627,11 @@ size_t sstring::find_last_not_of(const wchar_t *str, wchar_t caracter, size_t po
         if (*pivot != caracter)
             return pivot - str;
     }
-    return size_t(-1);
+    return String::npos;
 }
-size_t sstring::find_last_not_of(const wchar_t *str, bool (*cmp)(wchar_t), size_t position)
+size_t String::find_last_not_of(const wchar_t *str, bool (*cmp)(wchar_t), size_t position)
 {
-    if (position == size_t(-1))
+    if (position == String::npos)
         position = std::wcslen(str);
     const wchar_t *pivot = str + position;
     while (pivot != str)
@@ -640,15 +640,15 @@ size_t sstring::find_last_not_of(const wchar_t *str, bool (*cmp)(wchar_t), size_
         if (cmp(*pivot))
             return pivot - str;
     }
-    return size_t(-1);
+    return String::npos;
 }
-bool check_str(char car, const char* espacing)
+bool check_str(char car, const char *espacing)
 {
     bool launch = true;
     while (*espacing)
     {
         launch = false;
-        if(*espacing == car)
+        if (*espacing == car)
         {
             launch = true;
             break;
@@ -657,13 +657,13 @@ bool check_str(char car, const char* espacing)
     }
     return launch;
 }
-bool check_str(wchar_t car, const wchar_t* espacing)
+bool check_str(wchar_t car, const wchar_t *espacing)
 {
     bool launch = true;
     while (*espacing)
     {
         launch = false;
-        if(*espacing == car)
+        if (*espacing == car)
         {
             launch = true;
             break;
@@ -672,11 +672,11 @@ bool check_str(wchar_t car, const wchar_t* espacing)
     }
     return launch;
 }
-size_t sstring::find_word(const std::string& word, const std::string& sources, size_t index, const char* espacing)
+size_t String::find_word(const std::string &word, const std::string &sources, size_t index, const char *espacing)
 {
     size_t i = index;
-    reset:
-    size_t count = 0, pos = -1ULL;
+reset:
+    size_t count = 0, pos = String::npos;
     while (i < sources.size())
     {
         count = 0;
@@ -692,21 +692,21 @@ size_t sstring::find_word(const std::string& word, const std::string& sources, s
         }
         i++;
     }
-    check:
-    if(i < sources.size() && pos != -1ULL)
+check:
+    if (i < sources.size() && pos != String::npos)
         if (!check_str(sources[i], espacing))
             goto reset;
-    if(pos != 0 && pos != -1ULL)
+    if (pos != 0 && pos != String::npos)
         if (!check_str(sources[pos - 1], espacing))
             goto reset;
     return pos;
 }
 
-size_t sstring::find_word(const std::wstring &word, const std::wstring &sources, size_t index, const wchar_t *espacing)
+size_t String::find_word(const std::wstring &word, const std::wstring &sources, size_t index, const wchar_t *espacing)
 {
     size_t i = index;
-    reset:
-    size_t count = 0, pos = -1ULL;
+reset:
+    size_t count = 0, pos = String::npos;
     while (i < sources.size())
     {
         count = 0;
@@ -722,14 +722,38 @@ size_t sstring::find_word(const std::wstring &word, const std::wstring &sources,
         }
         i++;
     }
-    check:
-    if(i < sources.size() && pos != -1ULL)
+check:
+    if (i < sources.size() && pos != String::npos)
         if (!check_str(sources[i], espacing))
             goto reset;
-    if(pos != 0 && pos != -1ULL)
+    if (pos != 0 && pos != String::npos)
         if (!check_str(sources[pos - 1], espacing))
             goto reset;
     return pos;
+}
+
+char *String::substr(const char *sources, size_t __pos, size_t __n) {
+    const char* point_start = sources + __pos, *point_end = point_start;
+    char* new_str;
+    while (*point_end && (point_end - point_start + __pos) < __n)
+        point_end++;
+    size_t size = point_end - point_start;
+    new_str = new char[size + 1];
+    new_str[size] = 0;
+    std::strncpy(new_str, point_start, size);
+    return new_str;
+}
+
+wchar_t *String::substr(const wchar_t *sources, size_t __pos, size_t __n) {
+    const wchar_t* point_start = sources + __pos, *point_end = point_start;
+    wchar_t* new_str;
+    while (*point_end && (point_end - point_start + __pos) < __n)
+        point_end++;
+    size_t size = point_end - point_start;
+    new_str = new wchar_t[size + 1];
+    new_str[size] = 0;
+    std::wcsncpy(new_str, point_start, size);
+    return new_str;
 }
 
 /////////////////////////////////////

@@ -11,7 +11,7 @@
  * Tambien cuenta con funciones para generar cadenas de bit y hexadecimales
  */
 
-namespace numbers
+namespace Number
 {
     /// @brief Estructura pa almacenar bits por separado de la clase byte
     struct Bits

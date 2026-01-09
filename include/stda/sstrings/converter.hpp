@@ -10,7 +10,7 @@
  * Este archivo presenta las instrucciones para convertir cadenas de caracteres de 1byte a 2byte y viceversa
  */
 
-namespace stringconverter
+namespace String
 {
     /// @brief Convierte una cadena de caractres de tipo(?const char*?) a una de tipo (?const wchar_t*?)
     /// @param str Cadena de entrada

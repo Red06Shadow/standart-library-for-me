@@ -1,23 +1,23 @@
 #include <stda/system/files/fstream/fstream.hpp>
 
-const u8 systems::ios::fstream::mode(systems::ios::base __base)
+const u8 System::Ios::fstream::mode(System::Ios::base __base)
 {
     u8 base = 0;
-    if ((__base & systems::ios::app) && (__base & systems::ios::out))
-        throw systems::exception("Invalid operation for arguments");
-    if (__base & systems::ios::base::bin)
-        base = 6, __base ^= systems::ios::base::bin;
-    if (!(__base & systems::ios::base::trunc))
+    if ((__base & System::Ios::app) && (__base & System::Ios::out))
+        throw System::Exception("Invalid operation for arguments");
+    if (__base & System::Ios::base::bin)
+        base = 6, __base ^= System::Ios::base::bin;
+    if (!(__base & System::Ios::base::trunc))
         return base + static_cast<u8>(__base) - 1;
-    __base ^= systems::ios::base::trunc;
+    __base ^= System::Ios::base::trunc;
     if (!(__base & 0b11))
-        throw systems::exception("Invalid operation for arguments");
+        throw System::Exception("Invalid operation for arguments");
     else
         base += 0b110;
     return base - 1;
 }
 
-systems::ios::fstream::fstream(const systems::ios::fstream &other)
+System::Ios::fstream::fstream(const System::Ios::fstream &other)
 {
     if (__fptr__ != nullptr)
         fclose(__fptr__);
@@ -27,7 +27,7 @@ systems::ios::fstream::fstream(const systems::ios::fstream &other)
     __position_aux__ = other.__position_aux__;
     __position_before__ = other.__position_before__;
 }
-systems::ios::fstream::fstream(systems::ios::fstream &&other)
+System::Ios::fstream::fstream(System::Ios::fstream &&other)
 {
     if (__fptr__ != nullptr)
         fclose(__fptr__);
@@ -38,7 +38,7 @@ systems::ios::fstream::fstream(systems::ios::fstream &&other)
     this->__position_aux__ = other.__position_aux__;
     this->__position_before__ = other.__position_before__;
 }
-systems::ios::fstream &systems::ios::fstream::operator=(const systems::ios::fstream &other)
+System::Ios::fstream &System::Ios::fstream::operator=(const System::Ios::fstream &other)
 {
     if (this != &other)
     {
@@ -52,7 +52,7 @@ systems::ios::fstream &systems::ios::fstream::operator=(const systems::ios::fstr
     }
     return *this;
 }
-systems::ios::fstream &systems::ios::fstream::operator=(systems::ios::fstream &&other)
+System::Ios::fstream &System::Ios::fstream::operator=(System::Ios::fstream &&other)
 {
     if (this != &other)
     {
@@ -68,21 +68,22 @@ systems::ios::fstream &systems::ios::fstream::operator=(systems::ios::fstream &&
     return *this;
 }
 
-systems::ios::fstream::fstream(const __caracter *__path, systems::ios::base __mode)
+System::Ios::fstream::fstream(const __caracter *__path, System::Ios::base __mode)
 {
-    __binary__ = __mode & systems::ios::bin;
+    __binary__ = __mode & System::Ios::bin;
 #if defined(USINGWCARACTER)
-    char *__str__ = std::stringconverter::convert_utf8_to_ascii(__path);
-    __fptr__ = fopen(__str__, systems::ios::fstream::__mode__[systems::ios::fstream::mode(__mode)]);
+    char *__str__ = std::String::convert_utf8_to_ascii(__path);
+    __fptr__ = fopen(__str__, System::Ios::fstream::__mode__[System::Ios::fstream::mode(__mode)]);
     delete[] (__str__);
 #else
-    u8 base = systems::ios::fstream::mode(__mode);
-    __fptr__ = fopen(__path, systems::ios::fstream::__mode__[base]);
+    u8 base = System::Ios::fstream::mode(__mode);
+    if((__fptr__ = fopen(__path, System::Ios::fstream::__mode__[base])) == nullptr)
+        throw System::Exception(ferror(__fptr__), "System::Ios::fstream::fstream");
 #endif
     __position_aux__ = __position_before__ = ftell(__fptr__);
 }
 
-const char *const systems::ios::fstream::__mode__[12] = {
+const char *const System::Ios::fstream::__mode__[12] = {
     "r",  // 0
     "w",  // 1
     "r+", // 2
@@ -98,54 +99,54 @@ const char *const systems::ios::fstream::__mode__[12] = {
     "wb+"  // 11
 };
 
-void systems::ios::fstream::setpos(size_t position, bool actual)
+void System::Ios::fstream::setpos(size_t position, bool actual)
 {
     fseek(__fptr__, position, actual ? SEEK_CUR : SEEK_SET);
 }
-void systems::ios::fstream::setposaux(size_t position, bool actual)
+void System::Ios::fstream::setposaux(size_t position, bool actual)
 {
     __position_aux__ = position + (actual ? ftell(__fptr__) : 0);
 }
-void systems::ios::fstream::setpos(size_t position, size_t size, bool actual)
+void System::Ios::fstream::setpos(size_t position, size_t size, bool actual)
 {
     fseek(__fptr__, position * size, actual ? SEEK_CUR : SEEK_SET);
 }
-void systems::ios::fstream::setposaux(size_t position, size_t size, bool actual)
+void System::Ios::fstream::setposaux(size_t position, size_t size, bool actual)
 {
     __position_aux__ = position * size + (actual ? ftell(__fptr__) : 0);
 }
-size_t systems::ios::fstream::getpos()
+size_t System::Ios::fstream::getpos()
 {
     return ftell(__fptr__);
 }
-size_t systems::ios::fstream::getposreal()
+size_t System::Ios::fstream::getposreal()
 {
     return fgetpos(__fptr__, 0L);
 }
-size_t systems::ios::fstream::getposbe()
+size_t System::Ios::fstream::getposbe()
 {
     return 0;
 }
-size_t systems::ios::fstream::getposaux()
+size_t System::Ios::fstream::getposaux()
 {
     return __position_aux__;
 }
-void systems::ios::fstream::setendchar(int _c)
+void System::Ios::fstream::setendchar(int _c)
 {
     __endstr__ = _c;
 }
-int systems::ios::fstream::getendchar()
+int System::Ios::fstream::getendchar()
 {
     return __endstr__;
 }
-bool systems::ios::fstream::isopen() { return __fptr__ == nullptr; }
-bool systems::ios::fstream::iseof() { return feof(__fptr__) != 0; }
-void systems::ios::fstream::setstartp() { rewind(__fptr__); }
-void systems::ios::fstream::setendp() { fseek(__fptr__, 0L, SEEK_END); }
-void systems::ios::fstream::fsflush() { fflush(__fptr__); }
-void systems::ios::fstream::clearerror() { clearerr(__fptr__); }
+bool System::Ios::fstream::isopen() { return __fptr__ == nullptr; }
+bool System::Ios::fstream::iseof() { return feof(__fptr__) != 0; }
+void System::Ios::fstream::setstartp() { rewind(__fptr__); }
+void System::Ios::fstream::setendp() { fseek(__fptr__, 0L, SEEK_END); }
+void System::Ios::fstream::fsflush() { fflush(__fptr__); }
+void System::Ios::fstream::clearerror() { clearerr(__fptr__); }
 
-void systems::ios::fstream::copy(systems::ios::fstream *ptrfstream, systems::ios::fstream &reffstream)
+void System::Ios::fstream::copy(System::Ios::fstream *ptrfstream, System::Ios::fstream &reffstream)
 {
     ptrfstream->__binary__ = reffstream.__binary__;
     ptrfstream->__endstr__ = reffstream.__endstr__;
@@ -154,68 +155,68 @@ void systems::ios::fstream::copy(systems::ios::fstream *ptrfstream, systems::ios
     ptrfstream->__position_before__ = reffstream.__position_before__;
 }
 
-systems::ios::fstream systems::ios::fstream::open(const __caracter *__path, systems::ios::base __mode)
+System::Ios::fstream System::Ios::fstream::open(const __caracter *__path, System::Ios::base __mode)
 {
-    return systems::ios::fstream(__path, __mode);
+    return System::Ios::fstream(__path, __mode);
 }
-void systems::ios::fstream::reopen(const __caracter *__path, systems::ios::base __mode, fstream &__fstream__)
+void System::Ios::fstream::reopen(const __caracter *__path, System::Ios::base __mode, fstream &__fstream__)
 {
     if (__fstream__.isopen())
-        throw systems::exception(ferror(__fstream__.__fptr__), "systems::ios::fstream::reopen");
+        throw System::Exception(ferror(__fstream__.__fptr__), "System::Ios::fstream::reopen");
 #if defined(USINGWCARACTER)
-    char *__str__ = std::stringconverter::convert_utf8_to_ascii(__path);
-    __fptr__ = fopen(__str__, systems::ios::fstream::__mode__[__mode - u8(1)]);
+    char *__str__ = std::String::convert_utf8_to_ascii(__path);
+    __fptr__ = fopen(__str__, System::Ios::fstream::__mode__[__mode - u8(1)]);
     delete[] (__str__);
 #else
-    __fstream__.__fptr__ = fopen(__path, systems::ios::fstream::__mode__[__mode - u8(1)]);
+    __fstream__.__fptr__ = fopen(__path, System::Ios::fstream::__mode__[__mode - u8(1)]);
 #endif
-    __fstream__.__binary__ = __mode & systems::ios::base::bin;
+    __fstream__.__binary__ = __mode & System::Ios::base::bin;
     __fstream__.__position_aux__ = __fstream__.__position_before__ = ftell(__fstream__.__fptr__);
 }
-void systems::ios::fstream::close(fstream &__fstream__)
+void System::Ios::fstream::close(fstream &__fstream__)
 {
     fclose(__fstream__.__fptr__);
 }
-void systems::ios::fstream::changemode(systems::ios::base __mode)
+void System::Ios::fstream::changemode(System::Ios::base __mode)
 {
-    __binary__ = __mode & systems::ios::base::bin;
-    __fptr__ = freopen(nullptr, systems::ios::fstream::__mode__[__mode - u8(1)], __fptr__);
+    __binary__ = __mode & System::Ios::base::bin;
+    __fptr__ = freopen(nullptr, System::Ios::fstream::__mode__[__mode - u8(1)], __fptr__);
     __position_aux__ = __position_before__ = ftell(__fptr__);
 }
 
-bool systems::ios::fstream::isBinary() { return __binary__; }
+bool System::Ios::fstream::isBinary() { return __binary__; }
 
-systems::ios::fstream::~fstream()
+System::Ios::fstream::~fstream()
 {
     fflush(__fptr__);
     fclose(__fptr__);
 }
 
 /////////////////////////////////////////////////////////////////////////////////
-systems::ios::ifstream::ifstream(const systems::Url &url) : fstream(url.c_str(), systems::ios::base::in) {}
-systems::ios::ifstream::ifstream(const systems::Url &url, bool binary) : fstream(url.c_str(), systems::ios::base::in | systems::ios::base(binary ? systems::ios::base::bin : 0)) {}
+System::Ios::ifstream::ifstream(const System::Url &url) : fstream(url.c_str(), System::Ios::base::in) {}
+System::Ios::ifstream::ifstream(const System::Url &url, bool binary) : fstream(url.c_str(), System::Ios::base::in | System::Ios::base(binary ? System::Ios::base::bin : 0)) {}
 /////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////Funciones In////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-void systems::ios::ifstream::read(std::string &str, size_t _start, size_t _end)
+void System::Ios::ifstream::read(std::string &str, size_t _start, size_t _end)
 {
     char __c;
     while ((__c = fgetc(__fptr__)) != EOF && _start < _end)
         str.push_back(__c);
 }
-void systems::ios::ifstream::read(std::wstring &str, size_t _start, size_t _end)
+void System::Ios::ifstream::read(std::wstring &str, size_t _start, size_t _end)
 {
     wchar_t __c;
     while ((__c = fgetwc(__fptr__)) != EOF && _start < _end)
         str.push_back(__c);
 }
-void systems::ios::ifstream::read(std::string &str, char caracter_end)
+void System::Ios::ifstream::read(std::string &str, char caracter_end)
 {
     char __c;
     while ((__c = fgetc(__fptr__)) != EOF && __c != caracter_end)
         str.push_back(__c);
 }
-void systems::ios::ifstream::read(std::string &str, wchar_t caracter_end)
+void System::Ios::ifstream::read(std::string &str, wchar_t caracter_end)
 {
     wchar_t __c;
     while ((__c = fgetc(__fptr__)) != EOF && __c != caracter_end)
@@ -224,28 +225,28 @@ void systems::ios::ifstream::read(std::string &str, wchar_t caracter_end)
 /////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////Operadores In////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, char *&__str)
+System::Ios::ifstream &System::Ios::operator>>(System::Ios::ifstream &is, char *&__str)
 {
     std::string __str_;
     is >> __str_;
     __str = const_cast<char *>(__str_.c_str());
     return is;
 }
-systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, std::string &__str)
+System::Ios::ifstream &System::Ios::operator>>(System::Ios::ifstream &is, std::string &__str)
 {
     char __c;
     while ((__c = fgetc(is.__fptr__)) != EOF && __c != is.__endstr__)
         __str.push_back(__c);
     return is;
 }
-systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, std::wstring &__str)
+System::Ios::ifstream &System::Ios::operator>>(System::Ios::ifstream &is, std::wstring &__str)
 {
     wchar_t __c;
     while ((__c = fgetwc(is.__fptr__)) != EOF && __c != is.__endstr__)
         __str.push_back(__c);
     return is;
 }
-systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, stringbuffer &__str)
+System::Ios::ifstream &System::Ios::operator>>(System::Ios::ifstream &is, stringbuffer &__str)
 {
     char __c;
     size_t position = 0;
@@ -254,7 +255,7 @@ systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, str
     return is;
 }
 
-systems::ios::ifstream &systems::ios::operator>>(ifstream &is, wstringbuffer &__str)
+System::Ios::ifstream &System::Ios::operator>>(ifstream &is, wstringbuffer &__str)
 {
     wchar_t __c;
     size_t position = 0;
@@ -263,12 +264,12 @@ systems::ios::ifstream &systems::ios::operator>>(ifstream &is, wstringbuffer &__
     return is;
 }
 
-systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, int &__n)
+System::Ios::ifstream &System::Ios::operator>>(System::Ios::ifstream &is, int &__n)
 {
     if (is.__binary__)
     {
         if ((fread(&__n, sizeof(int), 1, is.__fptr__)) != 1)
-            throw systems::exception(ferror(is.__fptr__), "systems::ios::operator>>(systems::ios::ifstream &is, int &__n)");
+            throw System::Exception(ferror(is.__fptr__), "System::Ios::operator>>(System::Ios::ifstream &is, int &__n)");
     }
     else
     {
@@ -278,12 +279,12 @@ systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, int
     }
     return is;
 }
-systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, unsigned int &__n)
+System::Ios::ifstream &System::Ios::operator>>(System::Ios::ifstream &is, unsigned int &__n)
 {
     if (is.__binary__)
     {
         if ((fread(&__n, sizeof(int), 1, is.__fptr__)) != 1)
-            throw systems::exception(ferror(is.__fptr__), "systems::ios::operator>>(systems::ios::ifstream &is, unsigned int &__n)");
+            throw System::Exception(ferror(is.__fptr__), "System::Ios::operator>>(System::Ios::ifstream &is, unsigned int &__n)");
     }
     else
     {
@@ -293,7 +294,7 @@ systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, uns
     }
     return is;
 }
-systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, char &__n)
+System::Ios::ifstream &System::Ios::operator>>(System::Ios::ifstream &is, char &__n)
 {
     if ((__n = fgetc(is.__fptr__)) == EOF)
     {
@@ -302,7 +303,7 @@ systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, cha
     return is;
 }
 
-systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, wchar_t &__n)
+System::Ios::ifstream &System::Ios::operator>>(System::Ios::ifstream &is, wchar_t &__n)
 {
     if ((__n = fgetwc(is.__fptr__)) == EOF)
     {
@@ -311,17 +312,17 @@ systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, wch
     return is;
 }
 
-systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, unsigned char &__n)
+System::Ios::ifstream &System::Ios::operator>>(System::Ios::ifstream &is, unsigned char &__n)
 {
     fread(&__n, sizeof(char), 1, is.__fptr__);
     return is;
 }
-systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, long &__n)
+System::Ios::ifstream &System::Ios::operator>>(System::Ios::ifstream &is, long &__n)
 {
     if (is.__binary__)
     {
         if ((fread(&__n, sizeof(long), 1, is.__fptr__)) != 1)
-            throw systems::exception(ferror(is.__fptr__), "systems::ios::operator>>(systems::ios::ifstream &is, long &__n)");
+            throw System::Exception(ferror(is.__fptr__), "System::Ios::operator>>(System::Ios::ifstream &is, long &__n)");
     }
     else
     {
@@ -331,12 +332,12 @@ systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, lon
     }
     return is;
 }
-systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, unsigned long &__n)
+System::Ios::ifstream &System::Ios::operator>>(System::Ios::ifstream &is, unsigned long &__n)
 {
     if (is.__binary__)
     {
         if ((fread(&__n, sizeof(long), 1, is.__fptr__)) != 1)
-            throw systems::exception(ferror(is.__fptr__), "systems::ios::operator>>(systems::ios::ifstream &is, unsigned long &__n)");
+            throw System::Exception(ferror(is.__fptr__), "System::Ios::operator>>(System::Ios::ifstream &is, unsigned long &__n)");
     }
     else
     {
@@ -346,12 +347,12 @@ systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, uns
     }
     return is;
 }
-systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, long long &__n)
+System::Ios::ifstream &System::Ios::operator>>(System::Ios::ifstream &is, long long &__n)
 {
     if (is.__binary__)
     {
         if ((fread(&__n, sizeof(long long), 1, is.__fptr__)) != 1)
-            throw systems::exception(ferror(is.__fptr__), "systems::ios::operator>>(systems::ios::ifstream &is, long long &__n)");
+            throw System::Exception(ferror(is.__fptr__), "System::Ios::operator>>(System::Ios::ifstream &is, long long &__n)");
     }
     else
     {
@@ -361,12 +362,12 @@ systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, lon
     }
     return is;
 }
-systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, unsigned long long &__n)
+System::Ios::ifstream &System::Ios::operator>>(System::Ios::ifstream &is, unsigned long long &__n)
 {
     if (is.__binary__)
     {
         if ((fread(&__n, sizeof(long long), 1, is.__fptr__)) != 1)
-            throw systems::exception(ferror(is.__fptr__), "systems::ios::operator>>(systems::ios::ifstream &is, unsigned long long &__n)");
+            throw System::Exception(ferror(is.__fptr__), "System::Ios::operator>>(System::Ios::ifstream &is, unsigned long long &__n)");
     }
     else
     {
@@ -376,12 +377,12 @@ systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, uns
     }
     return is;
 }
-systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, float &__n)
+System::Ios::ifstream &System::Ios::operator>>(System::Ios::ifstream &is, float &__n)
 {
     if (is.__binary__)
     {
         if ((fread(&__n, sizeof(float), 1, is.__fptr__)) != 1)
-            throw systems::exception(ferror(is.__fptr__), "systems::ios::operator>>(systems::ios::ifstream &is, float &__n)");
+            throw System::Exception(ferror(is.__fptr__), "System::Ios::operator>>(System::Ios::ifstream &is, float &__n)");
     }
     else
     {
@@ -391,12 +392,12 @@ systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, flo
     }
     return is;
 }
-systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, double &__n)
+System::Ios::ifstream &System::Ios::operator>>(System::Ios::ifstream &is, double &__n)
 {
     if (is.__binary__)
     {
         if ((fread(&__n, sizeof(double), 1, is.__fptr__)) != 1)
-            throw systems::exception(ferror(is.__fptr__), "systems::ios::operator>>(systems::ios::ifstream &is, double &__n)");
+            throw System::Exception(ferror(is.__fptr__), "System::Ios::operator>>(System::Ios::ifstream &is, double &__n)");
     }
     else
     {
@@ -406,7 +407,7 @@ systems::ios::ifstream &systems::ios::operator>>(systems::ios::ifstream &is, dou
     }
     return is;
 }
-std::ostream &systems::ios::operator<<(std::ostream &out, systems::ios::ifstream &is)
+std::ostream &System::Ios::operator<<(std::ostream &out, System::Ios::ifstream &is)
 {
     while (!is.iseof())
     {
@@ -416,23 +417,23 @@ std::ostream &systems::ios::operator<<(std::ostream &out, systems::ios::ifstream
     }
     return out;
 }
-systems::ios::ofstream::ofstream(const systems::Url &url) : fstream(url.c_str(), systems::ios::base::app) {}
-systems::ios::ofstream::ofstream(const systems::Url &url, bool binary, ios::ofstream::options options) : systems::ios::fstream(url.c_str(), (
-                                                                                                                                                options == ios::ofstream::options::write
-                                                                                                                                                    ? (systems::ios::out | systems::ios::in)
-                                                                                                                                                    : (options == ios::ofstream::options::override
-                                                                                                                                                           ? systems::ios::out
-                                                                                                                                                           : systems::ios::app)) |
-                                                                                                                                                systems::ios::base(binary ? systems::ios::base::bin : 0)) {}
+System::Ios::ofstream::ofstream(const System::Url &url) : fstream(url.c_str(), System::Ios::base::app) {}
+System::Ios::ofstream::ofstream(const System::Url &url, bool binary, Ios::ofstream::options options) : System::Ios::fstream(url.c_str(), (
+                                                                                                                                                options == Ios::ofstream::options::write
+                                                                                                                                                    ? (System::Ios::out | System::Ios::in)
+                                                                                                                                                    : (options == Ios::ofstream::options::override
+                                                                                                                                                           ? System::Ios::out
+                                                                                                                                                           : System::Ios::app)) |
+                                                                                                                                                System::Ios::base(binary ? System::Ios::base::bin : 0)) {}
 
-void systems::ios::ofstream::write(const std::string &str, size_t strstart, size_t strend, size_t start)
+void System::Ios::ofstream::write(const std::string &str, size_t strstart, size_t strend, size_t start)
 {
     size_t size = (strend > str.size() ? str.size() : strend);
     setpos(start, 1, false);
     for (size_t i = 0; i < size; i++)
         fwrite(&str[i], sizeof(char), 1, __fptr__);
 }
-void systems::ios::ofstream::write(const std::wstring &str, size_t strstart, size_t strend, size_t start)
+void System::Ios::ofstream::write(const std::wstring &str, size_t strstart, size_t strend, size_t start)
 {
     size_t size = (strend > str.size() ? str.size() : strend);
     setpos(start, 1, false);
@@ -442,177 +443,177 @@ void systems::ios::ofstream::write(const std::wstring &str, size_t strstart, siz
 /////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////Operadores Out///////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, const char *__str)
+System::Ios::ofstream &System::Ios::operator<<(System::Ios::ofstream &os, const char *__str)
 {
     size_t n_elements = std::strlen(__str);
     if ((fwrite(__str, sizeof(char), n_elements, os.__fptr__)) != n_elements)
-        throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const char* __str)");
+        throw System::Exception(ferror(os.__fptr__), "System::Ios::operator<<(System::Ios::ofstream &os, const char* __str)");
     return os;
 }
-systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, const std::string __str)
+System::Ios::ofstream &System::Ios::operator<<(System::Ios::ofstream &os, const std::string __str)
 {
     if ((fwrite(__str.c_str(), sizeof(char), __str.size(), os.__fptr__)) != __str.size())
-        throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const std::string __str)");
+        throw System::Exception(ferror(os.__fptr__), "System::Ios::operator<<(System::Ios::ofstream &os, const std::string __str)");
     return os;
 }
-systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, const std::wstring __str)
+System::Ios::ofstream &System::Ios::operator<<(System::Ios::ofstream &os, const std::wstring __str)
 {
     if ((fwrite(__str.c_str(), sizeof(wchar_t), __str.size(), os.__fptr__)) != __str.size())
-        throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const std::wstring __str)");
+        throw System::Exception(ferror(os.__fptr__), "System::Ios::operator<<(System::Ios::ofstream &os, const std::wstring __str)");
     return os;
 }
-systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, const stringbuffer &__str)
+System::Ios::ofstream &System::Ios::operator<<(System::Ios::ofstream &os, const stringbuffer &__str)
 {
     if ((fwrite(__str.c_str(), sizeof(char), __str.size(), os.__fptr__)) != __str.size())
-        throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const stringbuffer __str)");
+        throw System::Exception(ferror(os.__fptr__), "System::Ios::operator<<(System::Ios::ofstream &os, const stringbuffer __str)");
     return os;
 }
-systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, const wstringbuffer &__str)
+System::Ios::ofstream &System::Ios::operator<<(System::Ios::ofstream &os, const wstringbuffer &__str)
 {
     if ((fwrite(__str.c_str(), sizeof(wchar_t), __str.size(), os.__fptr__)) != __str.size())
-        throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const wstringbuffer __str)");
+        throw System::Exception(ferror(os.__fptr__), "System::Ios::operator<<(System::Ios::ofstream &os, const wstringbuffer __str)");
     return os;
 }
-systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, const int __n)
+System::Ios::ofstream &System::Ios::operator<<(System::Ios::ofstream &os, const int __n)
 {
     if (os.__binary__)
     {
         if ((fwrite(&__n, sizeof(int), 1, os.__fptr__)) != 1)
-            throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const int __n)");
+            throw System::Exception(ferror(os.__fptr__), "System::Ios::operator<<(System::Ios::ofstream &os, const int __n)");
     }
     else
     {
         std::string cstr__n_ = std::to_string(__n);
         if ((fwrite(cstr__n_.c_str(), sizeof(char), cstr__n_.size(), os.__fptr__)) != cstr__n_.size())
-            throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const int __n)");
+            throw System::Exception(ferror(os.__fptr__), "System::Ios::operator<<(System::Ios::ofstream &os, const int __n)");
     }
     return os;
 }
-systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, const unsigned int __n)
+System::Ios::ofstream &System::Ios::operator<<(System::Ios::ofstream &os, const unsigned int __n)
 {
     if (os.__binary__)
     {
         if ((fwrite(&__n, sizeof(unsigned int), 1, os.__fptr__)) != 1)
-            throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const unsigned int __n)");
+            throw System::Exception(ferror(os.__fptr__), "System::Ios::operator<<(System::Ios::ofstream &os, const unsigned int __n)");
     }
     else
     {
         std::string cstr__n_ = std::to_string(__n);
         if ((fwrite(cstr__n_.c_str(), sizeof(char), cstr__n_.size(), os.__fptr__)) != cstr__n_.size())
-            throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const unsigned int __n)");
+            throw System::Exception(ferror(os.__fptr__), "System::Ios::operator<<(System::Ios::ofstream &os, const unsigned int __n)");
     }
     return os;
 }
 
-systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, const char __n)
+System::Ios::ofstream &System::Ios::operator<<(System::Ios::ofstream &os, const char __n)
 {
     if ((fwrite(&__n, sizeof(char), 1, os.__fptr__)) != 1)
-        throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const char __n)");
+        throw System::Exception(ferror(os.__fptr__), "System::Ios::operator<<(System::Ios::ofstream &os, const char __n)");
     return os;
 }
-systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, const unsigned char __n)
+System::Ios::ofstream &System::Ios::operator<<(System::Ios::ofstream &os, const unsigned char __n)
 {
     if ((fwrite(&__n, sizeof(char), 1, os.__fptr__)) != 1)
-        throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const unsigned char __n)");
+        throw System::Exception(ferror(os.__fptr__), "System::Ios::operator<<(System::Ios::ofstream &os, const unsigned char __n)");
     return os;
 }
-systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, const wchar_t __n)
+System::Ios::ofstream &System::Ios::operator<<(System::Ios::ofstream &os, const wchar_t __n)
 {
     if ((fwrite(&__n, sizeof(wchar_t), 1, os.__fptr__)) != 1)
-        throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const wchar_t __n)");
+        throw System::Exception(ferror(os.__fptr__), "System::Ios::operator<<(System::Ios::ofstream &os, const wchar_t __n)");
     return os;
 }
-systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, const long __n)
+System::Ios::ofstream &System::Ios::operator<<(System::Ios::ofstream &os, const long __n)
 {
     if (os.__binary__)
     {
         if ((fwrite(&__n, sizeof(long), 1, os.__fptr__)) != 1)
-            throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const long __n)");
+            throw System::Exception(ferror(os.__fptr__), "System::Ios::operator<<(System::Ios::ofstream &os, const long __n)");
     }
     else
     {
         std::string cstr__n_ = std::to_string(__n);
         if ((fwrite(cstr__n_.c_str(), sizeof(char), cstr__n_.size(), os.__fptr__)) != cstr__n_.size())
-            throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const long __n)");
+            throw System::Exception(ferror(os.__fptr__), "System::Ios::operator<<(System::Ios::ofstream &os, const long __n)");
     }
     return os;
 }
-systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, const unsigned long __n)
+System::Ios::ofstream &System::Ios::operator<<(System::Ios::ofstream &os, const unsigned long __n)
 {
     if (os.__binary__)
     {
         if ((fwrite(&__n, sizeof(unsigned long), 1, os.__fptr__)) != 1)
-            throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const unsigned long __n)");
+            throw System::Exception(ferror(os.__fptr__), "System::Ios::operator<<(System::Ios::ofstream &os, const unsigned long __n)");
     }
     else
     {
         std::string cstr__n_ = std::to_string(__n);
         if ((fwrite(cstr__n_.c_str(), sizeof(char), cstr__n_.size(), os.__fptr__)) != cstr__n_.size())
-            throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const unsigned long __n)");
+            throw System::Exception(ferror(os.__fptr__), "System::Ios::operator<<(System::Ios::ofstream &os, const unsigned long __n)");
     }
     return os;
 }
-systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, const long long __n)
+System::Ios::ofstream &System::Ios::operator<<(System::Ios::ofstream &os, const long long __n)
 {
     if (os.__binary__)
     {
         if ((fwrite(&__n, sizeof(long long), 1, os.__fptr__)) != 1)
-            throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const long long __n)");
+            throw System::Exception(ferror(os.__fptr__), "System::Ios::operator<<(System::Ios::ofstream &os, const long long __n)");
     }
     else
     {
         std::string cstr__n_ = std::to_string(__n);
         if ((fwrite(cstr__n_.c_str(), sizeof(char), cstr__n_.size(), os.__fptr__)) != cstr__n_.size())
-            throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const long long __n)");
+            throw System::Exception(ferror(os.__fptr__), "System::Ios::operator<<(System::Ios::ofstream &os, const long long __n)");
     }
     return os;
 }
-systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, const unsigned long long __n)
+System::Ios::ofstream &System::Ios::operator<<(System::Ios::ofstream &os, const unsigned long long __n)
 {
     if (os.__binary__)
     {
         if ((fwrite(&__n, sizeof(unsigned long long), 1, os.__fptr__)) != 1)
-            throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const unsigned long long __n)");
+            throw System::Exception(ferror(os.__fptr__), "System::Ios::operator<<(System::Ios::ofstream &os, const unsigned long long __n)");
     }
     else
     {
         std::string cstr__n_ = std::to_string(__n);
         if ((fwrite(cstr__n_.c_str(), sizeof(char), cstr__n_.size(), os.__fptr__)) != cstr__n_.size())
-            throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const unsigned long long __n)");
+            throw System::Exception(ferror(os.__fptr__), "System::Ios::operator<<(System::Ios::ofstream &os, const unsigned long long __n)");
     }
     return os;
 }
-systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, const float __n)
+System::Ios::ofstream &System::Ios::operator<<(System::Ios::ofstream &os, const float __n)
 {
     if (os.__binary__)
     {
         if ((fwrite(&__n, sizeof(float), 1, os.__fptr__)) != 1)
-            throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const float __n)");
+            throw System::Exception(ferror(os.__fptr__), "System::Ios::operator<<(System::Ios::ofstream &os, const float __n)");
     }
     else
     {
         std::string cstr__n_ = std::to_string(__n);
         if ((fwrite(cstr__n_.c_str(), sizeof(char), cstr__n_.size(), os.__fptr__)) != cstr__n_.size())
-            throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const float __n)");
+            throw System::Exception(ferror(os.__fptr__), "System::Ios::operator<<(System::Ios::ofstream &os, const float __n)");
     }
     return os;
 }
-systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &os, const double __n)
+System::Ios::ofstream &System::Ios::operator<<(System::Ios::ofstream &os, const double __n)
 {
     if (os.__binary__)
     {
         if ((fwrite(&__n, sizeof(double), 1, os.__fptr__)) != 1)
-            throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const double __n)");
+            throw System::Exception(ferror(os.__fptr__), "System::Ios::operator<<(System::Ios::ofstream &os, const double __n)");
     }
     else
     {
         std::string cstr__n_ = std::to_string(__n);
         if ((fwrite(cstr__n_.c_str(), sizeof(char), cstr__n_.size(), os.__fptr__)) != cstr__n_.size())
-            throw systems::exception(ferror(os.__fptr__), "systems::ios::operator<<(systems::ios::ofstream &os, const double __n)");
+            throw System::Exception(ferror(os.__fptr__), "System::Ios::operator<<(System::Ios::ofstream &os, const double __n)");
     }
     return os;
 }
-systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &out, ifstream &is)
+System::Ios::ofstream &System::Ios::operator<<(System::Ios::ofstream &out, ifstream &is)
 {
     while (!is.iseof())
     {
@@ -622,29 +623,29 @@ systems::ios::ofstream &systems::ios::operator<<(systems::ios::ofstream &out, if
     }
     return out;
 }
-std::istream &systems::ios::operator>>(std::istream &in, systems::ios::ofstream &out)
+std::istream &System::Ios::operator>>(std::istream &in, System::Ios::ofstream &out)
 {
     std::string line;
     std::getline(in, line);
     out << line;
     return in;
 }
-systems::ios::iofstream::iofstream(const systems::Url &url)
+System::Ios::iofstream::iofstream(const System::Url &url)
 {
     __syncroned__file__input__output__ = nullptr;
     __output__ = new ofstream(url);
     __input__ = new ifstream(url);
     __syncroned_input_output_system__ = false;
 }
-systems::ios::iofstream::iofstream(const systems::Url &url, bool binary, bool syncroned_input_output_system)
+System::Ios::iofstream::iofstream(const System::Url &url, bool binary, bool syncroned_input_output_system)
 {
-    __syncroned__file__input__output__ = (syncroned_input_output_system ? new fstream(url.c_str(), binary ? systems::ios::base::in : systems::ios::base::out) : nullptr);
+    __syncroned__file__input__output__ = (syncroned_input_output_system ? new fstream(url.c_str(), binary ? System::Ios::base::in : System::Ios::base::out) : nullptr);
     __output__ = new ofstream(url, binary);
     __input__ = new ifstream(url, binary);
     __syncroned_input_output_system__ = syncroned_input_output_system;
 }
 
-systems::ios::iofstream::iofstream(const systems::ios::iofstream &other) : __input__()
+System::Ios::iofstream::iofstream(const System::Ios::iofstream &other) : __input__()
 {
     if (__input__ != nullptr)
         delete __input__;
@@ -656,7 +657,7 @@ systems::ios::iofstream::iofstream(const systems::ios::iofstream &other) : __inp
     __input__ = std::move(other.__input__);
     __output__ = std::move(other.__output__);
 }
-systems::ios::iofstream::iofstream(systems::ios::iofstream &&other)
+System::Ios::iofstream::iofstream(System::Ios::iofstream &&other)
 {
     if (__input__ != nullptr)
         delete __input__;
@@ -673,25 +674,25 @@ systems::ios::iofstream::iofstream(systems::ios::iofstream &&other)
     other.__output__ = nullptr;
 }
 
-systems::ios::ifstream &systems::ios::iofstream::in()
+System::Ios::ifstream &System::Ios::iofstream::in()
 {
-    return (__syncroned_input_output_system__ ? *static_cast<systems::ios::ifstream *>(__syncroned__file__input__output__) : *__input__);
+    return (__syncroned_input_output_system__ ? *static_cast<System::Ios::ifstream *>(__syncroned__file__input__output__) : *__input__);
 }
-systems::ios::ofstream &systems::ios::iofstream::out()
+System::Ios::ofstream &System::Ios::iofstream::out()
 {
-    return (__syncroned_input_output_system__ ? *static_cast<systems::ios::ofstream *>(__syncroned__file__input__output__) : *__output__);
+    return (__syncroned_input_output_system__ ? *static_cast<System::Ios::ofstream *>(__syncroned__file__input__output__) : *__output__);
 }
-bool systems::ios::iofstream::isBinaryFile()
+bool System::Ios::iofstream::isBinaryFile()
 {
     return (__syncroned_input_output_system__ ? __syncroned__file__input__output__->isBinary() : __input__->__binary__ & __output__->__binary__);
 }
 
-void systems::ios::iofstream::setSyncronedInputOutputSystem(bool __v, systems::ios::fstream &Syncroned_fstream_reference)
+void System::Ios::iofstream::setSyncronedInputOutputSystem(bool __v, System::Ios::fstream &Syncroned_fstream_reference)
 {
     if (__syncroned__file__input__output__ == nullptr && __v)
     {
         __syncroned__file__input__output__ = new fstream();
-        systems::ios::fstream::copy(__syncroned__file__input__output__, *__input__);
+        System::Ios::fstream::copy(__syncroned__file__input__output__, *__input__);
     }
     __syncroned_input_output_system__ = __v;
 }

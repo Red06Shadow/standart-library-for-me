@@ -27,7 +27,7 @@ using __stringbuffer = wstringbuffer;
 #define __size(str1) std::wcslen(str1)
 #define __copy(str1, str2) std::wcscpy(str1, str2)
 #define __ncopy(str1, str2, n_char) std::wcscpy(str1, str2, n_char)
-#define __exceptiosconvert(str) std::string(std::stringconverter::convert_utf8_to_ascii(str))
+#define __exceptiosconvert(str) std::string(String::convert_utf8_to_ascii(str))
 #define __concaturl L"\\"
 #define __standartcout std::wcout
 #define __standartcin std::wcin
@@ -56,7 +56,7 @@ using __stringbuffer = stringbuffer;
 #define etiqueta(__name__) label(__name__)
 
 #pragma comment(lib, "Pathcch.lib")
-namespace systems
+namespace System
 {
     /// @brief Clase que se encarga de manejar las rutas de archivos
     class Url
@@ -66,7 +66,7 @@ namespace systems
         const __caracter *__path__;
         static void __generate__(__caracter **destine, const __caracter *sources);
         static void __generate__(__caracter **destine, const __caracter *sources, size_t size);
-        // friend files;
+        // friend Files;
 
     public:
         /// @brief Una pequena estructura para el control del directorio padre y el nombre del archivo o directorio

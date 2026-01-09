@@ -15,9 +15,12 @@
 /// @brief Clase de cadena de caracteres de 1 byte
 class stringbuffer
 {
+public:
+    static constexpr size_t npos = -1ULL;
+
 private:
-    /// @brief Objecto (?trails<char>?) para almacenar elementos
-    trails<char> buffer;
+    /// @brief Objecto (?Trails<char>?) para almacenar elementos
+    Trails<char> buffer;
 
 public:
     /// @brief Constructor por defecto
@@ -67,6 +70,53 @@ public:
     /// @param __str Cadena de caracteres tipo (?stringbuffer?)
     /// @param nelements Numero de elementos a copiar
     void copy(const stringbuffer &str, size_t nelements);
+
+    /// @brief Obtiene una subcadena en base a una pocision y un tamano fijo de tipo (?stringbuffer?)
+    /// @param __pos Posicion de sub cadena
+    /// @param __n Hasta donde terminara la subcadena(stringbuffer::npos indica que se llegara al final de la cadena)
+    /// @return Devuelve una cadena tipo (?stringbuffer?)
+    stringbuffer substr(size_t __pos, size_t __n = stringbuffer::npos);
+    /// @brief Busca el primer elemnto de la cadena de caracteres que coincida con el pasado por parametro
+    /// @param caracter Caracter que se va a buscar de tipo (?char?)
+    /// @param position Posicion de inicio de ese caracter
+    /// @return Devuleve -1 si no lo encuentra si lo envuentra devuleve la pocision
+    size_t find_first_of(char caracter, size_t position = 0);
+    /// @brief Busca el primer elemnto de la cadena de caracteres que coincida con el pasado por parametro
+    /// @param cmp Funcion que debe retornar un (?bool?) en caso de que se cumpla cierta condicion sobre el caracter accedido
+    /// @param position Posicion de inicio de ese caracter
+    /// @return Devuleve -1 si no lo encuentra si lo envuentra devuleve la pocision
+    size_t find_first_of(bool (*cmp)(char), size_t position = 0);
+    /// @brief Busca el primer elemnto de la cadena de caracteres que coincida con el pasado por parametro
+    /// @param caracter Caracter que se va a buscar de tipo (?char?)
+    /// @param position Posicion de inicio de ese caracter
+    /// @return Devuleve -1 si no lo encuentra si lo envuentra devuleve la pocision
+    size_t find_first_not_of(char caracter, size_t position = 0);
+    /// @brief Busca el primer elemnto de la cadena de caracteres que coincida con el pasado por parametro
+    /// @param cmp Funcion que debe retornar un (?bool?) en caso de que se cumpla cierta condicion sobre el caracter accedido
+    /// @param position Posicion de inicio de ese caracter
+    /// @return Devuleve -1 si no lo encuentra si lo envuentra devuleve la pocision
+    size_t find_first_not_of(bool (*cmp)(char), size_t position = 0);
+    /// @brief Busca el ultimo elemnto de la cadena de caracteres que coincida con el pasado por parametro
+    /// @param caracter Caracter que se va a buscar de tipo (?char?)
+    /// @param position Posicion de inicio de ese caracter
+    /// @return Devuleve -1 si no lo encuentra si lo envuentra devuleve la pocision
+    size_t find_last_of(char caracter, size_t position = stringbuffer::npos);
+    /// @brief Busca el ultimo elemnto de la cadena de caracteres que coincida con el pasado por parametro
+    /// @param cmp Funcion que debe retornar un (?bool?) en caso de que se cumpla cierta condicion sobre el caracter accedido
+    /// @param position Posicion de inicio de ese caracter
+    /// @return Devuleve -1 si no lo encuentra si lo envuentra devuleve la pocision
+    size_t find_last_of(bool (*cmp)(char), size_t position = stringbuffer::npos);
+    /// @brief Busca el ultimo elemnto que no sea igual al que se pasa por parametro de la cadena de caracteres
+    /// @param caracter Caracter que se va a buscar de tipo (?char?)
+    /// @param position Posicion de inicio de ese caracter
+    /// @return Devuleve -1 si no lo encuentra si lo envuentra devuleve la pocision
+    size_t find_last_not_of(char caracter, size_t position = stringbuffer::npos);
+    /// @brief Busca el ultimo elemnto que no sea igual al que se pasa por parametro de la cadena de caracteres
+    /// @param cmp Funcion que debe retornar un (?bool?) en caso de que se cumpla cierta condicion sobre el caracter accedido
+    /// @param position Posicion de inicio de ese caracter
+    /// @return Devuleve -1 si no lo encuentra si lo envuentra devuleve la pocision
+    size_t find_last_not_of(bool (*cmp)(char), size_t position = stringbuffer::npos);
+
     friend std::ostream &operator<<(std::ostream &os, const stringbuffer &str)
     {
         os << *str.buffer;
@@ -85,25 +135,25 @@ public:
         reverse(const stringbuffer &__base) : __arrarptr__(*__base.buffer), __size__(__base.size()) {}
         /// @brief Punto de partida de la iteracion reversa del array
         /// @return Devuelve el iterador que apunta al elemento final del array
-        iterators::reverse_iterator<char> begin() const { return iterators::reverse_iterator<char>(__arrarptr__ ? nullptr : __arrarptr__ + __size__ - 1); }
+        Iterators::Reverse_Iterator<char> begin() const { return Iterators::Reverse_Iterator<char>(__arrarptr__ ? nullptr : __arrarptr__ + __size__ - 1); }
         /// @brief Punto final de la iteracion reversa del array
         /// @return Devuelve el iterador que apunta al elemento inicial del array
-        iterators::reverse_iterator<char> end() const { return iterators::reverse_iterator<char>(__arrarptr__ ? nullptr : __arrarptr__ - 1); }
+        Iterators::Reverse_Iterator<char> end() const { return Iterators::Reverse_Iterator<char>(__arrarptr__ ? nullptr : __arrarptr__ - 1); }
         ~reverse() {}
     };
     /// @brief Punto de partida de la iteracion del array
     /// @return Devuelve el iterador que apunta al elemento inicial del array
-    iterators::iterator<char> begin() const { return iterators::iterator<char>(empty() ? nullptr : *buffer); }
+    Iterators::Iterator<char> begin() const { return Iterators::Iterator<char>(empty() ? nullptr : *buffer); }
     /// @brief Punto final de la iteracion del array
     /// @return Devuelve el iterador que apunta al elemento final del array
-    iterators::iterator<char> end() const { return iterators::iterator<char>(empty() ? nullptr : *buffer + buffer.size()); }
+    Iterators::Iterator<char> end() const { return Iterators::Iterator<char>(empty() ? nullptr : *buffer + buffer.size()); }
 
     /// @brief Punto de partida de la iteracion reversa del array
     /// @return Devuelve el iterador que apunta al elemento final del array
-    iterators::reverse_iterator<char> rbegin() const { return iterators::reverse_iterator<char>(empty() ? nullptr : *buffer + buffer.size() - 1); }
+    Iterators::Reverse_Iterator<char> rbegin() const { return Iterators::Reverse_Iterator<char>(empty() ? nullptr : *buffer + buffer.size() - 1); }
     /// @brief Punto final de la iteracion reversa del array
     /// @return Devuelve el iterador que apunta al elemento inicial del array
-    iterators::reverse_iterator<char> rend() const { return iterators::reverse_iterator<char>(empty() ? nullptr : *buffer - 1); }
+    Iterators::Reverse_Iterator<char> rend() const { return Iterators::Reverse_Iterator<char>(empty() ? nullptr : *buffer - 1); }
 
     bool operator==(const std::string& str) {
         return std::strcmp(str.c_str(), *buffer) == 0;
@@ -168,9 +218,11 @@ public:
 /// @brief Clase de cadena de caracteres de 2 byte
 class wstringbuffer
 {
+public:
+    static constexpr size_t npos = -1ULL;
 private:
-    /// @brief Objecto (?trails<wchar_t>?) para almacenar elementos
-    trails<wchar_t> buffer;
+    /// @brief Objecto (?Trails<wchar_t>?) para almacenar elementos
+    Trails<wchar_t> buffer;
 
 public:
     /// @brief Constructor por defecto
@@ -220,6 +272,53 @@ public:
     /// @param __str Cadena de caracteres tipo (?wstringbuffer?)
     /// @param nelements Numero de elementos a copiar
     void copy(const wstringbuffer &str, size_t nelements);
+
+    /// @brief Obtiene una subcadena en base a una pocision y un tamano fijo de tipo (?wstringbuffer?)
+    /// @param __pos Posicion de sub cadena
+    /// @param __n Hasta donde terminara la subcadena(wstringbuffer::npos indica que se llegara al final de la cadena)
+    /// @return Devuelve una cadena tipo (?wstringbuffer?)
+    wstringbuffer substr(size_t __pos, size_t __n = wstringbuffer::npos);
+    /// @brief Busca el primer elemnto de la cadena de caracteres que coincida con el pasado por parametro
+    /// @param caracter Caracter que se va a buscar de tipo (?wchar_t?)
+    /// @param position Posicion de inicio de ese caracter
+    /// @return Devuleve -1 si no lo encuentra si lo envuentra devuleve la pocision
+    size_t find_first_of(wchar_t caracter, size_t position = 0);
+    /// @brief Busca el primer elemnto de la cadena de caracteres que coincida con el pasado por parametro
+    /// @param cmp Funcion que debe retornar un (?bool?) en caso de que se cumpla cierta condicion sobre el caracter accedido
+    /// @param position Posicion de inicio de ese caracter
+    /// @return Devuleve -1 si no lo encuentra si lo envuentra devuleve la pocision
+    size_t find_first_of(bool (*cmp)(wchar_t), size_t position = 0);
+    /// @brief Busca el primer elemnto de la cadena de caracteres que coincida con el pasado por parametro
+    /// @param caracter Caracter que se va a buscar de tipo (?wchar_t?)
+    /// @param position Posicion de inicio de ese caracter
+    /// @return Devuleve -1 si no lo encuentra si lo envuentra devuleve la pocision
+    size_t find_first_not_of(wchar_t caracter, size_t position = 0);
+    /// @brief Busca el primer elemnto de la cadena de caracteres que coincida con el pasado por parametro
+    /// @param cmp Funcion que debe retornar un (?bool?) en caso de que se cumpla cierta condicion sobre el caracter accedido
+    /// @param position Posicion de inicio de ese caracter
+    /// @return Devuleve -1 si no lo encuentra si lo envuentra devuleve la pocision
+    size_t find_first_not_of(bool (*cmp)(wchar_t), size_t position = 0);
+    /// @brief Busca el ultimo elemnto de la cadena de caracteres que coincida con el pasado por parametro
+    /// @param caracter Caracter que se va a buscar de tipo (?wchar_t?)
+    /// @param position Posicion de inicio de ese caracter
+    /// @return Devuleve -1 si no lo encuentra si lo envuentra devuleve la pocision
+    size_t find_last_of(wchar_t caracter, size_t position = stringbuffer::npos);
+    /// @brief Busca el ultimo elemnto de la cadena de caracteres que coincida con el pasado por parametro
+    /// @param cmp Funcion que debe retornar un (?bool?) en caso de que se cumpla cierta condicion sobre el caracter accedido
+    /// @param position Posicion de inicio de ese caracter
+    /// @return Devuleve -1 si no lo encuentra si lo envuentra devuleve la pocision
+    size_t find_last_of(bool (*cmp)(wchar_t), size_t position = stringbuffer::npos);
+    /// @brief Busca el ultimo elemnto que no sea igual al que se pasa por parametro de la cadena de caracteres
+    /// @param caracter Caracter que se va a buscar de tipo (?wchar_t?)
+    /// @param position Posicion de inicio de ese caracter
+    /// @return Devuleve -1 si no lo encuentra si lo envuentra devuleve la pocision
+    size_t find_last_not_of(wchar_t caracter, size_t position = wstringbuffer::npos);
+    /// @brief Busca el ultimo elemnto que no sea igual al que se pasa por parametro de la cadena de caracteres
+    /// @param cmp Funcion que debe retornar un (?bool?) en caso de que se cumpla cierta condicion sobre el caracter accedido
+    /// @param position Posicion de inicio de ese caracter
+    /// @return Devuleve -1 si no lo encuentra si lo envuentra devuleve la pocision
+    size_t find_last_not_of(bool (*cmp)(wchar_t), size_t position = wstringbuffer::npos);
+
     friend std::ostream &operator<<(std::ostream &os, const wstringbuffer &str)
     {
         os << *str.buffer;
@@ -238,23 +337,23 @@ public:
         reverse(const wstringbuffer &__base) : __arrarptr__(*__base.buffer), __size__(__base.size()) {}
         /// @brief Punto de partida de la iteracion reversa del array
         /// @return Devuelve el iterador que apunta al elemento final del array
-        iterators::reverse_iterator<wchar_t> begin() const { return iterators::reverse_iterator<wchar_t>(__arrarptr__ ? nullptr : __arrarptr__ + __size__ - 1); }
+        Iterators::Reverse_Iterator<wchar_t> begin() const { return Iterators::Reverse_Iterator<wchar_t>(__arrarptr__ ? nullptr : __arrarptr__ + __size__ - 1); }
         /// @brief Punto final de la iteracion reversa del array
         /// @return Devuelve el iterador que apunta al elemento inicial del array
-        iterators::reverse_iterator<wchar_t> end() const { return iterators::reverse_iterator<wchar_t>(__arrarptr__ ? nullptr : __arrarptr__ - 1); }
+        Iterators::Reverse_Iterator<wchar_t> end() const { return Iterators::Reverse_Iterator<wchar_t>(__arrarptr__ ? nullptr : __arrarptr__ - 1); }
         ~reverse() {}
     };
     /// @brief Punto de partida de la iteracion del array
     /// @return Devuelve el iterador que apunta al elemento inicial del array
-    iterators::iterator<wchar_t> begin() const { return iterators::iterator<wchar_t>(empty() ? nullptr : *buffer); }
+    Iterators::Iterator<wchar_t> begin() const { return Iterators::Iterator<wchar_t>(empty() ? nullptr : *buffer); }
     /// @brief Punto final de la iteracion del array
     /// @return Devuelve el iterador que apunta al elemento final del array
-    iterators::iterator<wchar_t> end() const { return iterators::iterator<wchar_t>(empty() ? nullptr : *buffer + buffer.size()); }
+    Iterators::Iterator<wchar_t> end() const { return Iterators::Iterator<wchar_t>(empty() ? nullptr : *buffer + buffer.size()); }
 
     /// @brief Punto de partida de la iteracion reversa del array
     /// @return Devuelve el iterador que apunta al elemento final del array
-    iterators::reverse_iterator<wchar_t> rbegin() const { return iterators::reverse_iterator<wchar_t>(empty() ? nullptr : *buffer + buffer.size() - 1); }
-    iterators::reverse_iterator<wchar_t> rend() const { return iterators::reverse_iterator<wchar_t>(empty() ? nullptr : *buffer - 1); }
+    Iterators::Reverse_Iterator<wchar_t> rbegin() const { return Iterators::Reverse_Iterator<wchar_t>(empty() ? nullptr : *buffer + buffer.size() - 1); }
+    Iterators::Reverse_Iterator<wchar_t> rend() const { return Iterators::Reverse_Iterator<wchar_t>(empty() ? nullptr : *buffer - 1); }
 
     
     bool operator==(const std::wstring& str) {

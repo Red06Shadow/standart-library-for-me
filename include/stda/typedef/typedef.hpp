@@ -9,10 +9,10 @@
  * Contiene una simplificacion de definiciones de clases para facilitar su uso
  */
 
-typedef std::vector<numbers::byte> vbytes;
-typedef std::vector<numbers::word> vword;
-typedef std::vector<numbers::dword> vdword;
-typedef std::vector<numbers::qword> vqword;
+typedef std::vector<Number::byte> vbytes;
+typedef std::vector<Number::word> vword;
+typedef std::vector<Number::dword> vdword;
+typedef std::vector<Number::qword> vqword;
 typedef std::vector<stringbuffer> vstringbuffers;
 typedef std::vector<wstringbuffer> vwstringbuffers;
 typedef std::vector<std::string> vstrings;

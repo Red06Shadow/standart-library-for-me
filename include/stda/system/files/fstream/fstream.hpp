@@ -12,9 +12,9 @@
  * aunque estas funcionalidades existen en el standart de c++ prefiero usar esas ya que puedo modificarlas en caso de que fallen
  * o mejorarlas de ser necesario y ademas para mi es mas comodo :)
  */
-namespace systems
+namespace System
 {
-    namespace ios
+    namespace Ios
     {
         /// @brief Indicativo entero que permite identificar mas rapido el formato de archivo
         enum base
@@ -98,10 +98,10 @@ namespace systems
         class fstream
         {
         public:
-            static const u8 mode(ios::base __base);
+            static const u8 mode(Ios::base __base);
             ////////////////////////////////////////////////////////////////////////////////
             fstream() = default;
-            fstream(const __caracter *__path, ios::base __mode);
+            fstream(const __caracter *__path, Ios::base __mode);
             fstream(const fstream &other);
             fstream(fstream &&other);
             fstream &operator=(const fstream &other);
@@ -136,7 +136,7 @@ namespace systems
             /// @brief Obtiene la pocision auxialiar del fstream
             size_t getposaux();
             ////////////////////////////////////////////////////////////////////////////////
-            void changemode(ios::base __mode);
+            void changemode(Ios::base __mode);
             ////////////////////////////////////////////////////////////////////////////////
             /// @brief Inserta el caracter de fin de cadenas de texto
             /// @param _c caracter entero puede ser wchar_t o char
@@ -163,13 +163,13 @@ namespace systems
             /// @param __path Path del archivo
             /// @param __mode Modo en el que se abrira el archivo
             /// @return Retorna un objecto (?fstream?)
-            static fstream open(const __caracter *__path, ios::base __mode);
+            static fstream open(const __caracter *__path, Ios::base __mode);
             /// @brief A partir de una instancia cerrada por close reabre el archivo con el path definido
             /// @param __path Path del archivo
             /// @param __mode Modo en el que se abrira el archivo
             /// @param __fstream__ Fstream a reabrir
             /// @note Si el archivo aun est abierto lanzara un error
-            static void reopen(const __caracter *__path, ios::base __mode, fstream &__fstream__);
+            static void reopen(const __caracter *__path, Ios::base __mode, fstream &__fstream__);
             /// @brief Cierra el archivo pero sin eliminar la instancia definida
             static void close(fstream &__fstream__);
             ////////////////////////////////////////////////////////////////////////////////
@@ -269,7 +269,7 @@ namespace systems
             ///@param url path del archivo a iniciar flujo
             ///@param binary indica si el archivo a abrir sera en formato binario
             ///@param options indica si el archivo se creara en caso de no existir, lo actualizara o agregara elementos al final
-            ofstream(const Url &url, bool binary, ios::ofstream::options options = ios::ofstream::options::write);
+            ofstream(const Url &url, bool binary, Ios::ofstream::options options = Ios::ofstream::options::write);
             /// @brief Escribe todo lo que este dentro de la cadena str en un apocision determinada por sources
             /// @param str Cadena de caracteres de escritura(?std::string&?)
             /// @param strstart Pocision de donde se quiere leer la cadena
@@ -382,7 +382,7 @@ namespace systems
             bool isBinaryFile();
             /// @brief Activa o desactiva la configuracion de entrada y salida sincronizada
             /// @param __v Activa la sincronizacion si es verdadero, si no la desactiva
-            /// @param Syncroned_fstream_reference Referencia a un elemento de tipo (?ios::fstream?) que se usara como manejador del archivo
+            /// @param Syncroned_fstream_reference Referencia a un elemento de tipo (?Ios::fstream?) que se usara como manejador del archivo
             void setSyncronedInputOutputSystem(bool __v, fstream &Syncroned_fstream_reference);
             ~iofstream()
             {

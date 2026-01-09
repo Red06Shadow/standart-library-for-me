@@ -1,6 +1,6 @@
 
 template <typename T>
-void algoritm::view(const T array[], size_t size)
+void Algoritm::view(const T array[], size_t size)
 {
     std::cout << '[';
     for (size_t i = 0; i < size; i++)
@@ -9,7 +9,7 @@ void algoritm::view(const T array[], size_t size)
 }
 
 template <typename T>
-void algoritm::view(const trails<T>& array)
+void Algoritm::view(const Trails<T>& array)
 {
     std::cout << '[';
     for (size_t i = 0; i < array.size(); i++)
@@ -18,14 +18,14 @@ void algoritm::view(const trails<T>& array)
 }
 
 template <typename T>
-void algoritm::copy(T _destine_[], const T _sources[], size_t _sdestine_, size_t _ssources)
+void Algoritm::copy(T _destine_[], const T _sources[], size_t _sdestine_, size_t _ssources)
 {
     size_t s = (_sdestine_ <= _ssources) ? _sdestine_ : _ssources;
     for (size_t i = 0; i < s; i++)
         _destine_[i] = _sources[i];
 }
 template <typename T>
-void algoritm::copy(std::vector<T> &_destine_, const std::vector<T> &_sources)
+void Algoritm::copy(std::vector<T> &_destine_, const std::vector<T> &_sources)
 {
     if (_destine_.capacity() < _sources.size())
         _destine_.reserve(_sources.capacity());
@@ -33,7 +33,7 @@ void algoritm::copy(std::vector<T> &_destine_, const std::vector<T> &_sources)
         _destine_[i] = _sources[i];
     std::string h;
 }
-size_t algoritm::bitforaround(size_t n)
+size_t Algoritm::bitforaround(size_t n)
 {
     unsigned char i = sizeof(size_t) * 8;
     while (--i >= 0)
@@ -44,7 +44,7 @@ size_t algoritm::bitforaround(size_t n)
     return (size_t)(1) << (unsigned char)(i + 1);
 }
 template <typename T>
-void algoritm::copy(std::vector<T> &_destine_, const T _sources[], size_t _ssources)
+void Algoritm::copy(std::vector<T> &_destine_, const T _sources[], size_t _ssources)
 {
     if (_destine_.capacity() < _ssources)
         _destine_.reserve(bitforaround(_ssources));
@@ -52,12 +52,12 @@ void algoritm::copy(std::vector<T> &_destine_, const T _sources[], size_t _ssour
         _destine_[i] = _sources[i];
 }
 template <typename U>
-size_t algoritm::size(const U _sources[])
+size_t Algoritm::size(const U _sources[])
 {
     return std::strlen((char *)(_sources)) / size_t(sizeof(U));
 }
 template <typename Q>
-void algoritm::qickshort(Q array[], size_t size)
+void Algoritm::qickshort(Q array[], size_t size)
 {
     size_t sizeless = 0, sizeequals = 0, sizegreather = 0;
     Q pivote = array[0];
@@ -83,24 +83,24 @@ void algoritm::qickshort(Q array[], size_t size)
     if (sizeless > 0)
     {
         qickshort(arrayless, sizeless);
-        algoritm::copy<Q>(array, arrayless, size, sizeless);
+        Algoritm::copy<Q>(array, arrayless, size, sizeless);
     }
     if (sizeequals > 0)
     {
         if (sizeequals != size)
             qickshort(arrayequals, sizeequals);
-        algoritm::copy<Q>(array + sizeless, arrayequals, size, sizeequals);
+        Algoritm::copy<Q>(array + sizeless, arrayequals, size, sizeequals);
     }
     if (sizegreather > 0)
     {
         qickshort(arraygreathers, sizegreather);
-        algoritm::copy<Q>(array + sizeless + sizeequals, arraygreathers, size, sizegreather);
+        Algoritm::copy<Q>(array + sizeless + sizeequals, arraygreathers, size, sizegreather);
     }
 }
 
 // Escribir codigop para QickShortTwoPivote
 template <typename Q>
-void algoritm::qickshort2(Q array[], size_t size)
+void Algoritm::qickshort2(Q array[], size_t size)
 {
     size_t sizeless = 0, sizebetewn = 0, sizeequals1 = 0, sizeequals2 = 0, sizegreather = 0;
     Q pivote1 = array[0], pivote2 = array[size - 2];
@@ -139,33 +139,33 @@ void algoritm::qickshort2(Q array[], size_t size)
     if (sizeless > 0)
     {
         qickshort(arrayless, sizeless);
-        algoritm::copy<Q>(array, arrayless, size, sizeless);
+        Algoritm::copy<Q>(array, arrayless, size, sizeless);
     }
     if (sizeequals1 > 0)
     {
         if (sizeequals1 != size)
             qickshort(arrayequals1, sizeequals1);
-        algoritm::copy<Q>(array + sizeless, arrayequals1, size, sizeequals1);
+        Algoritm::copy<Q>(array + sizeless, arrayequals1, size, sizeequals1);
     }
     if (sizebetewn > 0)
     {
         qickshort(arraybetewn, sizebetewn);
-        algoritm::copy<Q>(array + sizeless + sizeequals1, arraybetewn, size, sizebetewn);
+        Algoritm::copy<Q>(array + sizeless + sizeequals1, arraybetewn, size, sizebetewn);
     }
     if (sizeequals2 > 0)
     {
         if (sizeequals2 != size)
             qickshort(arrayequals2, sizeequals2);
-        algoritm::copy<Q>(array + sizeless + sizeequals1 + sizebetewn, arrayequals2, size, sizeequals2);
+        Algoritm::copy<Q>(array + sizeless + sizeequals1 + sizebetewn, arrayequals2, size, sizeequals2);
     }
     if (sizegreather > 0)
     {
         qickshort(arraygreathers, sizegreather);
-        algoritm::copy<Q>(array + sizeless + sizeequals1 + sizebetewn + sizeequals2, arraygreathers, size, sizegreather);
+        Algoritm::copy<Q>(array + sizeless + sizeequals1 + sizebetewn + sizeequals2, arraygreathers, size, sizegreather);
     }
 }
 template <typename Q>
-size_t algoritm::binarysearch(Q array[], Q element, size_t size)
+size_t Algoritm::binarysearch(Q array[], Q element, size_t size)
 {
     size_t position = size / 2, pivote = size / 2;
     Q actual;

@@ -10,8 +10,10 @@
  * por el momento solo agregue estas para completar partes imporatntes de mis proyectos
  */
 
-namespace sstring
+namespace String
 {
+    constexpr size_t npos = -1ULL;
+
     /// @brief Elimina los caracteres de espacio de la cadena
     /// @param str Cadena que se desea modificar de tipo (?std::string?)
     void remove_espaces(std::string &str);
@@ -223,100 +225,100 @@ namespace sstring
     /// @param caracter Caracter que se va a buscar de tipo (?char?)
     /// @param position Posicion de inicio de ese caracter
     /// @return Devuleve -1 si no lo encuentra si lo envuentra devuleve la pocision
-    size_t find_frist_of(const char *str, char caracter, size_t position = 0);
+    size_t find_first_of(const char *str, char caracter, size_t position = 0);
     /// @brief Busca el primer elemnto de la cadena de caracteres que coincida con el pasado por parametro
     /// @param str Cadena de caracteres de tipo (?const char*?)
     /// @param cmp Funcion que debe retornar un (?bool?) en caso de que se cumpla cierta condicion sobre el caracter accedido
     /// @param position Posicion de inicio de ese caracter
     /// @return Devuleve -1 si no lo encuentra si lo envuentra devuleve la pocision
-    size_t find_frist_of(const char *str, bool (*cmp)(char), size_t position = 0);
+    size_t find_first_of(const char *str, bool (*cmp)(char), size_t position = 0);
     /// @brief Busca el primer elemnto de la cadena de caracteres que coincida con el pasado por parametro
     /// @param str Cadena de caracteres de tipo (?const wchar_t*?)
     /// @param caracter Caracter que se va a buscar de tipo (?wchar_t?)
     /// @param position Posicion de inicio de ese caracter
     /// @return Devuleve -1 si no lo encuentra si lo envuentra devuleve la pocision
-    size_t find_frist_of(const wchar_t *str, wchar_t caracter, size_t position = 0);
+    size_t find_first_of(const wchar_t *str, wchar_t caracter, size_t position = 0);
     /// @brief Busca el primer elemnto de la cadena de caracteres que coincida con el pasado por parametro
     /// @param str Cadena de caracteres de tipo (?const wchar_t*?)
     /// @param cmp Funcion que debe retornar un (?bool?) en caso de que se cumpla cierta condicion sobre el caracter accedido
     /// @param position Posicion de inicio de ese caracter
     /// @return Devuleve -1 si no lo encuentra si lo envuentra devuleve la pocision
-    size_t find_frist_of(const wchar_t *str, bool (*cmp)(wchar_t), size_t position = 0);
+    size_t find_first_of(const wchar_t *str, bool (*cmp)(wchar_t), size_t position = 0);
     /////////////////////////////////////
     /// @brief Busca el primer elemnto que no sea igual al que se pasa por parametro de la cadena de caracteres
     /// @param str Cadena de caracteres de tipo (?const char*?)
     /// @param caracter Caracter que se va a buscar de tipo (?char?)
     /// @param position Posicion de inicio de ese caracter
     /// @return Devuleve -1 si no lo encuentra si lo envuentra devuleve la pocision
-    size_t find_frist_not_of(const char *str, char caracter, size_t position = 0);
+    size_t find_first_not_of(const char *str, char caracter, size_t position = 0);
     /// @brief Busca el primer elemnto que no sea igual al que se pasa por parametro de la cadena de caracteres
     /// @param str Cadena de caracteres de tipo (?const char*?)
     /// @param cmp Funcion que debe retornar un (?bool?) en caso de que se cumpla cierta condicion sobre el caracter accedido
     /// @param position Posicion de inicio de ese caracter
     /// @return Devuleve -1 si no lo encuentra si lo envuentra devuleve la pocision
-    size_t find_frist_not_of(const char *str, bool (*cmp)(char), size_t position = 0);
+    size_t find_first_not_of(const char *str, bool (*cmp)(char), size_t position = 0);
     /// @brief Busca el primer elemnto que no sea igual al que se pasa por parametro de la cadena de caracteres
     /// @param str Cadena de caracteres de tipo (?const wchar_t*?)
     /// @param caracter Caracter que se va a buscar de tipo (?wchar_t?)
     /// @param position Posicion de inicio de ese caracter
     /// @return Devuleve -1 si no lo encuentra si lo envuentra devuleve la pocision
-    size_t find_frist_not_of(const wchar_t *str, wchar_t caracter, size_t position = 0);
+    size_t find_first_not_of(const wchar_t *str, wchar_t caracter, size_t position = 0);
     /// @brief Busca el primer elemnto que no sea igual al que se pasa por parametro de la cadena de caracteres
     /// @param str Cadena de caracteres de tipo (?const wchar_t*?)
     /// @param cmp Funcion que debe retornar un (?bool?) en caso de que se cumpla cierta condicion sobre el caracter accedido
     /// @param position Posicion de inicio de ese caracter
     /// @return Devuleve -1 si no lo encuentra si lo envuentra devuleve la pocision
-    size_t find_frist_not_of(const wchar_t *str, bool (*cmp)(wchar_t), size_t position = 0);
+    size_t find_first_not_of(const wchar_t *str, bool (*cmp)(wchar_t), size_t position = 0);
     /////////////////////////////////////
     /// @brief Busca el ultimo elemnto de la cadena de caracteres que coincida con el pasado por parametro
     /// @param str Cadena de caracteres de tipo (?const char*?)
     /// @param caracter Caracter que se va a buscar de tipo (?char?)
     /// @param position Posicion de inicio de ese caracter
     /// @return Devuleve -1 si no lo encuentra si lo envuentra devuleve la pocision
-    size_t find_last_of(const char *str, char caracter, size_t position = size_t(-1));
+    size_t find_last_of(const char *str, char caracter, size_t position = String::npos);
     /// @brief Busca el ultimo elemnto de la cadena de caracteres que coincida con el pasado por parametro
     /// @param str Cadena de caracteres de tipo (?const char*?)
     /// @param cmp Funcion que debe retornar un (?bool?) en caso de que se cumpla cierta condicion sobre el caracter accedido
     /// @param position Posicion de inicio de ese caracter
     /// @return Devuleve -1 si no lo encuentra si lo envuentra devuleve la pocision
-    size_t find_last_of(const char *str, bool (*cmp)(char), size_t position = size_t(-1));
+    size_t find_last_of(const char *str, bool (*cmp)(char), size_t position = String::npos);
     /// @brief Busca el ultimo elemnto de la cadena de caracteres que coincida con el pasado por parametro
     /// @param str Cadena de caracteres de tipo (?const wchar_t*?)
     /// @param caracter Caracter que se va a buscar de tipo (?wchar_t?)
     /// @param position Posicion de inicio de ese caracter
     /// @return Devuleve -1 si no lo encuentra si lo envuentra devuleve la pocision
-    size_t find_last_of(const wchar_t *str, wchar_t caracter, size_t position = size_t(-1));
+    size_t find_last_of(const wchar_t *str, wchar_t caracter, size_t position = String::npos);
     /// @brief Busca el ultimo elemnto de la cadena de caracteres que coincida con el pasado por parametro
     /// @param str Cadena de caracteres de tipo (?const wchar_t*?)
     /// @param cmp Funcion que debe retornar un (?bool?) en caso de que se cumpla cierta condicion sobre el caracter accedido
     /// @param position Posicion de inicio de ese caracter
     /// @return Devuleve -1 si no lo encuentra si lo envuentra devuleve la pocision
-    size_t find_last_of(const wchar_t *str, bool (*cmp)(wchar_t), size_t position = size_t(-1));
+    size_t find_last_of(const wchar_t *str, bool (*cmp)(wchar_t), size_t position = String::npos);
     /////////////////////////////////////
     /// @brief Busca el ultimo elemnto que no sea igual al que se pasa por parametro de la cadena de caracteres
     /// @param str Cadena de caracteres de tipo (?const char*?)
     /// @param caracter Caracter que se va a buscar de tipo (?char?)
     /// @param position Posicion de inicio de ese caracter
     /// @return Devuleve -1 si no lo encuentra si lo envuentra devuleve la pocision
-    size_t find_last_not_of(const char *str, char caracter, size_t position = size_t(-1));
+    size_t find_last_not_of(const char *str, char caracter, size_t position = String::npos);
     /// @brief Busca el ultimo elemnto que no sea igual al que se pasa por parametro de la cadena de caracteres
     /// @param str Cadena de caracteres de tipo (?const char*?)
     /// @param cmp Funcion que debe retornar un (?bool?) en caso de que se cumpla cierta condicion sobre el caracter accedido
     /// @param position Posicion de inicio de ese caracter
     /// @return Devuleve -1 si no lo encuentra si lo envuentra devuleve la pocision
-    size_t find_last_not_of(const char *str, bool (*cmp)(char), size_t position = size_t(-1));
+    size_t find_last_not_of(const char *str, bool (*cmp)(char), size_t position = String::npos);
     /// @brief Busca el ultimo elemnto que no sea igual al que se pasa por parametro de la cadena de caracteres
     /// @param str Cadena de caracteres de tipo (?const wchar_t*?)
     /// @param caracter Caracter que se va a buscar de tipo (?wchar_t?)
     /// @param position Posicion de inicio de ese caracter
     /// @return Devuleve -1 si no lo encuentra si lo envuentra devuleve la pocision
-    size_t find_last_not_of(const wchar_t *str, wchar_t caracter, size_t position = size_t(-1));
+    size_t find_last_not_of(const wchar_t *str, wchar_t caracter, size_t position = String::npos);
     /// @brief Busca el ultimo elemnto que no sea igual al que se pasa por parametro de la cadena de caracteres
     /// @param str Cadena de caracteres de tipo (?const wchar_t*?)
     /// @param cmp Funcion que debe retornar un (?bool?) en caso de que se cumpla cierta condicion sobre el caracter accedido
     /// @param position Posicion de inicio de ese caracter
     /// @return Devuleve -1 si no lo encuentra si lo envuentra devuleve la pocision
-    size_t find_last_not_of(const wchar_t *str, bool (*cmp)(wchar_t), size_t position = size_t(-1));
+    size_t find_last_not_of(const wchar_t *str, bool (*cmp)(wchar_t), size_t position = String::npos);
     /////////////////////////////////////
     /// @brief Busca si existe esa palabra dentro de la cadena sources
     /// @param word Palabra que se desea buscar de tipo (?std::string?)
@@ -330,6 +332,19 @@ namespace sstring
     /// @param espacing (?wchar_t?)
     /// @return Devuleve -1 si no la encuentra, si la encuentra devuleve la pocision dada
     size_t find_word(const std::wstring &word, const std::wstring &sources, size_t index = 0, const wchar_t *espacing = L" ,;.:?!'#$%&/(){}[]+*-<>_");
+    /// @brief Obtiene una subcadena en base a una pocision y un tamano fijo de tipo (?char*?)
+    /// @param sources Cadena objectivo de tipo (?const char*?)
+    /// @param __pos Posicion de sub cadena
+    /// @param __n Hasta donde terminara la subcadena(String::npos indica que se llegara al final de la cadena)
+    /// @return Devuelve una cadena tipo (?char*?)
+    char* substr(const char* sources, size_t __pos, size_t __n = String::npos);
+    /// @brief Obtiene una subcadena en base a una pocision y un tamano fijo de tipo (?wchar_t*?)
+    /// @param sources Cadena objectivo de tipo (?const wchar_t*?)
+    /// @param __pos Posicion de sub cadena
+    /// @param __n Hasta donde terminara la subcadena(String::npos indica que se llegara al final de la cadena)
+    /// @return Devuelve una cadena tipo (?wchar_t*?)
+    wchar_t* substr(const wchar_t* sources, size_t __pos, size_t __n = String::npos);
+    
 
     // _GLIBCXX_NODISCARD _GLIBCXX_CONSTEXPR inline char*
     // operator=(char* str, const std::string& sources) _GLIBCXX_NOTHROW
@@ -337,7 +352,7 @@ namespace sstring
     //     char* __str = new char[sources.size() + 1];
     //     std::strcpy(__str, sources.c_str());
     //     return __str;
-    // }
+    // } pense que podia
 
-} // namespace sstring
+} // namespace String
 #endif

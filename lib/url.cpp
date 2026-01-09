@@ -22,14 +22,14 @@ const bool is_exist(const __caracter *path)
     return false;
 }
 
-void systems::Url::__generate__(__caracter **destine, const __caracter *sources)
+void System::Url::__generate__(__caracter **destine, const __caracter *sources)
 {
     size_t s = __size(sources);
     *destine = new __caracter[s + 1];
     (*destine)[s] = 0;
     __copy(*destine, sources);
 }
-void systems::Url::__generate__(__caracter **destine, const __caracter *sources, size_t size)
+void System::Url::__generate__(__caracter **destine, const __caracter *sources, size_t size)
 {
     *destine = new __caracter[size + 1];
     (*destine)[size] = 0;
@@ -39,48 +39,48 @@ void systems::Url::__generate__(__caracter **destine, const __caracter *sources,
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-systems::Url::Url(const __caracter *path, bool checkExistUrl) : __consta__(true)
+System::Url::Url(const __caracter *path, bool checkExistUrl) : __consta__(true)
 {
     size_t size = 0;
     if (path == nullptr)
-        throw systems::exception("Error: Path vacio en systems::Url contructor");
+        throw System::Exception("Error: Path vacio en System::Url contructor");
     if ((size = __size(path)) == 0)
-        throw systems::exception("Error: Path vacio en systems::Url contructor");
+        throw System::Exception("Error: Path vacio en System::Url contructor");
     //////////////////////////////////////////////////////////////////////////////////////////////////////
-    if (!systems::Url::is_corret(path))
-        throw systems::exception("Error: La ruta no es valida sintacticamente; " + __exceptiosconvert(path));
+    if (!System::Url::is_corret(path))
+        throw System::Exception("Error: La ruta no es valida sintacticamente; " + __exceptiosconvert(path));
     if (checkExistUrl && !is_exist(path))
-        throw systems::exception("Error: La direcion asiganda no existe; " + __exceptiosconvert(path));
+        throw System::Exception("Error: La direcion asiganda no existe; " + __exceptiosconvert(path));
     __path__ = path;
 }
 
-systems::Url::Url(__caracter *path, bool checkExistUrl) : __consta__(false)
+System::Url::Url(__caracter *path, bool checkExistUrl) : __consta__(false)
 {
     size_t size = 0;
     if (path == nullptr)
-        throw systems::exception("Error: Path vacio en systems::Url contructor");
+        throw System::Exception("Error: Path vacio en System::Url contructor");
     if ((size = __size(path)) == 0)
-        throw systems::exception("Error: Path vacio en systems::Url contructor");
+        throw System::Exception("Error: Path vacio en System::Url contructor");
     //////////////////////////////////////////////////////////////////////////////////////////////////////
-    if (!systems::Url::is_corret(path))
-        throw systems::exception("Error: La ruta no es valida sintacticamente; " + __exceptiosconvert(path));
+    if (!System::Url::is_corret(path))
+        throw System::Exception("Error: La ruta no es valida sintacticamente; " + __exceptiosconvert(path));
     if (checkExistUrl && !is_exist(path))
-        throw systems::exception("Error: La direcion asiganda no existe; " + __exceptiosconvert(path));
-    systems::Url::__generate__(const_cast<__caracter **>(&__path__), path);
+        throw System::Exception("Error: La direcion asiganda no existe; " + __exceptiosconvert(path));
+    System::Url::__generate__(const_cast<__caracter **>(&__path__), path);
 }
-systems::Url::Url(const __string &path, bool checkExistUrl) : systems::Url(const_cast<__caracter *>(path.c_str()), checkExistUrl) {}
-systems::Url::Url(const __stringbuffer &path, bool checkExistUrl)
+System::Url::Url(const __string &path, bool checkExistUrl) : System::Url(const_cast<__caracter *>(path.c_str()), checkExistUrl) {}
+System::Url::Url(const __stringbuffer &path, bool checkExistUrl)
 {
     if (path.empty())
-        throw systems::exception("Error: Path vacio en systems::Url contructor");
-    if (!systems::Url::is_corret(path.c_str()))
-        throw systems::exception("Error: La ruta no es valida sintacticamente; " + __exceptiosconvert(path.c_str()));
+        throw System::Exception("Error: Path vacio en System::Url contructor");
+    if (!System::Url::is_corret(path.c_str()))
+        throw System::Exception("Error: La ruta no es valida sintacticamente; " + __exceptiosconvert(path.c_str()));
     if (checkExistUrl && !is_exist(path.c_str()))
-        throw systems::exception("Error: La direcion asiganda no existe; " + __exceptiosconvert(path.c_str()));
-    systems::Url::__generate__(const_cast<__caracter **>(&__path__), path.c_str(), path.size());
+        throw System::Exception("Error: La direcion asiganda no existe; " + __exceptiosconvert(path.c_str()));
+    System::Url::__generate__(const_cast<__caracter **>(&__path__), path.c_str(), path.size());
 }
 
-systems::Url::Url(const systems::Url &other) : __consta__(other.__consta__)
+System::Url::Url(const System::Url &other) : __consta__(other.__consta__)
 {
     if (other.__consta__)
     {
@@ -92,12 +92,12 @@ systems::Url::Url(const systems::Url &other) : __consta__(other.__consta__)
         __generate__(const_cast<__caracter **>(&__path__), other.__path__);
     }
 }
-systems::Url::Url(systems::Url &&other) : __consta__(other.__consta__)
+System::Url::Url(System::Url &&other) : __consta__(other.__consta__)
 {
     __path__ = other.__path__;
     other.__path__ = nullptr;
 }
-systems::Url &systems::Url::operator=(const systems::Url &other)
+System::Url &System::Url::operator=(const System::Url &other)
 {
     if (this != &other)
     {
@@ -112,7 +112,7 @@ systems::Url &systems::Url::operator=(const systems::Url &other)
     }
     return *this;
 }
-systems::Url &systems::Url::operator=(systems::Url &&other)
+System::Url &System::Url::operator=(System::Url &&other)
 {
     if (this != &other)
     {
@@ -124,35 +124,35 @@ systems::Url &systems::Url::operator=(systems::Url &&other)
     }
     return *this;
 }
-bool systems::Url::equals(const systems::Url &url1, const systems::Url &url2)
+bool System::Url::equals(const System::Url &url1, const System::Url &url2)
 {
     return __compare(url1.__path__, url2.__path__) == 0;
 }
-bool systems::Url::equals(const systems::Url &url1, const __caracter *strurl)
+bool System::Url::equals(const System::Url &url1, const __caracter *strurl)
 {
     return __compare(url1.__path__, strurl) == 0;
 }
 
-const __caracter *systems::Url::name() const
+const __caracter *System::Url::name() const
 {
-    return systems::Url::name(this->__path__);
+    return System::Url::name(this->__path__);
 }
-const systems::Url systems::Url::root() const
+const System::Url System::Url::root() const
 {
-    return systems::Url::root(this->__path__);
+    return System::Url::root(this->__path__);
 }
-const systems::Url systems::Url::parent() const
+const System::Url System::Url::parent() const
 {
-    return systems::Url::parent(this->__path__);
+    return System::Url::parent(this->__path__);
 }
 
-const __caracter *systems::Url::name(const __caracter *path)
+const __caracter *System::Url::name(const __caracter *path)
 {
     size_t size = __size(path), pos = 0;
     __caracter v = path[size - 1];
     if (path[size - 1] == '/' || path[size - 1] == '\\')
         size--;
-    pos = sstring::find_last_of(path, [](__caracter v) -> bool
+    pos = String::find_last_of(path, [](__caracter v) -> bool
                                 { return v == '/' || v == '\\'; }, size);
     if (pos == size_t(-1))
         pos = 0;
@@ -162,19 +162,19 @@ const __caracter *systems::Url::name(const __caracter *path)
     cstr[size - pos] = '\0';
     return const_cast<const __caracter *>(cstr);
 }
-const systems::Url systems::Url::root(const __caracter *path)
+const System::Url System::Url::root(const __caracter *path)
 {
     __caracter *cstr = new __caracter[4];
     __ncopy(cstr, path, 3);
     cstr[3] = '\0';
     return const_cast<const __caracter *>(cstr);
 }
-const systems::Url systems::Url::parent(const __caracter *path)
+const System::Url System::Url::parent(const __caracter *path)
 {
     size_t size = __size(path), pos = 0;
     if (path[size - 1] == '/' || path[size - 1] == '\\')
         size--;
-    pos = sstring::find_last_of(path, [](__caracter v) -> bool
+    pos = String::find_last_of(path, [](__caracter v) -> bool
                                 { return v == '/' || v == '\\'; }, size);
     if (pos == size_t(-1))
         pos = 0;
@@ -184,11 +184,11 @@ const systems::Url systems::Url::parent(const __caracter *path)
     return const_cast<const __caracter *>(cstr);
 }
 
-const bool systems::Url::is_corret(const systems::Url &url)
+const bool System::Url::is_corret(const System::Url &url)
 {
     return is_corret(url.__path__);
 }
-const bool systems::Url::is_corret(const __caracter *path)
+const bool System::Url::is_corret(const __caracter *path)
 {
     if (path == nullptr)
         return false;
@@ -196,7 +196,7 @@ const bool systems::Url::is_corret(const __caracter *path)
 #if defined(USINGWCARACTER)
     HRESULT hr = PathCchCanonicalize(buffer, MAX_PATH, path);
 #else
-    wchar_t *__str__ = stringconverter::convert_ascii_to_uft8(path);
+    wchar_t *__str__ = String::convert_ascii_to_uft8(path);
     HRESULT hr = PathCchCanonicalize(buffer, MAX_PATH, __str__);
     delete[] (__str__);
 #endif
@@ -211,11 +211,11 @@ const bool systems::Url::is_corret(const __caracter *path)
     return true;
 #endif
 }
-const bool systems::Url::is_corret(const __string &path)
+const bool System::Url::is_corret(const __string &path)
 {
     return is_corret(path.c_str());
 }
-const void systems::Url::get_tokens(const systems::Url &url, std::vector<const __caracter *> &__vect)
+const void System::Url::get_tokens(const System::Url &url, std::vector<const __caracter *> &__vect)
 {
     size_t size = __size(url.c_str());
     size_t before = 0;

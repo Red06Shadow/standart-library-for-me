@@ -1,6 +1,6 @@
 
 template <typename T>
-trails<T>::trails(const T __array[], size_t size) : __array__(nullptr), __size__(size)
+Trails<T>::Trails(const T __array[], size_t size) : __array__(nullptr), __size__(size)
 {
     if (size == 0)
         return;
@@ -10,31 +10,31 @@ trails<T>::trails(const T __array[], size_t size) : __array__(nullptr), __size__
     std::copy(__array, __array + size, __array__);
 }
 template <typename T>
-trails<T>::trails(size_t size) : __array__(nullptr), __size__(size)
+Trails<T>::Trails(size_t size) : __array__(nullptr), __size__(size)
 {
     if (size > 0)
         __array__ = new T[size];
 }
 
 template <typename T>
-T trails<T>::at(size_t pos) const
+T Trails<T>::at(size_t pos) const
 {
     if (pos >= __size__)
-        throw std::out_of_range("trails::at index out range");
+        throw std::out_of_range("Trails::at index out range");
     return __array__[pos];
 }
 template <typename T>
-void trails<T>::assing(const trails<T> &__other) {
+void Trails<T>::assing(const Trails<T> &__other) {
     delete[] (this->__array__);
     this->__array__ = __other.__array__;
     this->__size__ = __other.__size__;
 }
 template <typename T>
-void trails<T>::copy(const trails<T> &__other) {
+void Trails<T>::copy(const Trails<T> &__other) {
     *this = __other;
 }
 template <typename T>
-void trails<T>::copy(const trails<T> &__other, size_t nelements) {
+void Trails<T>::copy(const Trails<T> &__other, size_t nelements) {
     if (nelements > __other.__size__)
         throw std::invalid_argument("nelements exceeds sources size");
     delete[] __array__;

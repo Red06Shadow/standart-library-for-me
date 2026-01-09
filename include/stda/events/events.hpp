@@ -10,20 +10,20 @@
 */
 
 template <typename... _Params>
-class events
+class Event
 {
 private:
     /// @brief Variable interna que almacena la funcion
     void(*handle)(_Params...);
 public:
-    events() : handle(nullptr) {}
+    Event() : handle(nullptr) {}
     /*!Importante!
     * Por alguna razon que escapa de mis conicimientos actuales no puedo definir a partir del tipo de la funcion la cantidad de argumentos para _Params
-    * Actualmente se recomienda encarecidamente deginir los tipos de datos de los argumentos en la plantilla de events
+    * Actualmente se recomienda encarecidamente deginir los tipos de datos de los argumentos en la plantilla de Event
     * Las funciones no pueden refornar valores por el momento hasta que inbvestigue un poco mas sobre el uso de estas plantillas
     * */
     template<typename Calleble>
-    events(Calleble&& callback) : handle(std::forward<Calleble>(callback)) {}
+    Event(Calleble&& callback) : handle(std::forward<Calleble>(callback)) {}
     /// @brief Funcion para llamar al evento generado segun un numero de parametros que insertes
     /// @tparam ...Args Plantilla que carga los parametros indeterminados de la funcion
     /// @param ...args Contenedor de los argumentos

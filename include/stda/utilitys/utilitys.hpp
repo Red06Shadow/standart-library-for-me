@@ -9,7 +9,7 @@
 
 
 /// @brief Espacio de nombre para las utilidades
-namespace utilitys
+namespace Utilitys
 {
     /// @brief Guarda un par de elementos de tipo A y B
     /// @tparam A Tipo de dato que desee guardar
@@ -286,6 +286,6 @@ namespace utilitys
             }
         }
     };
-} // namespace utilitys
+} // namespace Utilitys
 
 #endif

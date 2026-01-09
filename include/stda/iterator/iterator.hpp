@@ -8,12 +8,12 @@
  * Funciones booleanas para los recorridos co for-each
 */
 
-namespace iterators
+namespace Iterators
 {
     /// @brief Clase iteradora
     /// @tparam T Tipo de dato que se desea(!Atencion: debe coincidir con el tipo de dato que guarda el arreglo!)
     template<typename T>
-    class iterator
+    class Iterator
     {
     private:
         /// @brief Puntero al elemento iterado
@@ -22,28 +22,43 @@ namespace iterators
     public:
         /// @brief Contructor de la clase ieradora
         /// @param __arrarptr Direccion de memoria
-        explicit iterator(const T *__arrarptr);
-        bool operator==(const iterator &otro) const;
-        bool operator!=(const iterator &otro) const;
+        explicit Iterator(const T *__arrarptr);
+        bool operator==(const Iterator &otro) const;
+        bool operator>(const Iterator &otro) const;
+        bool operator!=(const Iterator &otro) const;
+        Iterator operator+(size_t pos);
+        Iterator operator-(size_t pos);
+        size_t operator-(const Iterator& pos);
         T &operator*();
         T *operator->();
-        iterator operator++()
+        Iterator operator++()
         {
             this->__arrarptr__++;
             return *this;
         }
-        iterator operator++(int)
+        Iterator operator++(int)
         {
-            iterator temp(*this);
+            Iterator temp(*this);
             ++(*this);
             return temp;
         }
-        virtual ~iterator();
+        Iterator operator--()
+        {
+            this->__arrarptr__--;
+            return *this;
+        }
+        Iterator operator--(int)
+        {
+            Iterator temp(*this);
+            --(*this);
+            return temp;
+        }
+        virtual ~Iterator();
     };
     /// @brief Clase iteradora de reversa
     /// @tparam T Tipo de dato que se desea(!Atencion: debe coincidir con el tipo de dato que guarda el arreglo!)
     template<typename T>
-    class reverse_iterator
+    class Reverse_Iterator
     {
     private:
         /// @brief Puntero al elemento iterado
@@ -51,27 +66,42 @@ namespace iterators
 
     public:
         /// @brief Contructor de la clase ieradora
-        /// @param __arrarptr Direccion de memoria(!Atencion: El iterador de inicio debe ser la direccion final o la direccion de inicio mas el tamano disminuido en 1! y el valor del iterador final la direccion de inicio - 1 para que funcione correctamente en caso de arreglos o trails<T>)
-        explicit reverse_iterator(const T *__arrarptr);
-        bool operator==(const reverse_iterator &otro) const;
-        bool operator!=(const reverse_iterator &otro) const;
+        /// @param __arrarptr Direccion de memoria(!Atencion: El iterador de inicio debe ser la direccion final o la direccion de inicio mas el tamano disminuido en 1! y el valor del iterador final la direccion de inicio - 1 para que funcione correctamente en caso de arreglos o Trails<T>)
+        explicit Reverse_Iterator(const T *__arrarptr);
+        bool operator==(const Reverse_Iterator &otro) const;
+        bool operator>(const Reverse_Iterator &otro) const;
+        bool operator!=(const Reverse_Iterator &otro) const;
         T &operator*();
         T *operator->();
-        reverse_iterator operator++()
+        Reverse_Iterator operator+(size_t pos);
+        Reverse_Iterator operator-(size_t pos);
+        size_t operator-(const Reverse_Iterator& pos);
+        Reverse_Iterator operator++()
         {
             --(this->__arrarptr__);
             return *this;
         }
-        reverse_iterator operator++(int)
+        Reverse_Iterator operator++(int)
         {
-            reverse_iterator temp(*this);
+            Reverse_Iterator temp(*this);
             ++(*this);
             return temp;
         }
-        virtual ~reverse_iterator();
+        Reverse_Iterator operator--()
+        {
+            ++(this->__arrarptr__);
+            return *this;
+        }
+        Reverse_Iterator operator--(int)
+        {
+            Reverse_Iterator temp(*this);
+            --(*this);
+            return temp;
+        }
+        virtual ~Reverse_Iterator();
     };
-} // namespace iterators
+} // namespace Iterators
 
-#include "iterator.tpp"
+#include "Iterator.tpp"
 
 #endif

@@ -8,38 +8,49 @@
 #define EXCEPTIONSME
 
 /* @Documentacion:
- * Este archivo contiene el manejo de excepciones para namespace systems
+ * Este archivo contiene el manejo de excepciones para namespace System
  * facilita y ahorra tiempo a la hora de generarlas y aunque aun no este completa
  * tambien puede recibir excepciones fuera de las ya predefinidas
  */
 
 /// @brief Nombres de espacios de variables
-namespace systems
+namespace System
 {
-    /// @brief Clase que maneja las expeciones systems
-    class exception : public std::exception
+    /// @brief Clase que maneja las expeciones System
+    class Exception : public std::exception
     {
+    public:
+        /// @brief Id para identificar el nuvel del log
+        enum class Id : unsigned char
+        {
+            warning,
+            error,
+            none
+        };
+
     protected:
         char *__message__;
+        Exception::Id signal;
 
     public:
         /// @brief Constructor por defecto
-        exception() noexcept : __message__(nullptr) {}
+        Exception() noexcept : __message__(nullptr) {}
         /// @brief Constructor que usa un mensaje puro para aletras indefinidas
         /// @param __message Mensaje que se desea enviar de tipo (?const char*?)
-        explicit exception(const char *__message) : __message__(const_cast<char *>(__message)) {}
+        explicit Exception(const char *__message, Exception::Id _signal = Exception::Id::error) : __message__(const_cast<char *>(__message)), signal(_signal) {}
         /// @brief Constructor de errores para el manejo de excepciones con el estandar de C
         /// @param code codigo de error
         /// @param operation operacion donde se emitio el error
-        explicit exception(unsigned int code, const char* operation) {
-            std::string msg = "Error en: " + std::string(operation) + "(Codigo: "+std::to_string(code)+")" + std::string(strerror(code));
+        explicit Exception(unsigned int code, const char *operation, Exception::Id _signal = Exception::Id::error) : signal(_signal)
+        {
+            std::string msg = "Error en: " + std::string(operation) + " (Codigo: " + std::to_string(code) + ") " + std::string(strerror(code));
             __message__ = new char[msg.size() + 1];
             __message__[msg.size()] = 0;
             std::strcpy(__message__, msg.c_str());
         }
         /// @brief Constructor que usa un mensaje puro para aletras indefinidas
         /// @param __message Mensaje que se desea enviar de tipo (?std::string*?)
-        explicit exception(const std::string &__message)
+        explicit Exception(const std::string &__message, Exception::Id _signal = Exception::Id::error) : signal(_signal)
         {
             __message__ = new char[__message.size() + 1];
             __message__[__message.size()] = 0;
@@ -47,15 +58,15 @@ namespace systems
         }
         /// @brief Constructor que usa un mensaje puro para aletras indefinidas
         /// @param __message Mensaje que se desea enviar de tipo (?std::wstring*?)
-        explicit exception(const std::wstring &__message)
+        explicit Exception(const std::wstring &__message, Exception::Id _signal = Exception::Id::error) : signal(_signal)
         {
             __message__ = new char[__message.size() + 1];
             __message__[__message.size()] = 0;
-            char *str = stringconverter::convert_utf8_to_ascii(__message.c_str());
+            char *str = String::convert_utf8_to_ascii(__message.c_str());
             std::strcpy(__message__, str);
             delete[] (str);
         }
-        exception &operator=(exception const &_Other) noexcept
+        Exception &operator=(Exception const &_Other) noexcept
         {
             if (this != &_Other)
             {
@@ -66,7 +77,7 @@ namespace systems
             }
             return *this;
         }
-        exception &operator=(exception &&_Other) noexcept
+        Exception &operator=(Exception &&_Other) noexcept
         {
             if (this != &_Other)
             {
@@ -78,15 +89,19 @@ namespace systems
         /// @brief Obtiene el mensaje en formato (?const char*?)
         /// @return Devuelve el mensaje
         const char *what() const noexcept override;
-        virtual ~exception() noexcept {}
+        virtual ~Exception() noexcept {}
     };
-    class windows_exceptions : public systems::exception
+    class Windows_Exceptions : public System::Exception
     {
+    private:
+        Exception::Id signal;
+
     public:
         /// @brief Constructor por defecto
-        windows_exceptions() noexcept : exception() {}
-        windows_exceptions(unsigned int code, const char* operation = nullptr) {
-            char* errorMsg;
+        Windows_Exceptions() noexcept : Exception() {}
+        Windows_Exceptions(unsigned int code, const char *operation = nullptr, Exception::Id _signal = Exception::Id::error) : signal(_signal)
+        {
+            char *errorMsg;
             FormatMessageA(
                 FORMAT_MESSAGE_ALLOCATE_BUFFER |
                     FORMAT_MESSAGE_FROM_SYSTEM |
@@ -94,20 +109,18 @@ namespace systems
                 NULL,
                 code,
                 MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-                (char*)&errorMsg,
+                (char *)&errorMsg,
                 0,
                 NULL);
             size_t size = std::strlen(errorMsg);
-            std::string code_message = "Codigo de Error de Windows: " + std::to_string(code) + ((!operation)?(" en " + std::string(operation)):"")   + "\n";
+            std::string code_message = "Codigo de Error de Windows: " + std::to_string(code) + ((!operation) ? (" en " + std::string(operation)) : "") + "\n";
             __message__ = new char[size + code_message.size() + 1];
             __message__[size + code_message.size()] = 0;
             std::strcpy(__message__, code_message.c_str());
             std::strcpy(__message__ + code_message.size(), errorMsg);
         }
-        ~windows_exceptions() {}
+        ~Windows_Exceptions() {}
     };
 }
 
-
-        
 #endif

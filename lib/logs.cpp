@@ -1,37 +1,48 @@
 #include <stda/system/logs/logs.hpp>
 
-systems::logs::logs(const __caracter *_message, systems::logs::type _id) : message(_message), id(_id), time(systems::time::now()) {}
-systems::logs::logs(const __string &_message, systems::logs::type _id) : message(_message.c_str(), _message.size()), id(_id), time(systems::time::now()) {}
-systems::logs::logs(const __stringbuffer &_message, systems::logs::type _id) : message(_message), id(_id), time(systems::time::now()) {}
-systems::logs::logs(const std::exception &_message, systems::logs::type _id) : message(_message.what()), id(_id), time(systems::time::now()) {}
+System::Log::Log(const __caracter *_message, System::Log::Id _id) : message(_message), id(_id), time(System::Time::now()) {}
+System::Log::Log(const __string &_message, System::Log::Id _id) : message(_message.c_str(), _message.size()), id(_id), time(System::Time::now()) {}
+System::Log::Log(const __stringbuffer &_message, System::Log::Id _id) : message(_message), id(_id), time(System::Time::now()) {}
+System::Log::Log(const std::exception &_message, System::Log::Id _id) : message(_message.what()), id(_id), time(System::Time::now()) {}
+System::Log::Log(const Exception &_message, System::Log::Id _id) : message(_message.what()), time(System::Time::now())
+{
+    unsigned char u = static_cast<unsigned char>(_id) + 1;
+    id = static_cast<System::Log::Id>(u);
+}
+System::Log::Log(const Windows_Exceptions &_message, System::Log::Id _id) : message(_message.what()), time(System::Time::now())
+{
+    unsigned char u = static_cast<unsigned char>(_id) + 1;
+    id = static_cast<System::Log::Id>(u);
+}
 
-const char *systems::log_manager::codecolor[4] =
+const char *System::Log_Manager::codecolor[4] =
     {
         "\x1b[32m",
         "\x1b[33m",
         "\x1b[31m",
         "\033[m"};
-const char *systems::log_manager::codemensage[4]{
+const char *System::Log_Manager::codemensage[4]{
     "Message",
     "Warning",
     "Error",
     "None"};
-std::vector<systems::logs> systems::log_manager::allocator = {};
-const char *systems::log_manager::nameprogram = __argv[0];
+std::vector<System::Log> System::Log_Manager::allocator = {};
+const char *System::Log_Manager::nameprogram = __argv[0];
 
-void systems::log_manager::exportfile(const systems::Url &path)
+void System::Log_Manager::exportfile(const System::Url &path)
 {
-    systems::ios::ofstream os(path);
+    System::Ios::ofstream os(path);
     for (auto &&log : allocator)
-        os << log.time.to_string(systems::time::formatdate::shortlow, systems::time::formatclock::large24h) << "  " << nameprogram << "  " << codemensage[static_cast<u8>(log.id)] << "  " << log.message << '\n';
+        os << log.time.to_string(System::Time::formatdate::shortlow, System::Time::formatclock::large24h) << "  " << nameprogram << "  " << codemensage[static_cast<u8>(log.id)] << "  " << log.message << '\n';
 }
-void systems::log_manager::view()
+void System::Log_Manager::view()
 {
     for (auto &&log : allocator)
-        std::cerr << codecolor[static_cast<u8>(log.id)] << log.time.to_string(systems::time::formatdate::shortlow, systems::time::formatclock::large24h) << "  " << nameprogram << "  " << codemensage[static_cast<u8>(log.id)] << "  " << log.message.c_str() << codecolor[3] << '\n';
+        std::cerr << codecolor[static_cast<u8>(log.id)] << log.time.to_string(System::Time::formatdate::shortlow, System::Time::formatclock::large24h) << "  " << nameprogram << "  " << codemensage[static_cast<u8>(log.id)] << "  " << log.message.c_str() << codecolor[3] << '\n';
 }
-void systems::log_manager::serialize(const systems::logs &log) {
-    if(allocator.capacity() < 256) allocator.reserve(256);
+void System::Log_Manager::serialize(const System::Log &log)
+{
+    if (allocator.capacity() < 256)
+        allocator.reserve(256);
     allocator.push_back(log);
 }
-

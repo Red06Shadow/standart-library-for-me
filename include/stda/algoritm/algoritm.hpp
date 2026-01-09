@@ -9,7 +9,7 @@
  * disenados para cumplir con necesidades variadas del programador.
 */
 
-namespace algoritm
+namespace Algoritm
 {
     /// @brief Permite ver un arreglo de una dimension del tipo T insertado por el programador
     /// @tparam T Tipo de dato que se desea(!Atencion: debe coincidir con el tipo de dato que guarda el arreglo!)
@@ -19,9 +19,9 @@ namespace algoritm
     void view(const T array[], size_t size);
     /// @brief Permite ver el trais<T> deseado
     /// @tparam T Tipo de dato que se desea(!Atencion: debe coincidir con el tipo de dato que guarda el arreglo!) 
-    /// @param array Referencia al elemento de tipo trails<T> que se desea visualizar
+    /// @param array Referencia al elemento de tipo Trails<T> que se desea visualizar
     template <typename T>
-    void view(const trails<T>& array);
+    void view(const Trails<T>& array);
     /// @brief Copia un arreglo de un tipo determinado por T a otro arreglo del mismo tipo
     /// @tparam T Tipo de dato que se desea(!Atencion: debe coincidir con el tipo de dato que guarda el arreglo!)
     /// @param _destine_ Arreglo de destino donde se copiara el el arreglo _sources
@@ -75,6 +75,6 @@ namespace algoritm
     size_t binarysearch(Q array[], Q element, size_t size);
 }
 
-#include "algoritm.tpp"
+#include "Algoritm.tpp"
 
 #endif

@@ -1,6 +1,6 @@
 #include <stda/sstrings/converter.hpp>
 
-wchar_t *stringconverter::convert_ascii_to_uft8(const char *str, bool freeMemory)
+wchar_t *String::convert_ascii_to_uft8(const char *str, bool freeMemory)
 {
     size_t size = strlen(str);
     const char *__p__str = str;
@@ -12,7 +12,7 @@ wchar_t *stringconverter::convert_ascii_to_uft8(const char *str, bool freeMemory
         delete[] str;
     return wstr;
 }
-char *stringconverter::convert_utf8_to_ascii(const wchar_t *wstr, bool freeMemory)
+char *String::convert_utf8_to_ascii(const wchar_t *wstr, bool freeMemory)
 {
     size_t wsize = std::wcslen(wstr);
     char *str = new char[wsize + 1];
@@ -23,7 +23,7 @@ char *stringconverter::convert_utf8_to_ascii(const wchar_t *wstr, bool freeMemor
         delete[] wstr;
     return str;
 }
-std::wstring stringconverter::convert_string_to_wstring(const std::string &str)
+std::wstring String::convert_string_to_wstring(const std::string &str)
 {
     std::wstring wstr = std::wstring();
     wstr.reserve(str.size());
@@ -31,7 +31,7 @@ std::wstring stringconverter::convert_string_to_wstring(const std::string &str)
         wstr.push_back((wchar_t)(caracter));
     return wstr;
 }
-std::string stringconverter::convert_wstring_to_string(const std::wstring &wstr)
+std::string String::convert_wstring_to_string(const std::wstring &wstr)
 {
     std::string str = std::string();
     str.reserve(str.size());

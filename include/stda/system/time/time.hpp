@@ -1,7 +1,7 @@
 #include <stda/numbers/numbers.hpp>
 #include <time.h>
 #include <ctime>
-#include <chrono>
+#include <Chrono>
 #include <vector>
 #include <stdexcept>
 #include <thread>
@@ -15,10 +15,10 @@
  * Este archivo contiene funciones el maneo del tiempo tanto de fechas como de conteos en nanosegundos
  */
 
-namespace systems
+namespace System
 {
     /// @brief Clase que maneja el tiempo de sistema
-    class time
+    class Time
     {
     private:
         static const char *weekstext[7];
@@ -41,10 +41,10 @@ namespace systems
             large24h
         };
         /// @brief Clase que almacena un punto determinadi del tiempo en segundos
-        class time_point
+        class Point
         {
         protected:
-            typedef std::string (*TimerFormat)(const time_point &__tallocator);
+            typedef std::string (*TimerFormat)(const Point &__tallocator);
 
         private:
             u16 years;
@@ -62,19 +62,19 @@ namespace systems
             static TimerFormat to_stringformatclock[4];
 
             static u16 clockregulate12h(u16 horsformat24h, bool& pm);
-            static std::string clocklarge12(const time_point &__tallocator);
-            static std::string clocklarge24(const time_point &__tallocator);
-            static std::string clockshort12(const time_point &__tallocator);
-            static std::string clockshort24(const time_point &__tallocator);
-            static std::string dateshort(const time_point &__tallocator);
-            static std::string datelarge(const time_point &__tallocator);
-            static std::string datelargewithweekday(const time_point &__tallocator);
+            static std::string clocklarge12(const Point &__tallocator);
+            static std::string clocklarge24(const Point &__tallocator);
+            static std::string clockshort12(const Point &__tallocator);
+            static std::string clockshort24(const Point &__tallocator);
+            static std::string dateshort(const Point &__tallocator);
+            static std::string datelarge(const Point &__tallocator);
+            static std::string datelargewithweekday(const Point &__tallocator);
 
         public:
             /// @brief Constuctor por defecto
-            time_point() {}
+            Point() {}
 
-            time_point(time_t __now__)
+            Point(time_t __now__)
             {
                 tm *__sytime = localtime(&__now__);
                 years = __sytime->tm_year, month = __sytime->tm_mon, weeks = __sytime->tm_isdst, days_of_years = __sytime->tm_yday, days_of_month = __sytime->tm_mday, days_of_weeks = __sytime->tm_wday, hours = __sytime->tm_hour, mins = __sytime->tm_min, seconds = __sytime->tm_sec;
@@ -89,7 +89,7 @@ namespace systems
             /// @param __hours Horas
             /// @param __mins Minutos
             /// @param __seconds Segundos
-            time_point(u16 __years, u16 __month, u16 __weeks, u16 __days_of_years, u16 __days_of_month, u16 __days_of_weeks, u16 __hours, u16 __mins, u16 __seconds) : years(__years), month(__month), weeks(__weeks), days_of_years(__days_of_years), days_of_month(__days_of_month), days_of_weeks(__days_of_weeks), hours(__hours), mins(__mins), seconds(__seconds) {}
+            Point(u16 __years, u16 __month, u16 __weeks, u16 __days_of_years, u16 __days_of_month, u16 __days_of_weeks, u16 __hours, u16 __mins, u16 __seconds) : years(__years), month(__month), weeks(__weeks), days_of_years(__days_of_years), days_of_month(__days_of_month), days_of_weeks(__days_of_weeks), hours(__hours), mins(__mins), seconds(__seconds) {}
             /// @brief Transforma el tiempo a una cadena de caracteres
             /// @param fdate Formato de dia
             /// @param fclock Formato de hora
@@ -98,7 +98,7 @@ namespace systems
             {
                 return (to_stringformatdate[static_cast<u8>(fdate)])(*this) + "   " + (to_stringformatclock[static_cast<u8>(fclock)])(*this);
             }
-            ~time_point() {}
+            ~Point() {}
         };
         /// @brief Obtiene si el ano sera de 365 o 366 dias
         /// @param year Ano deseado
@@ -131,61 +131,61 @@ namespace systems
         }
     };
     /// @brief Contiene funciones para el manejo del tiempo de ejecucion del programa
-    class chrono
+    class Chrono
     {
     public:
         /// @brief Clase que maneja el tiempo del programa
-        typedef std::chrono::high_resolution_clock::time_point time_point;
+        typedef std::chrono::high_resolution_clock::time_point Point;
         using seconds = std::chrono::seconds;
         using milliseconds = std::chrono::milliseconds;
         using nanoseconds = std::chrono::nanoseconds;
 
     private:
-        static std::vector<time_point> clockcontainer;
+        static std::vector<Point> clockcontainer;
 
     public:
-        /// @brief Obtienes el punto de tiempo guardado en el administrador de chrono
+        /// @brief Obtienes el punto de tiempo guardado en el administrador de Chrono
         /// @param idclock Identificador del punto de tiempo
-        /// @return Devuelve la referencia al objecto de (?time_point?)
-        static time_point &get(size_t idclock) { return clockcontainer[idclock]; }
-        /// @brief Agrega el punto de tiempo al administrador de chrono
-        /// @param _clock Punto de tiempo dado en (?time_point?)
+        /// @return Devuelve la referencia al objecto de (?Point?)
+        static Point &get(size_t idclock) { return clockcontainer[idclock]; }
+        /// @brief Agrega el punto de tiempo al administrador de Chrono
+        /// @param _clock Punto de tiempo dado en (?Point?)
         /// @return Devuleve el id dentro del administrador
-        static size_t push(const time_point &_clock)
+        static size_t push(const Point &_clock)
         {
             clockcontainer.push_back(_clock);
             return clockcontainer.size() - 1;
         }
         /// @brief Obtiene el valor actual en nanosegundos del conteo del programa
-        /// @return Devuelve un (?time_point?) con los nanosegundos transcurridos
-        static const time_point now() { return std::chrono::high_resolution_clock::now(); }
+        /// @return Devuelve un (?Point?) con los nanosegundos transcurridos
+        static const Point now() { return std::chrono::high_resolution_clock::now(); }
 
-        /// @brief Obtienes la conevsruion del (?time_point?) a segundos en dependencia del tipo de dato en (?_Notation?)
+        /// @brief Obtienes la conevsruion del (?Point?) a segundos en dependencia del tipo de dato en (?_Notation?)
         /// @tparam _Notation Tipo de dato primitivo de retorno para el modo de segundos(!Importante: El codigo no funcionara si insertas otras clase que no sean las corresponidentes en este archivo para el manejo de etos casos!)
-        /// @param _clock Referencia constante de un (?time_point?)
+        /// @param _clock Referencia constante de un (?Point?)
         /// @return Devuelve la cantidad de segundos del tipo _Notation
         template <typename _Notation>
-        static const _Notation getSeconds(const time_point &_clock)
+        static const _Notation getSeconds(const Point &_clock)
         {
-            return std::chrono::duration_cast<std::chrono::seconds>(_clock - time_point()).count();
+            return std::chrono::duration_cast<std::chrono::seconds>(_clock - Point()).count();
         }
-        /// @brief Obtienes la conevsruion del (?time_point?) a milisegundos en dependencia del tipo de dato en (?_Notation?)
+        /// @brief Obtienes la conevsruion del (?Point?) a milisegundos en dependencia del tipo de dato en (?_Notation?)
         /// @tparam _Notation Tipo de dato primitivo de retorno para el modo de milisegundos(!Importante: El codigo no funcionara si insertas otras clase que no sean las corresponidentes en este archivo para el manejo de etos casos!)
-        /// @param _clock Referencia constante de un (?time_point?)
+        /// @param _clock Referencia constante de un (?Point?)
         /// @return Devuelve la cantidad de milisegundos del tipo _Notation
         template <typename _Notation>
-        static const _Notation getMiliseconds(const time_point &_clock)
+        static const _Notation getMiliseconds(const Point &_clock)
         {
-            return std::chrono::duration_cast<std::chrono::milliseconds>(_clock - time_point()).count();
+            return std::chrono::duration_cast<std::chrono::milliseconds>(_clock - Point()).count();
         }
-        /// @brief Obtienes la conevsruion del (?time_point?) a nanosegundos en dependencia del tipo de dato en (?_Notation?)
+        /// @brief Obtienes la conevsruion del (?Point?) a nanosegundos en dependencia del tipo de dato en (?_Notation?)
         /// @tparam _Notation Tipo de dato primitivo de retorno para el modo de nanosegundos(!Importante: El codigo no funcionara si insertas otras clase que no sean las corresponidentes en este archivo para el manejo de etos casos!)
-        /// @param _clock Referencia constante de un (?time_point?)
+        /// @param _clock Referencia constante de un (?Point?)
         /// @return Devuelve la cantidad de nanosegundos del tipo _Notation
         template <typename _Notation>
-        static const _Notation getNanoseconds(const time_point &_clock)
+        static const _Notation getNanoseconds(const Point &_clock)
         {
-            return (_clock - time_point()).count();
+            return (_clock - Point()).count();
         }
         /// @brief Transforma el valor de una duracion de tiempi dada por (?std::chrono::duration<int64_t, std::nano>?) en un valor entero segun un tipo de dato insertado en (?_Fromat?)
         /// @tparam _Fromat Tipo de dato de retorno para la base del tiempo(!Importante: El codigo no funcionara si insertas otras clase que no sean las corresponidentes en este archivo para el manejo de etos casos!)

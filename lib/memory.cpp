@@ -10,7 +10,7 @@ void memory::vmemory(const void *ptr, size_t size)
     u64 line = 0;
     while (control)
     {
-        std::cout << (numbers::hex << numbers::qword((u64)(16 * line))) << ": ";
+        std::cout << (Number::hex << Number::qword((u64)(16 * line))) << ": ";
         u64 columna = 0;
         u8 sallocator = 0;
         while (columna < 16 && control)
@@ -20,7 +20,7 @@ void memory::vmemory(const void *ptr, size_t size)
                 sallocator++;
                 u8 value = ((u8 *)(ptr))[line * 16 + columna];
                 array[columna] = value;
-                std::cout << (numbers::hex << numbers::byte(value)) << " ";
+                std::cout << (Number::hex << Number::byte(value)) << " ";
             }
             else
                 control = false;
