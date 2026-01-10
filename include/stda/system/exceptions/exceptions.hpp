@@ -30,18 +30,18 @@ namespace System
 
     protected:
         char *__message__;
-        Exception::Id signal;
+        Exception::Id __signal;
 
     public:
         /// @brief Constructor por defecto
         Exception() noexcept : __message__(nullptr) {}
         /// @brief Constructor que usa un mensaje puro para aletras indefinidas
         /// @param __message Mensaje que se desea enviar de tipo (?const char*?)
-        explicit Exception(const char *__message, Exception::Id _signal = Exception::Id::error) : __message__(const_cast<char *>(__message)), signal(_signal) {}
+        explicit Exception(const char *__message, Exception::Id _signal = Exception::Id::error) : __message__(const_cast<char *>(__message)), __signal(_signal) {}
         /// @brief Constructor de errores para el manejo de excepciones con el estandar de C
         /// @param code codigo de error
         /// @param operation operacion donde se emitio el error
-        explicit Exception(unsigned int code, const char *operation, Exception::Id _signal = Exception::Id::error) : signal(_signal)
+        explicit Exception(unsigned int code, const char *operation, Exception::Id _signal = Exception::Id::error) : __signal(_signal)
         {
             std::string msg = "Error en: " + std::string(operation) + " (Codigo: " + std::to_string(code) + ") " + std::string(strerror(code));
             __message__ = new char[msg.size() + 1];
@@ -50,7 +50,7 @@ namespace System
         }
         /// @brief Constructor que usa un mensaje puro para aletras indefinidas
         /// @param __message Mensaje que se desea enviar de tipo (?std::string*?)
-        explicit Exception(const std::string &__message, Exception::Id _signal = Exception::Id::error) : signal(_signal)
+        explicit Exception(const std::string &__message, Exception::Id _signal = Exception::Id::error) : __signal(_signal)
         {
             __message__ = new char[__message.size() + 1];
             __message__[__message.size()] = 0;
@@ -58,7 +58,7 @@ namespace System
         }
         /// @brief Constructor que usa un mensaje puro para aletras indefinidas
         /// @param __message Mensaje que se desea enviar de tipo (?std::wstring*?)
-        explicit Exception(const std::wstring &__message, Exception::Id _signal = Exception::Id::error) : signal(_signal)
+        explicit Exception(const std::wstring &__message, Exception::Id _signal = Exception::Id::error) : __signal(_signal)
         {
             __message__ = new char[__message.size() + 1];
             __message__[__message.size()] = 0;
@@ -73,6 +73,7 @@ namespace System
                 size_t s = std::strlen(_Other.__message__);
                 this->__message__ = new char[s + 1];
                 __message__[s] = 0;
+                this->__signal = _Other.__signal;
                 std::strcpy(this->__message__, _Other.__message__);
             }
             return *this;
@@ -81,6 +82,7 @@ namespace System
         {
             if (this != &_Other)
             {
+                this->__signal = _Other.__signal;
                 this->__message__ = _Other.__message__;
                 _Other.__message__ = nullptr;
             }
@@ -89,17 +91,15 @@ namespace System
         /// @brief Obtiene el mensaje en formato (?const char*?)
         /// @return Devuelve el mensaje
         const char *what() const noexcept override;
+        Exception::Id signal() const noexcept { return __signal;}
         virtual ~Exception() noexcept {}
     };
     class Windows_Exceptions : public System::Exception
     {
-    private:
-        Exception::Id signal;
-
     public:
         /// @brief Constructor por defecto
         Windows_Exceptions() noexcept : Exception() {}
-        Windows_Exceptions(unsigned int code, const char *operation = nullptr, Exception::Id _signal = Exception::Id::error) : signal(_signal)
+        Windows_Exceptions(unsigned int code, const char *operation = nullptr, Exception::Id _signal = Exception::Id::error)
         {
             char *errorMsg;
             FormatMessageA(
@@ -118,6 +118,7 @@ namespace System
             __message__[size + code_message.size()] = 0;
             std::strcpy(__message__, code_message.c_str());
             std::strcpy(__message__ + code_message.size(), errorMsg);
+            __signal = _signal;
         }
         ~Windows_Exceptions() {}
     };

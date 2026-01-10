@@ -51,15 +51,15 @@ void System::Terminal::showCursor()
 {
     std::cout << "\033[?25h";
 }
-void System::Terminal::setTextColor(Color color)
+void System::Terminal::setTextColor(Text::Color color, Text::Style style)
 {
-    std::cout << "\033[" << static_cast<int>(color) << "m";
+    std::cout << "\033[" << static_cast<int>(style) << ";" << static_cast<int>(color) << "m";
 }
-std::string System::Terminal::getTextColor(Color color)
+std::string System::Terminal::getTextColor(Text::Color color, Text::Style style)
 {
-    return "\033[" + std::to_string(static_cast<int>(color)) + "m";
+    return "\033[" + std::to_string(static_cast<int>(style)) + ";" + std::to_string(static_cast<int>(color)) + "m";
 }
-void System::Terminal::resetTextColor()
+void System::Terminal::resetColors()
 {
     std::cout << "\033[0m";
 }
@@ -69,13 +69,5 @@ int System::Terminal::exc()
     std::getline(std::cin, str);
     if (str == "exit")
         return -1;
-    return system(("powershell -Command \"" + str + "\"").c_str());
-}
-void System::Terminal::set_terminal()
-{
-    std::cout << "\033[1;32m" << System::Terminal::user << " @ pc\033[0m : \033[1;34m" << System::Terminal::current_directory << "\033[0m $ ";
-}
-std::string System::Terminal::get_terminal()
-{
-    return "\033[1;32m" + System::Terminal::user + " @ pc\033[0m : \033[1;34m" + System::Terminal::current_directory + "\033[0m $ ";
+    return system(str.c_str());
 }

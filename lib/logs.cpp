@@ -3,15 +3,15 @@
 System::Log::Log(const __caracter *_message, System::Log::Id _id) : message(_message), id(_id), time(System::Time::now()) {}
 System::Log::Log(const __string &_message, System::Log::Id _id) : message(_message.c_str(), _message.size()), id(_id), time(System::Time::now()) {}
 System::Log::Log(const __stringbuffer &_message, System::Log::Id _id) : message(_message), id(_id), time(System::Time::now()) {}
-System::Log::Log(const std::exception &_message, System::Log::Id _id) : message(_message.what()), id(_id), time(System::Time::now()) {}
-System::Log::Log(const Exception &_message, System::Log::Id _id) : message(_message.what()), time(System::Time::now())
+System::Log::Log(const std::exception &_message, Id _id) : message(_message.what()), id(_id), time(System::Time::now()) {}
+System::Log::Log(const Exception &_message) : message(_message.what()), time(System::Time::now())
 {
-    unsigned char u = static_cast<unsigned char>(_id) + 1;
+    unsigned char u = static_cast<unsigned char>(_message.signal()) + 1;
     id = static_cast<System::Log::Id>(u);
 }
-System::Log::Log(const Windows_Exceptions &_message, System::Log::Id _id) : message(_message.what()), time(System::Time::now())
+System::Log::Log(const Windows_Exceptions &_message) : message(_message.what()), time(System::Time::now())
 {
-    unsigned char u = static_cast<unsigned char>(_id) + 1;
+    unsigned char u = static_cast<unsigned char>(_message.signal()) + 1;
     id = static_cast<System::Log::Id>(u);
 }
 

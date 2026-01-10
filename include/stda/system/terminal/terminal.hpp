@@ -10,27 +10,64 @@ namespace System
     class Terminal
     {
     public:
-        enum class Color : int
+        class Text
         {
-            RESET = 0,
-            BLACK = 30,
-            RED,
-            GREEN,
-            YELLOW,
-            BLUE,
-            MAGENTA,
-            CYAN,
-            WHITE,
-            BRIGHT_BLACK = 90,
-            BRIGHT_RED,
-            BRIGHT_GREEN,
-            BRIGHT_YELLOW,
-            BRIGHT_BLUE,
-            BRIGHT_MAGENTA,
-            BRIGHT_CYAN,
-            BRIGHT_WHITE
+        public:
+            enum class Color : short
+            {
+                BLACK = 30,
+                RED,
+                GREEN,
+                YELLOW,
+                BLUE,
+                MAGENTA,
+                CYAN,
+                WHITE,
+                BRIGHT_BLACK = 90,
+                BRIGHT_RED,
+                BRIGHT_GREEN,
+                BRIGHT_YELLOW,
+                BRIGHT_BLUE,
+                BRIGHT_MAGENTA,
+                BRIGHT_CYAN,
+                BRIGHT_WHITE
+            };
+            enum class Style : short
+            {
+                RESET,
+                NORMAL,
+                NEGRITA,
+                TENUE,
+                CURSIVA,
+                SUBRAYADO,
+                PARPADEO,
+                INVERTIDO,
+                OCULTO
+            };
         };
-
+        class Background
+        {
+            enum class Color : short
+            {
+                RESET = 0,
+                BLACK = 40,
+                RED,
+                GREEN,
+                YELLOW,
+                BLUE,
+                MAGENTA,
+                CYAN,
+                WHITE,
+                BRIGHT_BLACK = 100,
+                BRIGHT_RED,
+                BRIGHT_GREEN,
+                BRIGHT_YELLOW,
+                BRIGHT_BLUE,
+                BRIGHT_MAGENTA,
+                BRIGHT_CYAN,
+                BRIGHT_WHITE,
+            };
+        };
         enum class Keywords : int
         {
             NONE,
@@ -52,52 +89,41 @@ namespace System
         /////////////////////////////////////////////////////
         static std::string anidation() { return ""; }
         template <typename T, typename... Args>
-        static std::string anidation(const T &arg, const Args &...args)
-        {
-            return "";
-        }
+        static std::string anidation(const T &arg, const Args &...args) { return ""; }
         template <typename... Args>
         static std::string anidation(const char *arg, const Args &...args)
         {
             std::string str = anidation(args...);
-            if (*arg == '&')
-                return " & '" + std::string(arg + 1) + "'" + (str.empty() ? str : ("'; " + str));
-            return std::string(arg) + (str.empty() ? str : ("; " + str));
+            return std::string(arg) + (str.empty() ? str : (" && " + str));
         }
         template <typename... Args>
         static std::string anidation(const std::string &arg, const Args &...args)
         {
             std::string str = anidation(args...);
-            if (*(arg.begin()) == '&')
-                return " & '" + std::string(arg.c_str() + 1) + "'" + (str.empty() ? str : ("'; " + str));
-            return arg + (str.empty() ? str : ("; " + str));
+            return std::string(arg) + (str.empty() ? str : (" && " + str));
         }
         static void get_caracters_of_terminal();
 
     public:
-        template <typename... Args>
-        static int exc(const Args &...args)
-        {
-            std::string str = anidation(args...);
-            return system(("powershell -Command \"" + str + "\"").c_str());
-        }
         static void clearScreen();
         static void clearLine();
+
         static void moveCursorTo(int row, int col);
-
         static void saveCursorPosition();
-
         static void restoreCursorPosition();
+
         static void hideCursor();
         static void showCursor();
-        static void setTextColor(Color color);
-        static std::string getTextColor(Color color);
-        static void resetTextColor();
-        static int exc();
-        static void set_terminal();
-        static std::string get_terminal();
+
+        static void setTextColor(Text::Color color, Text::Style style = Text::Style::NORMAL);
+        static std::string getTextColor(Text::Color color, Text::Style style = Text::Style::NORMAL);
+        static void resetColors();
+
         static void set_user(const std::string &name) { user = name; }
         static void set_current_directory(const std::string &url) { current_directory = url; }
+        static int exc();
+        template <typename... Args>
+        static int exc(const Args &...args) { return system(anidation(args...).c_str()); }
 
         // static void update()
         // {
