@@ -123,7 +123,7 @@ void Node::vector::insert(size_t pos, base *value)
 {
     values.insert(values.begin() + pos, value);
 }
-void Node::vector::insert(const std::vector<base *>::Iterator &pos, base *value)
+void Node::vector::insert(const std::vector<base *>::iterator &pos, base *value)
 {
     values.insert(pos, value);
 }
@@ -136,7 +136,7 @@ void Node::vector::remove(size_t pos)
 {
     values.erase(values.begin() + pos);
 }
-void Node::vector::remove(const std::vector<base *>::Iterator &pos)
+void Node::vector::remove(const std::vector<base *>::iterator &pos)
 {
     values.erase(pos);
 }

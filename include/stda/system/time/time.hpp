@@ -94,7 +94,7 @@ namespace System
             /// @param fdate Formato de dia
             /// @param fclock Formato de hora
             /// @return Devuelve la cadena de tipo (?std::string?) de la fecha
-            std::string to_string(formatdate fdate = formatdate::shortlow, formatclock fclock = formatclock::short12h)
+            std::string to_string(formatdate fdate = formatdate::shortlow, formatclock fclock = formatclock::short12h) const
             {
                 return (to_stringformatdate[static_cast<u8>(fdate)])(*this) + "   " + (to_stringformatclock[static_cast<u8>(fclock)])(*this);
             }

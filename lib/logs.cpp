@@ -15,12 +15,12 @@ System::Log::Log(const Windows_Exceptions &_message) : message(_message.what()),
     id = static_cast<System::Log::Id>(u);
 }
 
-const char *System::Log_Manager::codecolor[4] =
+System::Terminal::Text::Color System::Log_Manager::codecolor[4] =
     {
-        "\x1b[32m",
-        "\x1b[33m",
-        "\x1b[31m",
-        "\033[m"};
+        System::Terminal::Text::Color::GREEN,
+        System::Terminal::Text::Color::YELLOW,
+        System::Terminal::Text::Color::RED,
+        System::Terminal::Text::Color::RESET};
 const char *System::Log_Manager::codemensage[4]{
     "Message",
     "Warning",
@@ -38,7 +38,11 @@ void System::Log_Manager::exportfile(const System::Url &path)
 void System::Log_Manager::view()
 {
     for (auto &&log : allocator)
-        std::cerr << codecolor[static_cast<u8>(log.id)] << log.time.to_string(System::Time::formatdate::shortlow, System::Time::formatclock::large24h) << "  " << nameprogram << "  " << codemensage[static_cast<u8>(log.id)] << "  " << log.message.c_str() << codecolor[3] << '\n';
+        std::cerr << Terminal::getTextColor(codecolor[static_cast<u8>(log.id)]) << log.time.to_string(System::Time::formatdate::shortlow, System::Time::formatclock::large24h) << "  " << nameprogram << "  " << codemensage[static_cast<u8>(log.id)] << "  " << log.message.c_str() << Terminal::getTextColor(System::Terminal::Text::Color::RESET) << '\n';
+}
+void System::Log_Manager::view(const Log& log)
+{
+    std::cerr << Terminal::getTextColor(codecolor[static_cast<u8>(log.id)]) << log.time.to_string(System::Time::formatdate::shortlow, System::Time::formatclock::large24h) << "  " << nameprogram << "  " << codemensage[static_cast<u8>(log.id)] << "  " << log.message.c_str() << Terminal::getTextColor(System::Terminal::Text::Color::RESET) << '\n';
 }
 void System::Log_Manager::serialize(const System::Log &log)
 {

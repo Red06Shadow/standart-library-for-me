@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 option(USINGWCARACTER "Usa los caracteres wchar_t para las rutas de archivos" OFF)
-option(TESTLIBME "Indica si libme esta en testeo o en compilacion libreria" OFF)
+option(TESTLIBME "Indica si libme esta en testeo o en compilacion libreria" ON)
 
 set(CMAKE_CXX_STANDARD 17)
 # Configuración por configuración
@@ -26,6 +26,7 @@ ${CMAKE_SOURCE_DIR}/lib/time.cpp
 ${CMAKE_SOURCE_DIR}/lib/memory.cpp
 ${CMAKE_SOURCE_DIR}/lib/stringbuffer.cpp
 ${CMAKE_SOURCE_DIR}/lib/sstrings.cpp
+${CMAKE_SOURCE_DIR}/lib/terminal.cpp
 ${CMAKE_SOURCE_DIR}/lib/logs.cpp
 )
 link_directories(${CMAKE_SOURCE_DIR}/libme/lib)
@@ -33,8 +34,8 @@ target_link_libraries(slfm-test PRIVATE Pathcch ${CMAKE_SOURCE_DIR}/lib/wdebuger
 else()
 project(slfm)
 add_library(slfm STATIC
-${CMAKE_SOURCE_DIR}/lib/converter.cpp
 ${CMAKE_SOURCE_DIR}/lib/numbers.cpp
+${CMAKE_SOURCE_DIR}/lib/converter.cpp
 ${CMAKE_SOURCE_DIR}/lib/exception.cpp
 ${CMAKE_SOURCE_DIR}/lib/url.cpp
 ${CMAKE_SOURCE_DIR}/lib/fstream.cpp
@@ -43,6 +44,7 @@ ${CMAKE_SOURCE_DIR}/lib/time.cpp
 ${CMAKE_SOURCE_DIR}/lib/memory.cpp
 ${CMAKE_SOURCE_DIR}/lib/stringbuffer.cpp
 ${CMAKE_SOURCE_DIR}/lib/sstrings.cpp
+${CMAKE_SOURCE_DIR}/lib/terminal.cpp
 ${CMAKE_SOURCE_DIR}/lib/logs.cpp
 )
 

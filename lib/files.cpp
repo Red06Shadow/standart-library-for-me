@@ -375,7 +375,7 @@ void System::Files::remove(const System::Url &sources)
             !RemoveDirectoryA(sources.c_str())
 #endif
         )
-            throw System::Windows_Exceptions(GetLastError(), "System::Files::create_directory");
+            throw System::Windows_Exceptions(GetLastError(), "System::Files::remove");
     }
     else
         System::Files::remove_file(sources);
@@ -391,7 +391,7 @@ void System::Files::remove_file(const System::Url &sources)
         !DeleteFileA(sources.c_str())
 #endif
     )
-        throw System::Windows_Exceptions(GetLastError(), "System::Files::remove");
+        throw System::Windows_Exceptions(GetLastError(), "System::Files::remove_file");
 }
 
 void System::Files::rename(const System::Url &url, const __caracter *new_name, bool ignore_type)

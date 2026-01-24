@@ -1,8 +1,11 @@
-#include <system/files/url/url.hpp>
+#include <stda/system/files/url/url.hpp>
 #include <string>
 #include <type_traits>
 #include <conio.h>
 #include <windows.h>
+
+#ifndef TERMINAL
+#define TERMINAL
 
 namespace System
 {
@@ -15,6 +18,7 @@ namespace System
         public:
             enum class Color : short
             {
+                RESET = 0,
                 BLACK = 30,
                 RED,
                 GREEN,
@@ -34,7 +38,6 @@ namespace System
             };
             enum class Style : short
             {
-                RESET,
                 NORMAL,
                 NEGRITA,
                 TENUE,
@@ -148,3 +151,4 @@ namespace System
         // static void exit() { __continue = false; }
     };
 };
+#endif

@@ -17,7 +17,7 @@ namespace System
     namespace Ios
     {
         /// @brief Indicativo entero que permite identificar mas rapido el formato de archivo
-        enum base
+        enum Id
         {
             in = 0b00001,
             out = 0b00010,
@@ -26,85 +26,126 @@ namespace System
             trunc = 0b10000
         };
 
-        _GLIBCXX_NODISCARD _GLIBCXX_CONSTEXPR inline base
-        operator&(base __a, base __b) _GLIBCXX_NOTHROW
+        _GLIBCXX_NODISCARD _GLIBCXX_CONSTEXPR inline Id
+        operator&(Id __a, Id __b) _GLIBCXX_NOTHROW
         {
-            return base(static_cast<u8>(__a) & static_cast<u8>(__b));
+            return Id(static_cast<u8>(__a) & static_cast<u8>(__b));
         }
 
-        _GLIBCXX_NODISCARD _GLIBCXX_CONSTEXPR inline base
-        operator|(base __a, base __b) _GLIBCXX_NOTHROW
+        _GLIBCXX_NODISCARD _GLIBCXX_CONSTEXPR inline Id
+        operator|(Id __a, Id __b) _GLIBCXX_NOTHROW
         {
-            return base(static_cast<u8>(__a) | static_cast<u8>(__b));
+            return Id(static_cast<u8>(__a) | static_cast<u8>(__b));
         }
 
-        _GLIBCXX_NODISCARD _GLIBCXX_CONSTEXPR inline base
-        operator^(base __a, base __b) _GLIBCXX_NOTHROW
+        _GLIBCXX_NODISCARD _GLIBCXX_CONSTEXPR inline Id
+        operator^(Id __a, Id __b) _GLIBCXX_NOTHROW
         {
-            return base(static_cast<u8>(__a) ^ static_cast<u8>(__b));
+            return Id(static_cast<u8>(__a) ^ static_cast<u8>(__b));
         }
 
-        _GLIBCXX_NODISCARD _GLIBCXX_CONSTEXPR inline base
-        operator~(base __a) _GLIBCXX_NOTHROW
+        _GLIBCXX_NODISCARD _GLIBCXX_CONSTEXPR inline Id
+        operator~(Id __a) _GLIBCXX_NOTHROW
         {
-            return base(~static_cast<u8>(__a));
+            return Id(~static_cast<u8>(__a));
         }
 
         _GLIBCXX14_CONSTEXPR
-        inline const base &
-        operator|=(base &__a, base __b) _GLIBCXX_NOTHROW
+        inline const Id &
+        operator|=(Id &__a, Id __b) _GLIBCXX_NOTHROW
         {
             return __a = __a | __b;
         }
 
         _GLIBCXX14_CONSTEXPR
-        inline const base &
-        operator&=(base &__a, base __b) _GLIBCXX_NOTHROW
+        inline const Id &
+        operator&=(Id &__a, Id __b) _GLIBCXX_NOTHROW
         {
             return __a = __a & __b;
         }
 
         _GLIBCXX14_CONSTEXPR
-        inline const base &
-        operator^=(base &__a, base __b) _GLIBCXX_NOTHROW
+        inline const Id &
+        operator^=(Id &__a, Id __b) _GLIBCXX_NOTHROW
         {
             return __a = __a ^ __b;
         }
 
         _GLIBCXX_NODISCARD _GLIBCXX_CONSTEXPR inline u8
-        operator-(base __a, u8 __b) _GLIBCXX_NOTHROW
+        operator-(Id __a, u8 __b) _GLIBCXX_NOTHROW
         {
             return static_cast<u8>(__a) - __b;
         }
 
         _GLIBCXX_NODISCARD _GLIBCXX_CONSTEXPR inline u8
-        operator+(base __a, u8 __b) _GLIBCXX_NOTHROW
+        operator+(Id __a, u8 __b) _GLIBCXX_NOTHROW
         {
             return static_cast<u8>(__a) + __b;
         }
 
-        _GLIBCXX_NODISCARD _GLIBCXX_CONSTEXPR inline base
-        operator-(base __a, base __b) _GLIBCXX_NOTHROW
+        _GLIBCXX_NODISCARD _GLIBCXX_CONSTEXPR inline Id
+        operator-(Id __a, Id __b) _GLIBCXX_NOTHROW
         {
-            return base(static_cast<u8>(__a) - static_cast<u8>(__b));
+            return Id(static_cast<u8>(__a) - static_cast<u8>(__b));
         }
 
-        _GLIBCXX_NODISCARD _GLIBCXX_CONSTEXPR inline base
-        operator+(base __a, base __b) _GLIBCXX_NOTHROW
+        _GLIBCXX_NODISCARD _GLIBCXX_CONSTEXPR inline Id
+        operator+(Id __a, Id __b) _GLIBCXX_NOTHROW
         {
-            return base(static_cast<u8>(__a) + static_cast<u8>(__b));
+            return Id(static_cast<u8>(__a) + static_cast<u8>(__b));
         }
+
+        enum class Flags : u8 
+        {
+            none = 0,
+            end_of_file = 0b00000001,
+            binary = 0b10000000
+        };
+        _GLIBCXX_NODISCARD _GLIBCXX_CONSTEXPR inline Flags
+        operator&(Flags __a, Flags __b) _GLIBCXX_NOTHROW
+        {
+            return Flags(static_cast<u8>(__a) & static_cast<u8>(__b));
+        }
+        _GLIBCXX_NODISCARD _GLIBCXX_CONSTEXPR inline Flags
+        operator|(Flags __a, Flags __b) _GLIBCXX_NOTHROW
+        {
+            return Flags(static_cast<u8>(__a) | static_cast<u8>(__b));
+        }
+        _GLIBCXX_NODISCARD _GLIBCXX_CONSTEXPR inline Flags
+        operator^(Flags __a, Flags __b) _GLIBCXX_NOTHROW
+        {
+            return Flags(static_cast<u8>(__a) ^ static_cast<u8>(__b));
+        }
+        _GLIBCXX14_CONSTEXPR
+        inline const Flags &
+        operator&=(Flags &__a, Flags __b) _GLIBCXX_NOTHROW
+        {
+            return __a = __a & __b;
+        }
+        _GLIBCXX14_CONSTEXPR
+        inline const Flags &
+        operator|=(Flags& __a, Flags __b) _GLIBCXX_NOTHROW
+        {
+            return __a = __a | __b;
+        }
+        _GLIBCXX14_CONSTEXPR
+        inline const Flags &
+        operator^=(Flags &__a, Flags __b) _GLIBCXX_NOTHROW
+        {
+            return __a = __a ^ __b;
+        }
+
         /// @brief Fstream idica las funciones basicas
         class fstream
         {
         public:
-            static const u8 mode(Ios::base __base);
+            static const u8 mode(Ios::Id __base);
             ////////////////////////////////////////////////////////////////////////////////
             fstream() = default;
-            fstream(const __caracter *__path, Ios::base __mode);
-            fstream(const fstream &other);
+            fstream(const __caracter *__path, Ios::Id __mode);
+            fstream(const fstream &other) = delete;
             fstream(fstream &&other);
-            fstream &operator=(const fstream &other);
+            fstream &operator=(const fstream &other) = delete;
             fstream &operator=(fstream &&other);
             ////////////////////////////////////////////////////////////////////////////////
             /// @brief Coloca el puntero del archivo en la pocision especificada
@@ -131,12 +172,12 @@ namespace System
             size_t getpos();
             /// @brief Obtiene la real pocision del archivo(No usar en setpos)
             size_t getposreal();
-            /// @brief Obtiene la pocision base del archivo
+            /// @brief Obtiene la pocision Id del archivo
             size_t getposbe();
             /// @brief Obtiene la pocision auxialiar del fstream
             size_t getposaux();
             ////////////////////////////////////////////////////////////////////////////////
-            void changemode(Ios::base __mode);
+            void changemode(Ios::Id __mode);
             ////////////////////////////////////////////////////////////////////////////////
             /// @brief Inserta el caracter de fin de cadenas de texto
             /// @param _c caracter entero puede ser wchar_t o char
@@ -148,6 +189,8 @@ namespace System
             bool isopen();
             /// @brief Comprueba si el puntero esta en el final del archivo
             bool iseof();
+            /// @brief Comprueba si la operacion obtuvo o envio un dato valido
+            bool validation();
             /// @brief Coloca el puntero al inicio del archivo
             void setstartp();
             /// @brief Coloca el puntero al final del archivo
@@ -163,13 +206,13 @@ namespace System
             /// @param __path Path del archivo
             /// @param __mode Modo en el que se abrira el archivo
             /// @return Retorna un objecto (?fstream?)
-            static fstream open(const __caracter *__path, Ios::base __mode);
+            static fstream open(const __caracter *__path, Ios::Id __mode);
             /// @brief A partir de una instancia cerrada por close reabre el archivo con el path definido
             /// @param __path Path del archivo
             /// @param __mode Modo en el que se abrira el archivo
             /// @param __fstream__ Fstream a reabrir
             /// @note Si el archivo aun est abierto lanzara un error
-            static void reopen(const __caracter *__path, Ios::base __mode, fstream &__fstream__);
+            static void reopen(const __caracter *__path, Ios::Id __mode, fstream &__fstream__);
             /// @brief Cierra el archivo pero sin eliminar la instancia definida
             static void close(fstream &__fstream__);
             ////////////////////////////////////////////////////////////////////////////////
@@ -179,7 +222,7 @@ namespace System
 
         protected:
             FILE *__fptr__ = nullptr;
-            bool __binary__ = false;
+            Flags __flags__;
             size_t __position_before__ = 0;
             size_t __position_aux__ = 0;
             __caracter __endstr__ = '\n';
@@ -333,24 +376,24 @@ namespace System
             ///@param binary indica si el archivo a abrir sera en formato binario
             ///@param syncroned_input_output_system indica si se activara la sinconizacion de entrada y salida
             iofstream(const Url &url, bool binary, bool syncroned_input_output_system);
-            iofstream(const iofstream &other);
+            iofstream(const iofstream &other) = delete;
             iofstream(iofstream &&other);
-            iofstream &operator=(const iofstream &other)
-            {
-                if (this != &other)
-                {
-                    if (__input__ != nullptr)
-                        delete __input__;
-                    if (__output__ != nullptr)
-                        delete __output__;
-                    if (__syncroned__file__input__output__ != nullptr)
-                        delete __syncroned__file__input__output__;
-                    this->__syncroned_input_output_system__ = other.__syncroned_input_output_system__;
-                    this->__input__ = std::move(other.__input__);
-                    this->__output__ = std::move(other.__output__);
-                }
-                return *this;
-            }
+            iofstream &operator=(const iofstream &other) = delete;
+            // {
+            //     if (this != &other)
+            //     {
+            //         if (__input__ != nullptr)
+            //             delete __input__;
+            //         if (__output__ != nullptr)
+            //             delete __output__;
+            //         if (__syncroned__file__input__output__ != nullptr)
+            //             delete __syncroned__file__input__output__;
+            //         this->__syncroned_input_output_system__ = other.__syncroned_input_output_system__;
+            //         this->__input__ = std::move(other.__input__);
+            //         this->__output__ = std::move(other.__output__);
+            //     }
+            //     return *this;
+            // }
             iofstream &operator=(iofstream &&other)
             {
                 if (this != &other)

@@ -3,6 +3,7 @@
 #include <stda/system/time/time.hpp>
 #include <stda/system/memory/memory.hpp>
 #include <stda/utilitys/utilitys.hpp>
+#include <stda/system/terminal/terminal.hpp>
 
 #ifndef LOGSSTDX
 #define LOGSSTDX
@@ -70,7 +71,7 @@ namespace System
     class Log_Manager
     {
     private:
-        static const char *codecolor[4];
+        static System::Terminal::Text::Color codecolor[4];
         static const char *codemensage[4];
         static std::vector<Log> allocator;
         static const char *nameprogram;
@@ -81,6 +82,9 @@ namespace System
         static void exportfile(const System::Url &path);
         /// @brief Funcion que muestra todos los Log por consola
         static void view();
+        /// @brief Funcion que muestra todos los Log por consola
+        /// @param log Un log especifico que haya captado y desee ver
+        static void view(const Log& log);
         /// @brief Agrega un log al administrador para luego enviarlo a donde se desee
         /// @param log Log deseado
         static void serialize(const Log &log);

@@ -273,7 +273,7 @@ namespace Node
         /// @brief Inserta un elemento en la posicion deseada
         /// @param pos Iterador del vector
         /// @param value Valor del puntero del nodo
-        void insert(const std::vector<base *>::Iterator &pos, base *value);
+        void insert(const std::vector<base *>::iterator &pos, base *value);
         /// @brief Agrega el elemento al final del arreglo
         /// @param value Valor del puntero del nodo
         void push_back(base *value) { values.push_back(value); }
@@ -296,7 +296,7 @@ namespace Node
         void remove(size_t pos);
         /// @brief Elimina un elemento del arreglo volviendo a nullptr el valor de esa pocision
         /// @param pos Iterador del elemento
-        void remove(const std::vector<base *>::Iterator &pos);
+        void remove(const std::vector<base *>::iterator &pos);
         /// @brief Obtiene una expresion constante del tamano del arreglo
         /// @return Devuelve un (?size_t?) del numero de elementos tangibles del vector
         const size_t size() const { return values.size(); }
@@ -308,10 +308,10 @@ namespace Node
         const base *top() const { return const_cast<const base *>(values[0]); }
         /// @brief Punto de partida de la iteracion del array
         /// @return Devuelve el iterador que apunta al elemento inicial del array
-        std::vector<base *>::Iterator begin() { return values.begin(); }
+        std::vector<base *>::iterator begin() { return values.begin(); }
         /// @brief Punto de final de la iteracion del array
         /// @return Devuelve el iterador que apunta al elemento final del array
-        std::vector<base *>::Iterator end() { return values.end(); }
+        std::vector<base *>::iterator end() { return values.end(); }
         ~vector() override;
     };
     /// @brief Clase que guarda los elemntos de nodos en base a una clave(?std::map?)
